@@ -43,7 +43,7 @@
       animation-delay: -0.15s;
     }
 
-    @data.itms[key]frames lds {
+    @keyframes lds {
       0% {
         transform: rotate(0deg);
       }
@@ -52,7 +52,6 @@
         transform: rotate(360deg);
       }
     }
-
     * {
       font-family: "Noto Sans", "Tahoma", "Arial", "Sans-serif" !important;
       line-height: 1.15em;
@@ -171,27 +170,6 @@
       font-size: 1.2em;
     }
 
-    /* Animação do loader */
-    @-webkit-data.itms[key]frames spin {
-      0% {
-        -webkit-transform: rotate(0deg);
-      }
-
-      100% {
-        -webkit-transform: rotate(360deg);
-      }
-    }
-
-    @data.itms[key]frames spin {
-      0% {
-        transform: rotate(0deg);
-      }
-
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
     /* Responsividade */
     @media (max-width: 600px) {
       .container {
@@ -285,8 +263,8 @@
               error(`Dados de registro incorretas [TITLE]`, msg_);
             }
 
-            if (!data.hasOwnProperty( `data.itms[key]s`)) {
-              error(`Dados de registro incorretas [data.itms[key]S]`, msg_);
+            if (!data.hasOwnProperty( `data.keys[key]s`)) {
+              error(`Dados de registro incorretas [KEYS]`, msg_);
             }
 
             // Preenche a página com os dados
@@ -295,14 +273,14 @@
 
             // Cria a lista de propriedades dinamicamente
             for (const k in data.keys) {
-              const itms = data.itms[k];
-              const no_ar = !Array.isArray(data.itms[key]);              
+              const itms = data.keys[k];
+              const no_ar = !Array.isArray(data.keys[key]);              
 
               const dt = document.createElement("dt");
-              dt.innerHTML = no_ar ? `--` : data.itms[key][0].trim();
+              dt.innerHTML = no_ar ? `--` : data.keys[key][0].trim();
 
               const dd = document.createElement("dd");
-              dd.innerHTML = no_ar ? 'Item mal formatado' : data.itms[key][1];
+              dd.innerHTML = no_ar ? 'Item mal formatado' : data.keys[key][1];
 
               detailsList.appendChild(dt);
               detailsList.appendChild(dd);
