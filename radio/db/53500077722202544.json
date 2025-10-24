@@ -1,8 +1,10 @@
 {
     "title": "Baofeng UV-5RH",
     "keys": [
-        ["Peticionamento","53500.077722/2025-44"],
+        ["Peticionamento/Processo","53500.077722/2025-44"],
         ["Modelo", "Baofeng UV-5RH"],        
-        ["Despacho Decisório Anatel", "14982/2025/ORCN/SOR"]
+        ["Despacho Decisório Anatel", "14982/2025/ORCN/SOR"],
+        ["Validação Anatel", "código verificador 14603412 e o código CRC C8BF5411"],
+        ["Link Despacho", "<a href=`https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?8-74Kn1tDR89f1Q7RjX8EYU46IzCFD26Q9Xx5QNDbqY4Llc9gIBtBLJoM6kR8sQ2rVOSwFOxWW1f9s5JQNtjaOm9WBQE5QQUW45q-LRngDGTMD8oIGkJQU2PQKvxRJIV`>link<a>"]
     ]
 }

@@ -228,6 +228,16 @@
 
     <!-- Conteúdo dinâmico: Fica oculto até carregar -->
     <dl id="details-list"></dl>
+
+    <p>
+    <ul>
+      <li>Validação de documentos disponível em <a
+          href="http://www.anatel.gov.br/autenticidade">http://www.anatel.gov.br/autenticidade<a></li>
+      <li>Consultar peticionamento/processo <a
+          href="https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0">aqui<a>
+      </li>
+    </ul>
+    </p>
   </div>
 
   <noscript><span>There is something <strong>wrong</strong> here!</span>
@@ -290,10 +300,10 @@
               }
 
               const dt = document.createElement("dt");
-              dt.textContent = no_ar ? `--` : key[0].trim();
+              dt.innerHTML = no_ar ? `--` : key[0].trim();
 
               const dd = document.createElement("dd");
-              dd.textContent = no_ar ? 'Item mal formatado' : key[1];
+              dd.innerHTML = no_ar ? 'Item mal formatado' : key[1];
 
               detailsList.appendChild(dt);
               detailsList.appendChild(dd);
