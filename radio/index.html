@@ -249,6 +249,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       G("#container").style.display = `block`;
+      const msg_ = `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`;
       const productCode = `${window.location.search}`.replace(/[^a-b0-1]/i, '').trim();
 
       const loader = G(".lds");
@@ -281,11 +282,11 @@
             loader.style.display = "none";
 
             if (!data.hasOwnProperty(`title`)) {
-              error(`Dados de registro incorretas [TITLE]`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`);
+              error(`Dados de registro incorretas [TITLE]`, msg_);
             }
 
             if (!data.hasOwnProperty( `keys`)) {
-              error(`Dados de registro incorretas [KEYS]`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`);
+              error(`Dados de registro incorretas [KEYS]`, msg_);
             }
 
             // Preenche a página com os dados
@@ -296,7 +297,7 @@
             for (const key in data.keys) {
               const no_ar = !Array.isArray(key);
               if (no_ar) {
-                error(`Dados de registro incorretas [ITEMS]`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`);
+                error(`Dados de registro incorretas [ITEMS]`, msg_);
               }
 
               const dt = document.createElement("dt");
@@ -309,15 +310,15 @@
               detailsList.appendChild(dd);
 
               if (no_ar) {
-                error(`Dados de registro incorretas [ITEMS]`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`);
+                error(`Dados de registro incorretas [ITEMS]`, msg_);
               }
             }
 
             // Exibe a lista com a transição suave
             detailsList.classList.add("loaded");
           })
-          .catch((er) => {
-            console.error("Erro:", er);
+          .catch((er) => {            
+            console.error(filePath, "Erro:", er);
             error(`[B] ${url_def[0]}`, url_def[1]);
           });
       } else {
