@@ -317,8 +317,8 @@
             detailsList.classList.add("loaded");
           })
           .catch((er) => {
-            error(`[B] ${url_def[0]}`, url_def[1]);
             console.error("Erro:", er);
+            error(`[B] ${url_def[0]}`, url_def[1]);            
           });
       } else {
         loader.style.display = "none";
