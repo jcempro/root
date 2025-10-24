@@ -1,18 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-
-  <title>Redirecionando...</title>
-
-  <script>
-    ((L, w) => {
-      L.href = "https://www.ranchodaamizade.com.br/manuais/rener.pdf?utm_source=chatgpt.com";
-    })(window.location, window);
-  </script>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carregando...</title>
   <style>
     noscript,
     .lds {
@@ -63,7 +55,7 @@
 
     * {
       font-family: "Noto Sans", "Tahoma", "Arial", "Sans-serif" !important;
-      line-height: 1.5rem;
+      line-height: 1.15em;
       margin: 0;
       padding: 0;
       color: #222;
@@ -94,6 +86,131 @@
     noscript p span {
       font-size: 1.1rem;
     }
+
+    body {
+      margin: 0;
+      padding: 40px;
+      background-color: #f4f7f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      display: none;
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      position: relative;
+      /* Para posicionamento do loader */
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .description {
+      text-align: center;
+      color: #7f8c8d;
+      margin-bottom: 30px;
+    }
+
+    /* Estilo para a lista de descrição */
+    dl {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 15px;
+      opacity: 0;
+      /* Inicia escondido */
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    dl.loaded {
+      opacity: 1;
+      /* Transição suave */
+    }
+
+    dt {
+      font-weight: 600;
+      color: #555;
+      padding: 10px 0;
+      text-transform: uppercase;
+      font-size: 0.8em;
+      letter-spacing: 0.5px;
+    }
+
+    dd {
+      margin: 0;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      color: #34495e;
+    }
+
+    dd:last-of-type {
+      border-bottom: none;
+    }
+
+    small {
+      font-size: .6em;
+      margin-top: .7em;
+      display: block;
+      font-weight: normal;
+    }
+
+    .error-message {
+      text-align: center;
+      color: #e74c3c;
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+
+    /* Animação do loader */
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Responsividade */
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      dl {
+        grid-template-columns: 1fr;
+      }
+
+      dt {
+        padding-bottom: 0;
+      }
+
+      dd {
+        padding-top: 0;
+        padding-bottom: 15px;
+      }
+    }
   </style>
 </head>
 
@@ -104,9 +221,102 @@
     <div></div>
     <div></div>
   </div>
+
+  <div id="container" class="container">
+    <h1 id="page-title">Carregando...</h1>
+    <p id="page-description" class="description"></p>
+
+    <!-- Conteúdo dinâmico: Fica oculto até carregar -->
+    <dl id="details-list"></dl>
+  </div>
+
   <noscript><span>There is something <strong>wrong</strong> here!</span>
     <p><span>#noScript</span> <u>Javascript is disabled</u>, preventing us from directing you to the address.</p>
   </noscript>
+
+  <script>
+    const G = (e) => document.querySelector(e);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      G("#container").style.display = `block`;
+      const productCode = `${window.location.search}`.replace(/[^a-b0-1]/i, '').trim();
+
+      const loader = G(".lds");
+      const detailsList = G("#details-list");
+      const pageTitle = G("#page-title");
+      const pageDescription = G("#page-description");
+      const url_def = ['Dados não encontrados', 'A url deve terminar com "/?XXX", onde XXX é o nº do peticionamento anatel sem pontuação.'];
+
+      error = (title, descri, exit) => {
+        pageTitle.innerHTML =
+          `${title}<small>${descri}</small>`;
+
+        if (typeof exit === "undefined" || exit === 1 || exit === true) {
+          throw new Error(`${title}\n\n${descri}`);
+        }
+      }
+
+      if (productCode) {
+        const filePath = `./ db / ${productCode}.json`;
+
+        fetch(filePath)
+          .then((response) => {
+            if (!response.ok) {
+              error(`[A] ${url_def[0]}`, url_def[1]);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // Oculta o loader
+            loader.style.display = "none";
+
+            if (!Object.hasOwnProperty(data, `title`)) {
+              error(`Dados de registro incorretas [TITLE]`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`);
+            }
+
+            if (!Object.hasOwnProperty(data, `keys`)) {
+              error(`Dados de registro incorretas [KEYS]`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`);
+            }
+
+            // Preenche a página com os dados
+            pageTitle.textContent = data.title || "Detalhes do Radio/Homologação";
+            pageDescription.textContent = data.descricao || "";
+
+            // Cria a lista de propriedades dinamicamente
+            for (const key in data.keys) {
+              const no_ar = !Array.isArray(key);
+              if (no_ar) {
+                error(`Dados de registro incorretas [ITEMS]`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`);
+              }
+
+              const dt = document.createElement("dt");
+              dt.textContent = no_ar ? `--` : key[0].trim();
+
+              const dd = document.createElement("dd");
+              dd.textContent = no_ar ? 'Item mal formatado' : key[1];
+
+              detailsList.appendChild(dt);
+              detailsList.appendChild(dd);
+
+              if (no_ar) {
+                error(`Dados de registro incorretas [ITEMS]`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`);
+              }
+            }
+
+            // Exibe a lista com a transição suave
+            detailsList.classList.add("loaded");
+          })
+          .catch((er) => {
+            error(`[B] ${url_def[0]}`, url_def[1]);
+            console.error("Erro:", er);
+          });
+      } else {
+        loader.style.display = "none";
+        error(`[C] ${url_def[0]}`, url_def[1]);
+        pageDescription.textContent = "";
+      }
+    });
+  </script>
 </body>
 
 </html>
