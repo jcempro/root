@@ -274,13 +274,13 @@
             // Cria a lista de propriedades dinamicamente
             for (const k in data.keys) {
               const itms = data.keys[k];
-              const no_ar = !Array.isArray(data.keys[key]);              
+              const no_ar = !Array.isArray(data.keys[k]);              
 
               const dt = document.createElement("dt");
-              dt.innerHTML = no_ar ? `--` : data.keys[key][0].trim();
+              dt.innerHTML = no_ar ? `--` : itms[0].trim();
 
               const dd = document.createElement("dd");
-              dd.innerHTML = no_ar ? 'Item mal formatado' : data.keys[key][1];
+              dd.innerHTML = no_ar ? 'Item mal formatado' : itms[1];
 
               detailsList.appendChild(dt);
               detailsList.appendChild(dd);
