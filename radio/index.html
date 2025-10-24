@@ -280,11 +280,11 @@
             // Oculta o loader
             loader.style.display = "none";
 
-            if (!Object.hasOwnProperty(data, `title`)) {
+            if (!data.hasOwnProperty(`title`)) {
               error(`Dados de registro incorretas [TITLE]`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`);
             }
 
-            if (!Object.hasOwnProperty(data, `keys`)) {
+            if (!data.hasOwnProperty( `keys`)) {
               error(`Dados de registro incorretas [KEYS]`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`);
             }
 
@@ -318,7 +318,7 @@
           })
           .catch((er) => {
             console.error("Erro:", er);
-            error(`[B] ${url_def[0]}`, url_def[1]);            
+            error(`[B] ${url_def[0]}`, url_def[1]);
           });
       } else {
         loader.style.display = "none";
