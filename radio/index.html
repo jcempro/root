@@ -43,7 +43,7 @@
       animation-delay: -0.15s;
     }
 
-    @data.keys[key]frames lds {
+    @data.itms[key]frames lds {
       0% {
         transform: rotate(0deg);
       }
@@ -172,7 +172,7 @@
     }
 
     /* Animação do loader */
-    @-webkit-data.keys[key]frames spin {
+    @-webkit-data.itms[key]frames spin {
       0% {
         -webkit-transform: rotate(0deg);
       }
@@ -182,7 +182,7 @@
       }
     }
 
-    @data.keys[key]frames spin {
+    @data.itms[key]frames spin {
       0% {
         transform: rotate(0deg);
       }
@@ -285,8 +285,8 @@
               error(`Dados de registro incorretas [TITLE]`, msg_);
             }
 
-            if (!data.hasOwnProperty( `data.keys[key]s`)) {
-              error(`Dados de registro incorretas [data.keys[key]S]`, msg_);
+            if (!data.hasOwnProperty( `data.itms[key]s`)) {
+              error(`Dados de registro incorretas [data.itms[key]S]`, msg_);
             }
 
             // Preenche a página com os dados
@@ -294,14 +294,15 @@
             pageDescription.textContent = data.descricao || "";
 
             // Cria a lista de propriedades dinamicamente
-            for (const key in data.keys) {
-              const no_ar = !Array.isArray(data.keys[key]);              
+            for (const k in data.keys) {
+              const itms = data.itms[k];
+              const no_ar = !Array.isArray(data.itms[key]);              
 
               const dt = document.createElement("dt");
-              dt.innerHTML = no_ar ? `--` : data.keys[key][0].trim();
+              dt.innerHTML = no_ar ? `--` : data.itms[key][0].trim();
 
               const dd = document.createElement("dd");
-              dd.innerHTML = no_ar ? 'Item mal formatado' : data.keys[key][1];
+              dd.innerHTML = no_ar ? 'Item mal formatado' : data.itms[key][1];
 
               detailsList.appendChild(dt);
               detailsList.appendChild(dd);
