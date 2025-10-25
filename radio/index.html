@@ -2,308 +2,360 @@
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carregando...</title>
-  <style>
-    noscript,
-    .lds {
-      width: calc(3 * 1.25rem);
-      height: calc(3 * 1.25rem);
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Carregando...</title>
+	<style>
+		noscript,
+		.lds {
+			width: calc(3 * 1.25rem);
+			height: calc(3 * 1.25rem);
 
-      position: fixed;
-      top: 50vh;
-      left: 50vw;
-      margin-left: calc(-1.5 * 1.25rem);
-      margin-top: calc(-1.5 * 1.25rem);
-    }
+			position: fixed;
+			top: 50vh;
+			left: 50vw;
+			margin-left: calc(-1.5 * 1.25rem);
+			margin-top: calc(-1.5 * 1.25rem);
+		}
 
-    .lds div {
-      box-sizing: border-box;
-      display: block;
-      position: absolute;
-      width: 3rem;
-      height: 3rem;
-      margin: 8px;
-      border: 8px solid #ccc;
-      border-radius: 50%;
-      animation: lds 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-      border-color: #ccc transparent transparent transparent;
-    }
+		.lds div {
+			box-sizing: border-box;
+			display: block;
+			position: absolute;
+			width: 3rem;
+			height: 3rem;
+			margin: 8px;
+			border: 8px solid #ccc;
+			border-radius: 50%;
+			animation: lds 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+			border-color: #ccc transparent transparent transparent;
+		}
 
-    .lds div:nth-child(1) {
-      animation-delay: -0.45s;
-    }
+		.lds div:nth-child(1) {
+			animation-delay: -0.45s;
+		}
 
-    .lds div:nth-child(2) {
-      animation-delay: -0.3s;
-    }
+		.lds div:nth-child(2) {
+			animation-delay: -0.3s;
+		}
 
-    .lds div:nth-child(3) {
-      animation-delay: -0.15s;
-    }
+		.lds div:nth-child(3) {
+			animation-delay: -0.15s;
+		}
 
-    @keyframes lds {
-      0% {
-        transform: rotate(0deg);
-      }
+		@keyframes lds {
+			0% {
+				transform: rotate(0deg);
+			}
 
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-    * {
-      font-family: "Noto Sans", "Tahoma", "Arial", "Sans-serif" !important;
-      line-height: 1.15em;
-      margin: 0;
-      padding: 0;
-      color: #222;
-    }
+			100% {
+				transform: rotate(360deg);
+			}
+		}
 
-    noscript {
-      display: block;
-      width: 280px;
-      max-width: 280px;
-      height: 160px;
-      margin-left: calc(-140px - 1rem);
-      margin-top: calc(-80px - .5rem);
-      background: rgba(255, 255, 255, .9);
-      padding: .5rem 1rem;
-      border-left: .5rem solid #eee;
-    }
+		* {
+			font-family: "Noto Sans", "Tahoma", "Arial", "Sans-serif" !important;
+			line-height: 1.15em;
+			margin: 0;
+			padding: 0;
+			color: #222;
+		}
 
-    noscript span {
-      opacity: .6;
-      font-size: .9rem;
-    }
+		noscript {
+			display: block;
+			width: 280px;
+			max-width: 280px;
+			height: 160px;
+			margin-left: calc(-140px - 1rem);
+			margin-top: calc(-80px - .5rem);
+			background: rgba(255, 255, 255, .9);
+			padding: .5rem 1rem;
+			border-left: .5rem solid #eee;
+		}
 
-    noscript p {
-      margin-top: .5rem;
-      font-weight: 600;
-    }
+		noscript span {
+			opacity: .6;
+			font-size: .9rem;
+		}
 
-    noscript p span {
-      font-size: 1.1rem;
-    }
+		noscript p {
+			margin-top: .5rem;
+			font-weight: 600;
+		}
 
-    body {
-      margin: 0;
-      padding: 40px;
-      background-color: #f4f7f9;
-      color: #333;
-      line-height: 1.6;
-    }
+		noscript p span {
+			font-size: 1.1rem;
+		}
 
-    .container {
-      display: none;
-      max-width: 600px;
-      margin: auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      position: relative;
-      /* Para posicionamento do loader */
-    }
+		body {
+			margin: 0;
+			padding: 40px;
+			background-color: #f4f7f9;
+			color: #333;
+			line-height: 1.6;
+		}
 
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
+		.container {
+			display: none;
+			max-width: 600px;
+			margin: auto;
+			background: #fff;
+			padding: 30px;
+			border-radius: 12px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+			position: relative;
+			/* Para posicionamento do loader */
+		}
 
-    .description {
-      text-align: center;
-      color: #7f8c8d;
-      margin-bottom: 30px;
-    }
+		h1 {
+			text-align: center;
+			color: #2c3e50;
+			margin-bottom: 10px;
+			font-weight: 600;
+		}
 
-    /* Estilo para a lista de descrição */
-    dl {
-      margin: 0;
-      padding: 0;
-      display: grid;
-      grid-template-columns: 150px 1fr;
-      gap: 15px;
-      opacity: 0;
-      /* Inicia escondido */
-      transition: opacity 0.5s ease-in-out;
-    }
+		.description {
+			text-align: center;
+			color: #7f8c8d;
+			margin-bottom: 30px;
+		}
 
-    dl.loaded {
-      opacity: 1;
-      /* Transição suave */
-    }
+		/* Estilo para a lista de descrição */
+		dl {
+			margin: 0;
+			padding: 0;
+			display: grid;
+			grid-template-columns: 150px 1fr;
+			gap: 15px;
+			opacity: 0;
+			/* Inicia escondido */
+			transition: opacity 0.5s ease-in-out;
+		}
 
-    dt {
-      font-weight: 600;
-      color: #555;
-      padding: 10px 0;
-      text-transform: uppercase;
-      font-size: 0.8em;
-      letter-spacing: 0.5px;
-    }
+		dl.loaded {
+			opacity: 1;
+			/* Transição suave */
+		}
 
-    dd {
-      margin: 0;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-      color: #34495e;
-    }
+		dt {
+			font-weight: 600;
+			color: #555;
+			padding: 10px 0;
+			text-transform: uppercase;
+			font-size: 0.8em;
+			letter-spacing: 0.5px;
+		}
 
-    dd:last-of-type {
-      border-bottom: none;
-    }
+		dd {
+			margin: 0;
+			padding: 10px 0;
+			border-bottom: 1px solid #eee;
+			color: #34495e;
+		}
 
-    small {
-      font-size: .6em;
-      margin-top: .7em;
-      display: block;
-      font-weight: normal;
-    }
+		dd:last-of-type {
+			border-bottom: none;
+		}
 
-    .error-message {
-      text-align: center;
-      color: #e74c3c;
-      margin-top: 20px;
-      font-size: 1.2em;
-    }
+		small {
+			font-size: .6em;
+			margin-top: .7em;
+			display: block;
+			font-weight: normal;
+		}
 
-    /* Responsividade */
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
+		.error-message {
+			text-align: center;
+			color: #e74c3c;
+			margin-top: 20px;
+			font-size: 1.2em;
+		}
 
-      dl {
-        grid-template-columns: 1fr;
-      }
+		/* Responsividade */
+		@media (max-width: 600px) {
+			.container {
+				padding: 20px;
+			}
 
-      dt {
-        padding-bottom: 0;
-      }
+			dl {
+				grid-template-columns: 1fr;
+			}
 
-      dd {
-        padding-top: 0;
-        padding-bottom: 15px;
-      }
-    }
-  </style>
+			dt {
+				padding-bottom: 0;
+			}
+
+			dd {
+				padding-top: 0;
+				padding-bottom: 15px;
+			}
+		}
+	</style>
 </head>
 
 <body>
-  <div class="lds">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
+	<div class="lds">
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+	</div>
 
-  <div id="container" class="container">
-    <h1 id="page-title">Carregando...</h1>
-    <p id="page-description" class="description"></p>
+	<div id="container" class="container">
+		<h1 id="ttl">Carregando...</h1>
+		<p id="sub" class="description"></p>
 
-    <!-- Conteúdo dinâmico: Fica oculto até carregar -->
-    <dl id="details-list"></dl>
+		<!-- Conteúdo dinâmico: Fica oculto até carregar -->
+		<dl id="list"></dl>
 
-    <p>
-    <ul>
-      <li>Validação de documentos disponível em <a
-          href="http://www.anatel.gov.br/autenticidade">http://www.anatel.gov.br/autenticidade<a></li>
-      <li>Consultar peticionamento/processo <a
-          href="https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0">aqui<a>
-      </li>
-    </ul>
-    </p>
-  </div>
+		<p>
+		<ul>
+			<li>Validação de documentos disponível em <a
+					href="http://www.anatel.gov.br/autenticidade">http://www.anatel.gov.br/autenticidade<a></li>
+			<li>Consultar peticionamento/processo <a
+					href="https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0">aqui<a>
+			</li>
+		</ul>
+		</p>
+	</div>
 
-  <noscript><span>There is something <strong>wrong</strong> here!</span>
-    <p><span>#noScript</span> <u>Javascript is disabled</u>, preventing us from directing you to the address.</p>
-  </noscript>
+	<noscript><span>There is something <strong>wrong</strong> here!</span>
+		<p><span>#noScript</span> <u>Javascript is disabled</u>, preventing us from directing you to the address.</p>
+	</noscript>
 
-  <script>
-    const G = (e) => document.querySelector(e);
+	<script>
+		const _ = (e) => document.querySelector(e);
 
-    document.addEventListener("DOMContentLoaded", () => {
-      G("#container").style.display = `block`;
-      const msg_ = `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`;
-      const productCode = `${window.location.search}`.replace(/[^a-b0-1]/i, '').trim();
+		document.addEventListener("DOMContentLoaded", () => {
+			_("#container").style.display = `block`;
+			Object.prototype.has = function (propriedade) {
+				return Object.hasOwnProperty(this, propriedade);
+			};
 
-      const loader = G(".lds");
-      const detailsList = G("#details-list");
-      const pageTitle = G("#page-title");
-      const pageDescription = G("#page-description");
-      const url_def = ['Dados não encontrados', 'A url deve terminar com "/?XXX", onde XXX é o nº do peticionamento anatel sem pontuação.'];
+			const C = `${window.location.search}`.split('radio/').pop().replace(/[^a-b0-1\/]/i, '').trim().split(`/`);
+			const CID = C[0];
+			const CED = C.length >= 2 ? C[1] : false;
+			const isL = (v) => /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/.test(v);
 
-      error = (title, descri, exit) => {
-        pageTitle.innerHTML =
-          `${title}<small>${descri}</small>`;
+			const _L = (y) => {
+				return !Array.isArray(y)
+					? y
+					: ((x) => {
+						if (x.length === 0) return `---`;
 
-        if (typeof exit === "undefined" || exit === 1 || exit === true) {
-          throw new Error(`${title}\n\n${descri}`);
-        }
-      }
+						if (typeof x[0] === `string`) {
+							const l = isL(x[0] ? x[0] : x[1]);
+							const t = isL(x[0] ? x[1] : x[0]);
+							return `<a href="${l}" target="_blank">${t}</a>`
+						}
 
-      if (productCode) {
-        const filePath = `db/${productCode}.json`;
+						if (!Array.isArray(x[0])) return `---`;
 
-        fetch(filePath)
-          .then((response) => {
-            if (!response.ok) {
-              error(`[A] ${url_def[0]}`, url_def[1]);
-            }
-            return response.json();
-          })
-          .then((data) => {
-            // Oculta o loader
-            loader.style.display = "none";
+						return x.map(_L).join(`; `);
+					})(y);
+			}
 
-            if (!data.hasOwnProperty(`title`)) {
-              error(`Dados de registro incorretas [TITLE]`, msg_);
-            }
+			const _T = {
+				"id": "Peticionamento/Processo",
+				"r": "Despacho/Decisão/Homologação Anatel",
+				"dt": "Emissão/consulta",
+				"m": "Modelo",
+			};
 
-            if (!data.hasOwnProperty( `keys`)) {
-              error(`Dados de registro incorretas [KEYS]`, msg_);
-            }
+			const LOAD = _(".lds");
+			const LST = _("#list");
+			const TTL = (t) => {
+				_("#ttl").innerHTML = document.title = t;
+			};
+			const DESC = _("#sub");
+			const e_id = (id) => {
+				return id ? ` <small>[${`${id}`.toUpperCase()}]<small>` : ``;
+			};
 
-            // Preenche a página com os dados
-            pageTitle.textContent = data.title || "Detalhes do Radio/Homologação";
-            pageDescription.textContent = data.descricao || "";
+			const M1 = (id) => {
+				[id, `Dados de registro incorretas`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`]
+			};
+			const M2 = (id) => {
+				return [id, `Dados não encontrados`, 'A url deve terminar com "/?<b>XXX<b>", onde "XXX" é o nº do peticionamento anatel sem pontuação.'];
+			};
 
-            // Cria a lista de propriedades dinamicamente
-            for (const k in data.keys) {
-              const itms = data.keys[k];
-              const no_ar = !Array.isArray(data.keys[k]);              
+			const ERR = (id, title, descri, exit) => {
+				TTL(`${title}${e_id(id)}<small>${descri}</small>`);
 
-              const dt = document.createElement("dt");
-              dt.innerHTML = no_ar ? `--` : itms[0].trim();
+				if (typeof exit === "undefined" || exit === 1 || exit === true) {
+					throw new Error(`${title}\n\n${descri}`);
+				}
+			};
 
-              const dd = document.createElement("dd");
-              dd.innerHTML = no_ar ? 'Item mal formatado' : itms[1];
+			const A = (k, v) => {
+				const dt = document.createElement("dt");
+				dt.innerHTML = k === null ? `--` : itms[0].trim();
 
-              detailsList.appendChild(dt);
-              detailsList.appendChild(dd);
+				const dd = document.createElement("dd");
+				dd.innerHTML = k === null ? 'Item mal formatado' : itms[1];
 
-              if (no_ar) {
-                error(`Dados de registro incorretas [ITEMS]`, msg_);
-              }
-            }
+				LST.appendChild(dt);
+				LST.appendChild(dd);
+			}
 
-            // Exibe a lista com a transição suave
-            detailsList.classList.add("loaded");
-          })
-          .catch((er) => {            
-            console.error(filePath, "Erro:", er);
-            error(`[B] ${url_def[0]}`, url_def[1]);
-          });
-      } else {
-        loader.style.display = "none";
-        error(`[C] ${url_def[0]}`, url_def[1]);
-        pageDescription.textContent = "";
-      }
-    });
-  </script>
+			if (C) {
+				const filePath = `db/${C}.json`;
+
+				fetch(filePath)
+					.then((response) => {
+						if (!response.ok) {
+							ERR(...M2("A"));
+						}
+						return response.json();
+					})
+					.then((data) => {
+						LOAD.style.display = "none";
+
+						for (const i of Object.keys(_L)) {
+							if (!data.has(i)) {
+								ERR(M1(`:${i}`));
+							}
+						}
+
+						if (!data.has(`items`) || !Array.isArray(data.items)) {
+							ERR(M1(`ITM`));
+						}
+
+						// Preenche a página com os dados
+						TTL(data.m || "Detalhes do Radio/Homologação");
+						DESC.textContent = data.descricao || "";
+
+						// Cria a lista de propriedades dinamicamente
+						for (const j of [...Object.keys(_T), ...data.items]) {
+							const [k = undefined, v = undefined] = Array.isArray(j)
+								? j
+								: (Number.isInteger(j) || (typeof j == "string" && j.trim() !== ``) && data.has(j) && _T.has(j))
+									? [_T[j], _L(data[j])]
+									: []
+								;
+
+							const f = typeof k === "undefined";
+							A(f ? null : v[0], v[1])
+
+							if (f) {
+								ERR(M1(`ITM`));
+							}
+						}
+
+						// Exibe a lista com a transição suave
+						LST.classList.add("loaded");
+					})
+					.catch((er) => {
+						console.error(filePath, "Erro:", er);
+						ERR(...M2("B"));
+					});
+			} else {
+				LOAD.style.display = "none";
+				ERR(...M2("C"));
+				DESC.textContent = "";
+			}
+		});
+	</script>
 </body>
 
 </html>

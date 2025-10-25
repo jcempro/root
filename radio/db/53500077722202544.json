@@ -1,26 +1,23 @@
 {
-  "title": "Baofeng UV-5RH",
-  "keys": [
+  "id": [
+    "53500.077722/2025-44",
+    "https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_exibir.php?92AHliMZAlcgWWxm2w2qy-GDVz335h7FYd_mrGCDn9UEi2XStDTUZKOJ_damneHH9mwnSMIjw0l3j23hD04TshVeEEqsYGmJNEugGLwOvuVmHnY4y1qPIpzFftIgDiSk"
+  ],
+  "r": [
     [
-      "Peticionamento/Processo",
-      "53500.077722/2025-44"
-    ],
-    ["Link público anatel", "<a href='https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_exibir.php?92AHliMZAlcgWWxm2w2qy-GDVz335h7FYd_mrGCDn9UEi2XStDTUZKOJ_damneHH9mwnSMIjw0l3j23hD04TshVeEEqsYGmJNEugGLwOvuVmHnY4y1qPIpzFftIgDiSk'>aqui</a>"],
-    [
-      "Modelo",
-      "Baofeng UV-5RH"
+      "14982/2025/ORCN/SOR",
+      "https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?8-74Kn1tDR89f1Q7RjX8EYU46IzCFD26Q9Xx5QNDbqY4Llc9gIBtBLJoM6kR8sQ2rVOSwFOxWW1f9s5JQNtjaOm9WBQE5QQUW45q-LRngDGTMD8oIGkJQU2PQKvxRJIV"
     ],
     [
-      "Despacho Decisório Anatel",
-      "14982/2025/ORCN/SOR"
-    ],
-    [
-      "Link Despacho",
-      "<a href=`https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?8-74Kn1tDR89f1Q7RjX8EYU46IzCFD26Q9Xx5QNDbqY4Llc9gIBtBLJoM6kR8sQ2rVOSwFOxWW1f9s5JQNtjaOm9WBQE5QQUW45q-LRngDGTMD8oIGkJQU2PQKvxRJIV`>aqui<a>"
-    ],
-    [
-      "Validação Anatel",
-      "código verificador 14603412 e o código CRC C8BF5411"
+      ".PDF no drive",
+      "https://drive.google.com/file/d/1Lg6ceokOFKShfufL80M3BFTVEEeREgLw/view?usp=drive_link"
     ]
-  ]
+  ],
+  "dt": "24/10/2025",
+  "v": [
+    14603412,
+    "C8BF5411"
+  ],
+  "m": "Baofeng UV-5RH",
+  "keys": []
 }
