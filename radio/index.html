@@ -334,7 +334,7 @@
 				if (typeof x === "string" && x.trim().length > 0) return x;
 
 				if (Array.isArray(x) && x.length === 2){
-					return `Código: ${x[1][0]}<br />CRC: ${x[1][1]}`
+					return `Código: ${x[0]}<br />CRC: ${x[1]}`
 				}
 
 				return "";
