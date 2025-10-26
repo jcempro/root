@@ -369,7 +369,7 @@
 
 			if (C) {
 				const filePath = `db/${C}.json`;
-				fetch(filePath)
+				fetch(`${filePath}?t=` + Math.random().toString(36).substring(2, 18))
 					.then(response => {
 						if (!response.ok) ERR(...M2("A"));
 						return response.json();
