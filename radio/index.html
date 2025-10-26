@@ -370,10 +370,10 @@
       };
 
       const RP = (str) => {
-        return String(str).replace(/\$\{([\w\d]+)\}/g, (_, k) => {
+        return `${str}`.replace(/\$\{([\w\d]+)\}/g, (_, k) => {
           const i = k.trim().toLowerCase();
           const val = _S == null || !KH(_S, i) ? null : _S[i];
-          return val === null ? `???` : String(val);
+          return val === null ? `???` : `${val}`;
         });
       }
 
@@ -407,8 +407,8 @@
       }
 
       if (C) {
-        const filePath = `db/${C}.json?t=` + Math.random().toString(36).substring(2, 18);
-        fetch(filePath)
+        const fURL = `db/${C}.json?t=` + Math.random().toString(36).substring(2, 18);
+        fetch(fURL)
           .then(response => {
             if (!response.ok) ERR(...M2("A"));
             return response.json();
@@ -433,7 +433,7 @@
             }
           })
           .catch(er => {
-            console.error(filePath, "Erro:", er);
+            console.error(fURL, "Erro:", er);
             ERR(...M2("B"));
           });
       } else {
