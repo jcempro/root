@@ -6,16 +6,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Carregando...</title>
 	<style>
-		noscript,
+		.noscript,
 		.lds {
-			width: calc(3 * 1.25rem);
-			height: calc(3 * 1.25rem);
-
+			width: 3.75rem;
+			height: 3.75rem;
 			position: fixed;
-			top: 50vh;
-			left: 50vw;
-			margin-left: calc(-1.5 * 1.25rem);
-			margin-top: calc(-1.5 * 1.25rem);
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
 		}
 
 		.lds div {
@@ -25,10 +23,10 @@
 			width: 3rem;
 			height: 3rem;
 			margin: 8px;
-			border: 8px solid #ccc;
+			border: 8px solid #333;
 			border-radius: 50%;
 			animation: lds 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-			border-color: #ccc transparent transparent transparent;
+			border-color: #333 transparent transparent transparent;
 		}
 
 		.lds div:nth-child(1) {
@@ -61,29 +59,27 @@
 			color: #333;
 		}
 
-		noscript {
+		.noscript {
 			display: block;
 			width: 280px;
 			max-width: 280px;
 			height: 160px;
-			margin-left: calc(-140px - 1rem);
-			margin-top: calc(-80px - .5rem);
 			background: rgba(255, 255, 255, .9);
 			padding: .5rem 1rem;
 			border-left: .5rem solid #eee;
 		}
 
-		noscript span {
+		.noscript span {
 			opacity: .6;
 			font-size: .9rem;
 		}
 
-		noscript p {
+		.noscript p {
 			margin-top: .5rem;
 			font-weight: 600;
 		}
 
-		noscript p span {
+		.noscript p span {
 			font-size: 1.1rem;
 		}
 
@@ -104,28 +100,29 @@
 			border-radius: 12px;
 			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 			position: relative;
-			/* Para posicionamento do loader */
 		}
 
 		h1 {
 			text-align: center;
-			color: #2c3e50;
+			color: #333;
 			margin-bottom: 10px;
 			font-weight: 600;
 		}
 
+		ul,
 		ul>li,
 		p {
 			text-align: justify;
+			display: block;
+			margin-top: .5em;
 		}
 
 		.desc {
 			text-align: center;
-			color: #7f8c8d;
+			color: #333;
 			margin-bottom: 30px;
 		}
 
-		/* Estilo para a lista de descrição */
 		div.dl {
 			margin: 0;
 			padding: 0;
@@ -133,18 +130,16 @@
 			grid-template-columns: 150px 1fr;
 			gap: 15px;
 			opacity: 0;
-			/* Inicia escondido */
 			transition: opacity 0.5s ease-in-out;
 		}
 
 		div.loaded {
 			opacity: 1;
-			/* Transição suave */
 		}
 
 		div.dt {
 			font-weight: 600;
-			color: #555;
+			color: #333;
 			padding: 10px 0;
 			text-transform: uppercase;
 			font-size: 0.8em;
@@ -155,13 +150,12 @@
 			margin: 0;
 			padding: 10px 0;
 			border-bottom: 1px solid #eee;
-			color: #34495e;
+			color: #333;
 		}
 
 		div.dd:last-of-type {
 			border-bottom: none;
 		}
-
 
 		sup {
 			font-size: .7em;
@@ -186,7 +180,6 @@
 			font-size: 1.2em;
 		}
 
-		/* Responsividade */
 		@media (max-width: 600px) {
 			.container {
 				padding: 20px;
@@ -196,20 +189,10 @@
 				grid-template-columns: 1fr;
 			}
 
-			dt {
-				padding-bottom: 0;
-			}
-
 			div.dd {
 				padding-top: 0;
 				padding-bottom: 15px;
 			}
-		}
-
-		ul>li,
-		ul {
-			display: block;
-			margin-top: .5em;
 		}
 	</style>
 </head>
@@ -231,7 +214,9 @@
 		<ul>
 			<li>A validação de documentos Anatel está disponível em <a
 					href="http://www.anatel.gov.br/autenticidade">anatel.gov.br</a></li>
-			<li>Para consultar onsultar peticionamento/processo acesso o site SEI da Anatel<a href="https://sei.anatel.gov.br/...">aqui</a></li>
+			<li>Consultar peticionamento/processo <a
+					href="https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0">aqui</a>
+			</li>
 		</ul>
 	</div>
 
@@ -240,55 +225,39 @@
 	</noscript>
 
 	<script>
-		const _ = (e) => document.querySelector(e);
+		const _ = e => document.querySelector(e);
 
 		document.addEventListener("DOMContentLoaded", () => {
-			_("#container").style.display = `block`;
-			Object.prototype.has = function (propriedade) {
-				return Object.hasOwnProperty(this, propriedade);
-			};
+			_("#container").style.display = "block";
 
-			const M1 = (id) => {
-				[id, `Dados de registro incorretas`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`]
-			};
-			const M2 = (id) => {
-				return [id, `Parâmetro não encontrado ou inválido`, 'A url deve terminar com <span class="url">"/?<b>XXX</b>"</span>, onde "XXX" é o nº do peticionamento, despacho ou homologação Anatel sem pontuação.'];
-			};
+			const M1 = id => [id, `Dados de registro incorretas`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`];
+			const M2 = id => [id, `Parâmetro não encontrado ou inválido`, 'A url deve terminar com <span class="url">"/?<b>XXX</b>"</span>, onde "XXX" é o nº do peticionamento, despacho ou homologação Anatel sem pontuação.'];
 
 			const ERR = (id, title, descri, exit) => {
-				TTL(`${title}${e_id(id)}<p class="sub">${descri}</p>`);
-
-				if (typeof exit === "undefined" || exit === 1 || exit === true) {
-					throw new Error(`${title}\n\n${descri}`);
-				}
+				const m = `${title}${e_id(id)}\n\n<p class="sub">${descri}</p>`;
+				TTL(m);
+				if (typeof exit === "undefined" || exit === 1 || exit === true) throw new Error(m.replace(/<\/?[^>]+(>|$)/g, ``));
 			};
 
 			const C = `${window.location.search}`.split('radio/').pop().split(`?`).pop().replace(/[^a-z0-9\/]/i, '').trim().split(`/`);
-
 			const CID = C[0];
 			console.log(CID);
 			if (/[^a-z0-9]/.test(CID)) ERR(...M2("1"));
 
 			const CED = C.length >= 2 ? C[1] : false;
-			const isL = (v) => /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/.test(v);
+			const isL = v => /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/.test(v);
 
-			const _L = (y) => {
-				return !Array.isArray(y)
-					? y
-					: ((x) => {
-						if (x.length === 0) return `---`;
-
-						if (typeof x[0] === `string`) {
-							const l = isL(x[0] ? x[0] : x[1]);
-							const t = isL(x[0] ? x[1] : x[0]);
-							return `<a href="${l}" target="_blank">${t}</a>`
-						}
-
-						if (!Array.isArray(x[0])) return `---`;
-
-						return x.map(_L).join(`; `);
-					})(y);
-			}
+			const _L = y => {
+				if (!Array.isArray(y)) return y;
+				if (y.length === 0) return '---';
+				if (typeof y[0] === 'string') {
+					const l = isL(y[0] ? y[0] : y[1]);
+					const t = isL(y[0] ? y[1] : y[0]);
+					return `<a href="${l}" target="_blank">${t}</a>`;
+				}
+				if (!Array.isArray(y[0])) return '---';
+				return y.map(_L).join('; ');
+			};
 
 			const _T = {
 				"id": "Peticionamento/Processo",
@@ -299,75 +268,46 @@
 
 			const LOAD = _(".lds");
 			const LST = _(".dl");
-			const TTL = (t) => {
-				_("#ttl").innerHTML = document.title = t;
-			};
+			const TTL = t => _("#ttl").innerHTML = document.title = t;
 			const DESC = _(".desc");
-			const e_id = (id) => {
-				return id ? ` <sup>[${`${id}`.toUpperCase()}]</sup>` : ``;
-			};
+			const e_id = id => id ? `<sup>[${id.toUpperCase()}]</sup>` : '';
 
 			const A = (k, v) => {
 				const dt = document.createElement("div");
 				dt.className = "dt";
-				dt.innerHTML = k === null ? `--` : itms[0].trim();
-
+				dt.innerHTML = k === null ? `--` : k;
 				const dd = document.createElement("div");
 				dd.className = "dd";
-				dd.innerHTML = k === null ? 'Item mal formatado' : itms[1];
-
+				dd.innerHTML = k === null ? 'Item mal formatado' : v;
 				LST.appendChild(dt);
 				LST.appendChild(dd);
-			}
+			};
 
 			if (C) {
 				const filePath = `db/${C}.json`;
-
 				fetch(filePath)
-					.then((response) => {
-						if (!response.ok) {
-							ERR(...M2("A"));
-						}
+					.then(response => {
+						if (!response.ok) ERR(...M2("A"));
 						return response.json();
 					})
-					.then((data) => {
+					.then(data => {
 						LOAD.style.display = "none";
 
-						for (const i of Object.keys(_L)) {
-							if (!data.has(i)) {
-								ERR(M1(`:${i}`));
-							}
-						}
+						for (const i of Object.keys(_T)) if (!Object.hasOwn(data, i)) ERR(...M1(`:${i}`));
+						if (!Object.hasOwn(data, 'items') || !Array.isArray(data.items)) ERR(...M1('ITM1'));
 
-						if (!data.has(`items`) || !Array.isArray(data.items)) {
-							ERR(M1(`ITM`));
-						}
-
-						// Preenche a página com os dados
 						TTL(data.m || "Detalhes do Radio/Homologação");
 						DESC.textContent = data.descricao || "";
 
-						// Cria a lista de propriedades dinamicamente
 						for (const j of [...Object.keys(_T), ...data.items]) {
-							const [k = undefined, v = undefined] = Array.isArray(j)
-								? j
-								: (Number.isInteger(j) || (typeof j == "string" && j.trim() !== ``) && data.has(j) && _T.has(j))
-									? [_T[j], _L(data[j])]
-									: []
-								;
-
-							const f = typeof k === "undefined";
-							A(f ? null : v[0], v[1])
-
-							if (f) {
-								ERR(M1(`ITM`));
-							}
+							const val = Array.isArray(j) ? j : [_T[j] || null, _L(data[j])];
+							A(val[0], val[1]);
+							if (!val[0]) ERR(M1(`ITM2`));
 						}
 
-						// Exibe a lista com a transição suave
 						LST.classList.add("loaded");
 					})
-					.catch((er) => {
+					.catch(er => {
 						console.error(filePath, "Erro:", er);
 						ERR(...M2("B"));
 					});
