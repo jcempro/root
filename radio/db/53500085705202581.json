@@ -13,14 +13,7 @@
     "2AJGM-5RH",
     "https://fccid.io/2AJGM-5RH"
   ],
-  "items": [
-    [
-      "Data da petição",
-      "11/10/2025"
-    ],
-    [
-      "Tipo de processo",
-      "Certificação de Produto: Declaração de Conformidade - Importado uso Próprio"
-    ]
-  ]
+  "dp": "11/10/2025",
+  "tp": "${imp}",
+  "items": []
 }

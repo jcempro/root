@@ -25,14 +25,7 @@
     "XBPUV-K5",
     "https://fccid.io/XBPUV-K5"
   ],
-  "items": [
-    [
-      "Data da petição",
-      "17/09/2025"
-    ],
-    [
-      "Tipo de processo",
-      "Certificação de Produto: Declaração de Conformidade - Importado uso Próprio"
-    ]
-  ]
+  "dp": "17/09/2025",
+  "tp": "${imp}",
+  "items": []
 }

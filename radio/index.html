@@ -2,415 +2,441 @@
 <html lang="pt-BR">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="robots" content="noindex">
-	<title>Carregando...</title>
-	<style>
-		.noscript,
-		.lds {
-			width: 3.75rem;
-			height: 3.75rem;
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-		}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex">
+  <title>Carregando...</title>
+  <style>
+    .noscript,
+    .lds {
+      width: 3.75rem;
+      height: 3.75rem;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
 
-		a {
-			text-decoration: none;
-			color: #2b92db;
-		}
+    a {
+      text-decoration: none;
+      color: #2b92db;
+    }
 
-		a::after {
-			content: "\279A";
-			display: inline-block;
-			font-weight: 900;
-			margin: .15em .15em;
-			font-family: system-ui, "Segoe UI", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
-			color: #777;
-			border: 1px solid #bbb;
-			background-color: #eee;
-			padding: .1em;
-			padding-left: 0;
-			border-radius: .25em;
-			width: .6em;
-			height: .6em;
-			line-height: .6em;
-			text-align: left;
-		}
+    a::after {
+      content: "\279A";
+      display: inline-block;
+      font-weight: 900;
+      margin: .15em .15em;
+      font-family: system-ui, "Segoe UI", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+      color: #777;
+      border: 1px solid #bbb;
+      background-color: #eee;
+      padding: .1em;
+      padding-left: 0;
+      border-radius: .25em;
+      width: .6em;
+      height: .6em;
+      line-height: .6em;
+      text-align: left;
+    }
 
-		.lds div {
-			box-sizing: border-box;
-			display: block;
-			position: absolute;
-			width: 3rem;
-			height: 3rem;
-			margin: 0.5rem;
-			border: 0.5rem solid #333;
-			border-radius: 50%;
-			animation: lds 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-			border-color: #333 transparent transparent transparent;
-		}
+    .lds div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 3rem;
+      height: 3rem;
+      margin: 0.5rem;
+      border: 0.5rem solid #333;
+      border-radius: 50%;
+      animation: lds 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: #333 transparent transparent transparent;
+    }
 
-		.lds div:nth-child(1) {
-			animation-delay: -0.45s;
-		}
+    .lds div:nth-child(1) {
+      animation-delay: -0.45s;
+    }
 
-		.lds div:nth-child(2) {
-			animation-delay: -0.3s;
-		}
+    .lds div:nth-child(2) {
+      animation-delay: -0.3s;
+    }
 
-		.lds div:nth-child(3) {
-			animation-delay: -0.15s;
-		}
+    .lds div:nth-child(3) {
+      animation-delay: -0.15s;
+    }
 
-		@keyframes lds {
-			0% {
-				transform: rotate(0deg);
-			}
+    @keyframes lds {
+      0% {
+        transform: rotate(0deg);
+      }
 
-			100% {
-				transform: rotate(360deg);
-			}
-		}
+      100% {
+        transform: rotate(360deg);
+      }
+    }
 
-		* {
-			font-family: "Noto Sans", "Tahoma", "Arial", "Sans-serif" !important;
-			line-height: 1.15em;
-			margin: 0;
-			padding: 0;
-			color: #333;
-		}
+    * {
+      font-family: "Noto Sans", "Tahoma", "Arial", "Sans-serif" !important;
+      line-height: 1.15em;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
 
-		.noscript {
-			display: block;
-			width: 17.5rem;
-			max-width: 17.5rem;
-			height: 10rem;
-			background: rgba(255, 255, 255, 0.9);
-			padding: 0.5rem 1rem;
-			border-left: 0.5rem solid #eee;
-		}
+    .noscript {
+      display: block;
+      width: 17.5rem;
+      max-width: 17.5rem;
+      height: 10rem;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 0.5rem 1rem;
+      border-left: 0.5rem solid #eee;
+    }
 
-		.noscript span {
-			opacity: 0.6;
-			font-size: 0.9rem;
-		}
+    .noscript span {
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
 
-		.noscript p {
-			margin-top: 0.5rem;
-			font-weight: 600;
-		}
+    .noscript p {
+      margin-top: 0.5rem;
+      font-weight: 600;
+    }
 
-		.noscript p span {
-			font-size: 1.1rem;
-		}
+    .noscript p span {
+      font-size: 1.1rem;
+    }
 
-		body {
-			margin: 0;
-			padding: 2.5rem;
-			background-color: #f4f7f9;
-			color: #333;
-			line-height: 1.6;
-		}
+    body {
+      margin: 0;
+      padding: 2.5rem;
+      background-color: #f4f7f9;
+      color: #333;
+      line-height: 1.6;
+    }
 
-		.container {
-			display: none;
-			max-width: 37.5rem;
-			margin: auto;
-			background: #fff;
-			padding: 1.875rem;
-			border-radius: 0.75rem;
-			box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.08);
-			position: relative;
-		}
+    .container {
+      display: none;
+      max-width: 37.5rem;
+      margin: auto;
+      background: #fff;
+      padding: 1.875rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
 
-		h1 {
-			text-align: center;
-			color: #333;
-			margin-bottom: 0.625rem;
-			font-weight: 600;
-		}
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 0.625rem;
+      font-weight: 600;
+    }
 
-		ul,
-		ul>li,
-		p {
-			text-align: justify;
-			display: block;
-			margin-top: 0.5rem;
-		}
+    ul,
+    ul>li,
+    p {
+      text-align: justify;
+      display: block;
+      margin-top: 0.5rem;
+    }
 
-		.desc {
-			text-align: center;
-			color: #333;
-			margin-bottom: 1.875rem;
-		}
+    .desc {
+      text-align: center;
+      color: #333;
+      margin-bottom: 1.875rem;
+    }
 
-		/* Tabela de propriedade/valor */
-		.dl {
-			display: table;
-			width: 100%;
-			border-spacing: 0rem 0.3125rem;
-			opacity: 0;
-			transition: opacity 0.5s ease-in-out;
-			margin: 2em 0;
-		}
+    /* Tabela de propriedade/valor */
+    .dl {
+      display: table;
+      width: 100%;
+      border-spacing: 0rem 0.3125rem;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      margin: 2em 0;
+    }
 
-		.dl.loaded {
-			opacity: 1;
-		}
+    .dl.loaded {
+      opacity: 1;
+    }
 
-		.dl-row {
-			display: table-row;
-		}
+    .dl-row {
+      display: table-row;
+    }
 
-		.dl-row:nth-child(odd) {
-			background: #eee;
-		}
+    .dl-row:nth-child(odd) {
+      background: #eee;
+    }
 
-		.dt,
-		.dd {
-			display: table-cell;
-			vertical-align: middle;
-			padding: 0.3125rem 0.3125rem 0.3125rem 0;
-		}
+    .dt,
+    .dd {
+      display: table-cell;
+      vertical-align: middle;
+      padding: 0.3125rem 0.3125rem 0.3125rem 0;
+    }
 
-		.dt {
-			font-weight: 600;
-			text-transform: uppercase;
-			font-size: 0.8rem;
-			letter-spacing: 0.031rem;
-		}
+    .dt {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.031rem;
+    }
 
-		.dd {
-			padding-left: 0.625rem;
-			border-bottom: 0.0625rem solid #eee;
-		}
+    .dd {
+      padding-left: 0.625rem;
+      border-bottom: 0.0625rem solid #eee;
+    }
 
-		.dd span {
-			margin-bottom: .1em !important;
-		}
+    .dd span {
+      margin-bottom: .1em !important;
+    }
 
-		.dd:last-of-type {
-			border-bottom: none;
-		}
+    .dd:last-of-type {
+      border-bottom: none;
+    }
 
-		sup {
-			font-size: 0.7rem;
-			font-style: italic;
-			font-weight: bold;
-			margin: 0 .15em;
-		}
+    sup {
+      font-size: 0.7rem;
+      font-style: italic;
+      font-weight: bold;
+      margin: 0 .15em;
+    }
 
-		span.url {
-			background-color: #eee;
-			padding: 0 0.125rem;
-		}
+    span.url {
+      background-color: #eee;
+      padding: 0 0.125rem;
+    }
 
-		p.sub {
-			font-size: 1rem;
-			font-weight: normal;
-			margin: 1rem 0;
-		}
+    p.sub {
+      font-size: 1rem;
+      font-weight: normal;
+      margin: 1rem 0;
+    }
 
-		.error-message {
-			text-align: center;
-			color: #e74c3c;
-			margin-top: 1.25rem;
-			font-size: 1.2rem;
-		}
+    .error-message {
+      text-align: center;
+      color: #e74c3c;
+      margin-top: 1.25rem;
+      font-size: 1.2rem;
+    }
 
-		@media (max-width: 37.5rem) {
-			.container {
-				padding: 1.25rem;
-			}
+    @media (max-width: 37.5rem) {
+      .container {
+        padding: 1.25rem;
+      }
 
-			.dt,
-			.dd {
-				display: block;
-				padding-left: 0;
-			}
+      .dt,
+      .dd {
+        display: block;
+        padding-left: 0;
+      }
 
-			.dt {
-				margin-bottom: 0.1875rem;
-			}
+      .dt {
+        margin-bottom: 0.1875rem;
+      }
 
-			.dd {
-				padding-bottom: 0.625rem;
-				border-bottom: 0.0625rem solid #eee;
-			}
-		}
+      .dd {
+        padding-bottom: 0.625rem;
+        border-bottom: 0.0625rem solid #eee;
+      }
+    }
 
-		ul {
-			padding-top: .7em;
-			border-top: 1px solid #aaa;
-		}
+    ul {
+      padding-top: .7em;
+      border-top: 1px solid #aaa;
+    }
 
-		li::before {
-			content: "—";
-			margin: 0 .2em;
-			display: inline-block;
-			font-weight: bold;
-		}
+    li::before {
+      content: "—";
+      margin: 0 .2em;
+      display: inline-block;
+      font-weight: bold;
+    }
 
-		li.nl::before {
-			content: "";
-		}
-	</style>
+    li.nl::before {
+      content: "";
+    }
+  </style>
 
 </head>
 
 <body>
-	<div class="lds">
-		<div></div>
-		<div></div>
-		<div></div>
-		<div></div>
-	</div>
+  <div class="lds">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 
-	<div id="container" class="container">
-		<h1 id="ttl">Carregando...</h1>
-		<p class="desc"></p>
+  <div id="container" class="container">
+    <h1 id="ttl">Carregando...</h1>
+    <p class="desc"></p>
 
-		<div class="dl"></div>
+    <div class="dl"></div>
 
-		<ul>
-			<li>A validação de documentos Anatel está disponível em <a target="_blank"
-					href="http://www.anatel.gov.br/autenticidade">anatel.gov.br</a></li>
-			<li>Consultar peticionamento/processo <a target="_blank"
-					href="https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0">aqui</a>
-			</li>
-			<li class="nl"><sup><strong>[1]</strong></sup>Refere-se a própria homologação ou outro documento oficial análogo,
-				como uma decisão ou despacho.</li>
-		</ul>
-	</div>
+    <ul>
+      <li>A validação de documentos Anatel está disponível em <a target="_blank"
+          href="http://www.anatel.gov.br/autenticidade">anatel.gov.br</a></li>
+      <li>Consultar peticionamento/processo <a target="_blank"
+          href="https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0">aqui</a>
+      </li>
+      <li class="nl"><sup><strong>[1]</strong></sup>Refere-se a própria homologação ou outro documento oficial análogo,
+        como uma decisão ou despacho.</li>
+    </ul>
+  </div>
 
-	<noscript><span>There is something <strong>wrong</strong> here!</span>
-		<p><span>#noScript</span> <u>Javascript is disabled</u>, preventing us from directing you to the address.</p>
-	</noscript>
+  <noscript><span>There is something <strong>wrong</strong> here!</span>
+    <p><span>#noScript</span> <u>Javascript is disabled</u>, preventing us from directing you to the address.</p>
+  </noscript>
 
-	<script>
-		const _ = e => document.querySelector(e);
+  <script>
+    const _ = e => document.querySelector(e);
 
-		document.addEventListener("DOMContentLoaded", () => {
-			_("#container").style.display = "block";
+    document.addEventListener("DOMContentLoaded", () => {
+      _("#container").style.display = "block";
 
-			const M1 = id => [id, `Dados de registro incorretas`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`];
-			const M2 = id => [id, `Parâmetro não encontrado ou inválido`, 'A url deve terminar com <span class="url">"/?<b>XXX</b>"</span>, onde "XXX" é o nº do peticionamento, despacho ou homologação Anatel sem pontuação.'];
+      const M1 = id => [id, `Dados de registro incorretas`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`];
+      const M2 = id => [id, `Parâmetro não encontrado ou inválido`, 'A url deve terminar com <span class="url">"/?<b>XXX</b>"</span>, onde "XXX" é o nº do peticionamento, despacho ou homologação Anatel sem pontuação.'];
 
-			const ERR = (id, title, descri, exit) => {
-				const m = `${title}${e_id(id)}\n\n<p class="sub">${descri}</p>`;
-				TTL(m);
-				LDD();
-				if (typeof exit === "undefined" || exit === 1 || exit === true) throw new Error(m.replace(/<\/?[^>]+(>|$)/g, ``));
-			};
+      const ERR = (id, title, descri, exit) => {
+        const m = `${title}${e_id(id)}\n\n<p class="sub">${descri}</p>`;
+        TTL(m);
+        LDD();
+        if (typeof exit === "undefined" || exit === 1 || exit === true) throw new Error(m.replace(/<\/?[^>]+(>|$)/g, ``));
+      };
 
-			const C = `${window.location.search}`.split('radio/').pop().split(`?`).pop().replace(/[^a-z0-9\/]/i, '').trim().split(`/`);
-			const CID = C[0];
-			if (/[^a-z0-9]/.test(CID)) ERR(...M2("1"));
+      const C = `${window.location.search}`.split('radio/').pop().split(`?`).pop().replace(/[^a-z0-9\/]/i, '').trim().split(`/`);
+      const CID = C[0];
+      if (/[^a-z0-9]/.test(CID)) ERR(...M2("1"));
 
-			const CED = C.length >= 2 ? C[1] : false;
-			const isL = v => /^\s?(http|ftp)s?:\/\//.test(v);
+      const CED = C.length >= 2 ? C[1] : false;
+      const isL = v => /^\s?(http|ftp)s?:\/\//.test(v);
 
-			const _L = y => {
-				if (!Array.isArray(y)) return y;
-				if (y.length === 0) return ``;
-				if (typeof y[0] === 'string') {
-					const pl = isL(y[0]) ? 0 : isL(y[1]) ? 1 : -1;
-					const l = y[pl];
-					const t = y[pl === 0 ? 1 : 0];
-					return `<a href="${l}" target="_blank">${t}</a>`;
-				}
-				if (!Array.isArray(y[0])) return '';
-				return y.map(_L).join('<br />');
-			};
+      const _L = y => {
+        if (!Array.isArray(y)) return y;
+        if (y.length === 0) return ``;
+        if (typeof y[0] === 'string') {
+          const pl = isL(y[0]) ? 0 : isL(y[1]) ? 1 : -1;
+          const l = y[pl];
+          const t = y[pl === 0 ? 1 : 0];
+          return `<a href="${l}" target="_blank">${t}</a>`;
+        }
+        if (!Array.isArray(y[0])) return '';
+        return y.map(_L).join('<br />');
+      };
 
-			const _T = {
-				"id": "Peticionamento/Processo",
-				"mc": "Marca",
-				"md": "Modelo",
-				"fccid": "FCC ID",
-				"sn": "Número de Série",
-				"r": "Homologação<sup>[1]</sup>",
-				"v": "Validação da Homologação<sup>[1]</sup>",
-				"dt": "Data de Homologaçãoo"
-			};
+      const _T = {
+        "id": "Peticionamento/Processo",
+        "tp": "Tipo de processo",
+        "dp": "Data da Petição",
+        "mc": "Marca",
+        "md": "Modelo",
+        "fccid": "FCC ID",
+        "sn": "Número de Série",
+        "r": "Homologação<sup>[1]</sup>",
+        "v": "Validação da Homologação<sup>[1]</sup>",
+        "dt": "Data de Homologação",
+      };
 
-			const NT = s => s.replace(/(<([^>]+)>)/ig, '');
-			const LOAD = _(".lds");
-			const LST = _(".dl");
-			const HO = (x) => {
-				if (typeof x === "string" && x.trim().length > 0) return x;
+      const _T2 = {
 
-				if (Array.isArray(x) && x.length === 2) {
-					return `Código: ${x[0]}<br />CRC: ${x[1]}`
-				}
+      };
 
-				return "";
-			};
-			const TTL = t => {
-				_("#ttl").innerHTML = t;
-				document.title = NT(t);
-			};
-			const DESC = _(".desc");
-			const e_id = id => id ? `<sup>[${id.toUpperCase()}]</sup>` : '';
+      const _S = {
+        "imp": "Certificação de Produto: Declaração de Conformidade - Importado uso Próprio"
+      };
 
-			const A = (k, v) => {
-				const row = document.createElement("div");
-				row.className = "dl-row";
+      const NT = s => s.replace(/(<([^>]+)>)/ig, '');
+      const LOAD = _(".lds");
+      const LST = _(".dl");
+      const HO = (x) => {
+        if (typeof x === "string" && x.trim().length > 0) return x;
 
-				const dt = document.createElement("div");
-				dt.className = "dt";
-				dt.innerHTML = k === null ? `--` : `<span>${k}</span>`;
+        if (Array.isArray(x) && x.length === 2) {
+          return `Código: ${x[0]}<br />CRC: ${x[1]}`
+        }
 
-				const dd = document.createElement("div");
-				dd.className = "dd";
-				dd.innerHTML = k === null ? 'Item mal formatado' : (v && v.trim().length > 0 ? `<span>${v}</span>` : `---`);
+        return "";
+      };
 
-				row.appendChild(dt);
-				row.appendChild(dd);
-				LST.appendChild(row);
-			};
+      const RP = (str) => {
+        return String(str).replace(/\$\{([\w\d]+)\}/g, (_, k) => {
+          const i = k.trim().toLowerCase();
+          const val = _S == null || !Object.hasOwn(_S, i) ? null : _S[i];
+          return val === null ? `???` : String(val);
+        });
+      }
 
-			const LDD = () => {
-				LST.classList.add("loaded");
-				LOAD.style.display = "none";
-			}
+      const _X = (x, k = undefinewd) => {
+        return RP((k === "v")
+          ? HO(x)
+          : _L(x)
+        );
+      };
 
-			if (C) {
-				const filePath = `db/${C}.json?t=` + Math.random().toString(36).substring(2, 18);
-				fetch(filePath)
-					.then(response => {
-						if (!response.ok) ERR(...M2("A"));
-						return response.json();
-					})
-					.then(data => {
-						LOAD.style.display = "none";
+      const TTL = t => {
+        _("#ttl").innerHTML = t;
+        document.title = NT(t);
+      };
+      const DESC = _(".desc");
+      const e_id = id => id ? `<sup>[${id.toUpperCase()}]</sup>` : '';
 
-						for (const i of Object.keys(_T)) if (!Object.hasOwn(data, i)) ERR(...M1(`:${i}`));
-						if (!Object.hasOwn(data, 'items') || !Array.isArray(data.items)) ERR(...M1('ITM1'));
+      const A = (k, v) => {
+        const row = document.createElement("div");
+        row.className = "dl-row";
 
-						TTL(`<small>${data.mc}</small> ${data.md}`);
-						DESC.innerHTML = data.desc || `Processo ${NT(_L(data.id))}`;
+        const dt = document.createElement("div");
+        dt.className = "dt";
+        dt.innerHTML = k === null ? `--` : `<span>${k}</span>`;
 
-						for (const j of [...Object.keys(_T), ...data.items, ["Solicitante", atob("PHN0cm9uZz5QVTJZUUM8L3N0cm9uZz4gKEplYW4gQ2FybG8pPGJyIC8+PGk+amVhbmNhcmxvQGplYW5jYXJsb2VtLmNvbTwvaT48YnIgLz5DUEY6IDMzKi4qKiouKio4LTk1")]]) {
-							const val = Array.isArray(j) ? j : [_T[j] || null, (data[j])];
-							A(val[0], j === "v" ? HO(val[1]) : _L(val[1]));
-							if (!val[0]) ERR(M1(`ITM2`));
-						}
+        const dd = document.createElement("div");
+        dd.className = "dd";
+        dd.innerHTML = k === null ? 'Item mal formatado' : (v && v.trim().length > 0 ? `<span>${v}</span>` : `---`);
 
-						LDD();
-					})
-					.catch(er => {
-						console.error(filePath, "Erro:", er);
-						ERR(...M2("B"));
-					});
-			} else {
-				ERR(...M2("C"));
-			}
-		});
-	</script>
+        row.appendChild(dt);
+        row.appendChild(dd);
+        LST.appendChild(row);
+      };
+
+      const LDD = () => {
+        LST.classList.add("loaded");
+        LOAD.style.display = "none";
+      }
+
+      if (C) {
+        const filePath = `db/${C}.json?t=` + Math.random().toString(36).substring(2, 18);
+        fetch(filePath)
+          .then(response => {
+            if (!response.ok) ERR(...M2("A"));
+            return response.json();
+          })
+          .then(data => {
+            LOAD.style.display = "none";
+
+            for (const i of Object.keys(_T)) if (!Object.hasOwn(data, i)) ERR(...M1(`:${i}`));
+            if (!Object.hasOwn(data, 'items') || !Array.isArray(data.items)) ERR(...M1('ITM1'));
+
+            TTL(`<small>${data.mc}</small> ${data.md}`);
+            DESC.innerHTML = data.desc || `Processo ${NT(_L(data.id))}`;
+
+            for (const j of [...Object.keys(_T), ...data.items, ["Solicitante", atob("PHN0cm9uZz5QVTJZUUM8L3N0cm9uZz4gKEplYW4gQ2FybG8pPGJyIC8+PGk+amVhbmNhcmxvQGplYW5jYXJsb2VtLmNvbTwvaT48YnIgLz5DUEY6IDMzKi4qKiouKio4LTk1")]]) {
+              const val = Array.isArray(j) ? j : [_T[j] || null, (data[j])];
+              A(RP(val[0]), _X(val[1], j));
+              if (!val[0]) ERR(M1(`ITM2`));
+            }
+
+            LDD();
+          })
+          .catch(er => {
+            console.error(filePath, "Erro:", er);
+            ERR(...M2("B"));
+          });
+      } else {
+        ERR(...M2("C"));
+      }
+    });
+  </script>
 </body>
 
 </html>
