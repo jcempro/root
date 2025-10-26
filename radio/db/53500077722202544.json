@@ -9,7 +9,7 @@
       "https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?8-74Kn1tDR89f1Q7RjX8EYU46IzCFD26Q9Xx5QNDbqY4Llc9gIBtBLJoM6kR8sQ2rVOSwFOxWW1f9s5JQNtjaOm9WBQE5QQUW45q-LRngDGTMD8oIGkJQU2PQKvxRJIV"
     ],
     [
-      ".PDF no drive",
+      "PDF no drive",
       "https://drive.google.com/file/d/1Lg6ceokOFKShfufL80M3BFTVEEeREgLw/view?usp=drive_link"
     ]
   ],
@@ -18,7 +18,11 @@
     14603412,
     "C8BF5411"
   ],
-  "m": "Baofeng UV-5RH",
+  "m": "QUANSHENG UV-K6",
   "sn": "indefinido",
+  "fccid": [
+    "XBPUV-K5",
+    "https://fccid.io/XBPUV-K5/External-Photos/External-Photos-6401588"
+  ],
   "items": []
 }
