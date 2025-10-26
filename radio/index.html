@@ -16,14 +16,27 @@
 			transform: translate(-50%, -50%);
 		}
 
+		a {
+			text-decoration: none;
+			color: #2b92db;
+		}
+
+		a::after {
+			content: "\1F517";
+			display: inline-block;
+			margin: 0 .1em;
+			font-family: system-ui, "Segoe UI", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+			color: #2b92db;
+		}
+
 		.lds div {
 			box-sizing: border-box;
 			display: block;
 			position: absolute;
 			width: 3rem;
 			height: 3rem;
-			margin: 8px;
-			border: 8px solid #333;
+			margin: 0.5rem;
+			border: 0.5rem solid #333;
 			border-radius: 50%;
 			animation: lds 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 			border-color: #333 transparent transparent transparent;
@@ -61,21 +74,21 @@
 
 		.noscript {
 			display: block;
-			width: 280px;
-			max-width: 280px;
-			height: 160px;
-			background: rgba(255, 255, 255, .9);
-			padding: .5rem 1rem;
-			border-left: .5rem solid #eee;
+			width: 17.5rem;
+			max-width: 17.5rem;
+			height: 10rem;
+			background: rgba(255, 255, 255, 0.9);
+			padding: 0.5rem 1rem;
+			border-left: 0.5rem solid #eee;
 		}
 
 		.noscript span {
-			opacity: .6;
-			font-size: .9rem;
+			opacity: 0.6;
+			font-size: 0.9rem;
 		}
 
 		.noscript p {
-			margin-top: .5rem;
+			margin-top: 0.5rem;
 			font-weight: 600;
 		}
 
@@ -85,7 +98,7 @@
 
 		body {
 			margin: 0;
-			padding: 40px;
+			padding: 2.5rem;
 			background-color: #f4f7f9;
 			color: #333;
 			line-height: 1.6;
@@ -93,19 +106,19 @@
 
 		.container {
 			display: none;
-			max-width: 600px;
+			max-width: 37.5rem;
 			margin: auto;
 			background: #fff;
-			padding: 30px;
-			border-radius: 12px;
-			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+			padding: 1.875rem;
+			border-radius: 0.75rem;
+			box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.08);
 			position: relative;
 		}
 
 		h1 {
 			text-align: center;
 			color: #333;
-			margin-bottom: 10px;
+			margin-bottom: 0.625rem;
 			font-weight: 600;
 		}
 
@@ -114,87 +127,129 @@
 		p {
 			text-align: justify;
 			display: block;
-			margin-top: .5em;
+			margin-top: 0.5rem;
 		}
 
 		.desc {
 			text-align: center;
 			color: #333;
-			margin-bottom: 30px;
+			margin-bottom: 1.875rem;
 		}
 
-		div.dl {
-			margin: 0;
-			padding: 0;
-			display: grid;
-			grid-template-columns: 150px 1fr;
-			gap: 15px;
+		/* Tabela de propriedade/valor */
+		.dl {
+			display: table;
+			width: 100%;
+			border-spacing: 0rem 0.3125rem;
 			opacity: 0;
 			transition: opacity 0.5s ease-in-out;
+			margin: 2em 0;
 		}
 
-		div.loaded {
+		.dl.loaded {
 			opacity: 1;
 		}
 
-		div.dt {
+		.dl-row {
+			display: table-row;
+		}
+
+		.dl-row:nth-child(odd) {
+			background: #eee;
+		}
+
+		.dt,
+		.dd {
+			display: table-cell;
+			vertical-align: middle;
+			padding: 0.3125rem 0.3125rem 0.3125rem 0;
+		}
+
+		.dt {
 			font-weight: 600;
-			color: #333;
-			padding: 10px 0;
 			text-transform: uppercase;
-			font-size: 0.8em;
-			letter-spacing: 0.5px;
+			font-size: 0.8rem;
+			letter-spacing: 0.031rem;
 		}
 
-		div.dd {
-			margin: 0;
-			padding: 10px 0;
-			border-bottom: 1px solid #eee;
-			color: #333;
+		.dd {
+			padding-left: 0.625rem;
+			border-bottom: 0.0625rem solid #eee;
 		}
 
-		div.dd:last-of-type {
+		.dd span {
+			margin-bottom: .1em !important;
+		}
+
+		.dd:last-of-type {
 			border-bottom: none;
 		}
 
 		sup {
-			font-size: .7em;
+			font-size: 0.7rem;
 			font-style: italic;
+			font-weight: bold;
+			margin: 0 .15em;
 		}
 
 		span.url {
 			background-color: #eee;
-			padding: 0 .2em;
+			padding: 0 0.125rem;
 		}
 
 		p.sub {
-			font-size: .6em;
+			font-size: 0.6rem;
 			font-weight: normal;
-			margin: 1em 0;
+			margin: 0.625rem 0;
 		}
 
 		.error-message {
 			text-align: center;
 			color: #e74c3c;
-			margin-top: 20px;
-			font-size: 1.2em;
+			margin-top: 1.25rem;
+			font-size: 1.2rem;
 		}
 
-		@media (max-width: 600px) {
+		@media (max-width: 37.5rem) {
 			.container {
-				padding: 20px;
+				padding: 1.25rem;
 			}
 
-			div.dl {
-				grid-template-columns: 1fr;
+			.dt,
+			.dd {
+				display: block;
+				padding-left: 0;
 			}
 
-			div.dd {
-				padding-top: 0;
-				padding-bottom: 15px;
+			.dt {
+				margin-bottom: 0.1875rem;
 			}
+
+			.dd {
+				padding-bottom: 0.625rem;
+				border-bottom: 0.0625rem solid #eee;
+			}
+		}
+
+		ul {
+			padding-top: .7em;
+			border-top: 1px solid #aaa;
+		}
+
+		li::before {
+			content: "—";
+			margin: 0 .2em;
+			display: inline-block;
+			font-weight: bold;
+		}
+
+
+		li.nl::before {
+			content: "";
 		}
 	</style>
+
+
 </head>
 
 <body>
@@ -217,6 +272,9 @@
 			<li>Consultar peticionamento/processo <a
 					href="https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0">aqui</a>
 			</li>
+			<li class="nl"><sup><strong>[1]</strong></sup>Refere-se a própria homologação ou outro documento que indique
+				aprovação, como
+				uma decisão ou despacho.</li>
 		</ul>
 	</div>
 
@@ -241,29 +299,32 @@
 
 			const C = `${window.location.search}`.split('radio/').pop().split(`?`).pop().replace(/[^a-z0-9\/]/i, '').trim().split(`/`);
 			const CID = C[0];
-			console.log(CID);
 			if (/[^a-z0-9]/.test(CID)) ERR(...M2("1"));
 
 			const CED = C.length >= 2 ? C[1] : false;
-			const isL = v => /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/.test(v);
+			const isL = v => /^\s?(http|ftp)s?:\/\//.test(v);
 
 			const _L = y => {
 				if (!Array.isArray(y)) return y;
 				if (y.length === 0) return '---';
 				if (typeof y[0] === 'string') {
-					const l = isL(y[0] ? y[0] : y[1]);
-					const t = isL(y[0] ? y[1] : y[0]);
+					const pl = isL(y[0]) ? 0 : isL(y[1]) ? 1 : -1;					
+					const l = y[pl];
+					const t = y[pl === 0 ? 1 : 0];
 					return `<a href="${l}" target="_blank">${t}</a>`;
 				}
 				if (!Array.isArray(y[0])) return '---';
-				return y.map(_L).join('; ');
+				return y.map(_L).join('<br />');
 			};
 
 			const _T = {
 				"id": "Peticionamento/Processo",
-				"r": "Despacho/Decisão/Homologação Anatel",
-				"dt": "Emissão/consulta",
 				"m": "Modelo",
+				"fccid": "FCC ID",
+				"sn": "Número de Série",
+				"r": "Homologação<sup>[1]</sup> Anatel",
+				"v": "Validação da Homologação<sup>[1]</sup>",
+				"dt": "Data de Homologaçãoo"
 			};
 
 			const LOAD = _(".lds");
@@ -273,14 +334,20 @@
 			const e_id = id => id ? `<sup>[${id.toUpperCase()}]</sup>` : '';
 
 			const A = (k, v) => {
+				const row = document.createElement("div");
+				row.className = "dl-row";
+
 				const dt = document.createElement("div");
 				dt.className = "dt";
-				dt.innerHTML = k === null ? `--` : k;
+				dt.innerHTML = k === null ? `--` : `<span>${k}</span>`;
+
 				const dd = document.createElement("div");
 				dd.className = "dd";
-				dd.innerHTML = k === null ? 'Item mal formatado' : v;
-				LST.appendChild(dt);
-				LST.appendChild(dd);
+				dd.innerHTML = k === null ? 'Item mal formatado' : `<span>${v}</span>`;
+
+				row.appendChild(dt);
+				row.appendChild(dd);
+				LST.appendChild(row);
 			};
 
 			if (C) {
@@ -297,11 +364,11 @@
 						if (!Object.hasOwn(data, 'items') || !Array.isArray(data.items)) ERR(...M1('ITM1'));
 
 						TTL(data.m || "Detalhes do Radio/Homologação");
-						DESC.textContent = data.descricao || "";
+						DESC.innerHTML = data.descricao || "";
 
 						for (const j of [...Object.keys(_T), ...data.items]) {
-							const val = Array.isArray(j) ? j : [_T[j] || null, _L(data[j])];
-							A(val[0], val[1]);
+							const val = Array.isArray(j) ? j : [_T[j] || null, (data[j])];
+							A(val[0], j === "v" ? `Código: ${val[1][0]}<br />CRC: ${val[1][1]}` : _L(val[1]));
 							if (!val[0]) ERR(M1(`ITM2`));
 						}
 
