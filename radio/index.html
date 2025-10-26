@@ -199,9 +199,9 @@
 		}
 
 		p.sub {
-			font-size: 0.6rem;
+			font-size: 1rem;
 			font-weight: normal;
-			margin: 0.625rem 0;
+			margin: 1rem 0;
 		}
 
 		.error-message {
@@ -292,6 +292,7 @@
 			const ERR = (id, title, descri, exit) => {
 				const m = `${title}${e_id(id)}\n\n<p class="sub">${descri}</p>`;
 				TTL(m);
+				LDD();
 				if (typeof exit === "undefined" || exit === 1 || exit === true) throw new Error(m.replace(/<\/?[^>]+(>|$)/g, ``));
 			};
 
@@ -361,6 +362,11 @@
 				LST.appendChild(row);
 			};
 
+			const LDD = () => {
+				LST.classList.add("loaded");
+				LOAD.style.display = "none";
+			}
+
 			if (C) {
 				const filePath = `db/${C}.json`;
 				fetch(filePath)
@@ -383,16 +389,14 @@
 							if (!val[0]) ERR(M1(`ITM2`));
 						}
 
-						LST.classList.add("loaded");
+						LDD();
 					})
 					.catch(er => {
 						console.error(filePath, "Erro:", er);
 						ERR(...M2("B"));
 					});
 			} else {
-				LOAD.style.display = "none";
 				ERR(...M2("C"));
-				DESC.textContent = "";
 			}
 		});
 	</script>
