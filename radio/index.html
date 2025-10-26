@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="robots" content="noindex">
 	<title>Carregando...</title>
 	<style>
 		.noscript,
@@ -243,12 +244,10 @@
 			font-weight: bold;
 		}
 
-
 		li.nl::before {
 			content: "";
 		}
 	</style>
-
 
 </head>
 
@@ -267,14 +266,13 @@
 		<div class="dl"></div>
 
 		<ul>
-			<li>A validação de documentos Anatel está disponível em <a
+			<li>A validação de documentos Anatel está disponível em <a target="_blank"
 					href="http://www.anatel.gov.br/autenticidade">anatel.gov.br</a></li>
-			<li>Consultar peticionamento/processo <a
+			<li>Consultar peticionamento/processo <a target="_blank"
 					href="https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0">aqui</a>
 			</li>
-			<li class="nl"><sup><strong>[1]</strong></sup>Refere-se a própria homologação ou outro documento que indique
-				aprovação, como
-				uma decisão ou despacho.</li>
+			<li class="nl"><sup><strong>[1]</strong></sup>Refere-se a própria homologação ou outro documento oficial análogo,
+				como uma decisão ou despacho.</li>
 		</ul>
 	</div>
 
@@ -306,30 +304,43 @@
 
 			const _L = y => {
 				if (!Array.isArray(y)) return y;
-				if (y.length === 0) return '---';
+				if (y.length === 0) return ``;
 				if (typeof y[0] === 'string') {
-					const pl = isL(y[0]) ? 0 : isL(y[1]) ? 1 : -1;					
+					const pl = isL(y[0]) ? 0 : isL(y[1]) ? 1 : -1;
 					const l = y[pl];
 					const t = y[pl === 0 ? 1 : 0];
 					return `<a href="${l}" target="_blank">${t}</a>`;
 				}
-				if (!Array.isArray(y[0])) return '---';
+				if (!Array.isArray(y[0])) return '';
 				return y.map(_L).join('<br />');
 			};
 
 			const _T = {
 				"id": "Peticionamento/Processo",
-				"m": "Modelo",
+				"mc": "Marca",
+				"md": "Modelo",
 				"fccid": "FCC ID",
 				"sn": "Número de Série",
-				"r": "Homologação<sup>[1]</sup> Anatel",
+				"r": "Homologação<sup>[1]</sup>",
 				"v": "Validação da Homologação<sup>[1]</sup>",
 				"dt": "Data de Homologaçãoo"
 			};
 
+			const NT = s => s.replace(/(<([^>]+)>)/ig, '');
 			const LOAD = _(".lds");
 			const LST = _(".dl");
-			const TTL = t => _("#ttl").innerHTML = document.title = t;
+			const HO = (x) => {
+				if (typeof x === "string" && x.trim().length > 0) return x;
+
+				if (Array.isArray(x) && x.length === 2)
+					return `Código: ${val[1][0]}<br />CRC: ${val[1][1]}`
+
+				return "";
+			};
+			const TTL = t => {
+				_("#ttl").innerHTML = t;
+				document.title = NT(t);
+			};
 			const DESC = _(".desc");
 			const e_id = id => id ? `<sup>[${id.toUpperCase()}]</sup>` : '';
 
@@ -343,7 +354,7 @@
 
 				const dd = document.createElement("div");
 				dd.className = "dd";
-				dd.innerHTML = k === null ? 'Item mal formatado' : `<span>${v}</span>`;
+				dd.innerHTML = k === null ? 'Item mal formatado' : (v && v.trim().length > 0 ? `<span>${v}</span>` : `---`);
 
 				row.appendChild(dt);
 				row.appendChild(dd);
@@ -363,12 +374,12 @@
 						for (const i of Object.keys(_T)) if (!Object.hasOwn(data, i)) ERR(...M1(`:${i}`));
 						if (!Object.hasOwn(data, 'items') || !Array.isArray(data.items)) ERR(...M1('ITM1'));
 
-						TTL(data.m || "Detalhes do Radio/Homologação");
-						DESC.innerHTML = data.descricao || "";
+						TTL(`<small>${data.mc}</small> ${data.md}`);
+						DESC.innerHTML = data.desc || `Processo ${NT(_L(data.id))}`;
 
 						for (const j of [...Object.keys(_T), ...data.items]) {
 							const val = Array.isArray(j) ? j : [_T[j] || null, (data[j])];
-							A(val[0], j === "v" ? `Código: ${val[1][0]}<br />CRC: ${val[1][1]}` : _L(val[1]));
+							A(val[0], j === "v" ? HO(val[1]) : _L(val[1]));
 							if (!val[0]) ERR(M1(`ITM2`));
 						}
 
