@@ -333,8 +333,9 @@
 			const HO = (x) => {
 				if (typeof x === "string" && x.trim().length > 0) return x;
 
-				if (Array.isArray(x) && x.length === 2)
-					return `Código: ${val[1][0]}<br />CRC: ${val[1][1]}`
+				if (Array.isArray(x) && x.length === 2){
+					return `Código: ${x[1][0]}<br />CRC: ${x[1][1]}`
+				}
 
 				return "";
 			};
@@ -368,8 +369,8 @@
 			}
 
 			if (C) {
-				const filePath = `db/${C}.json`;
-				fetch(`${filePath}?t=` + Math.random().toString(36).substring(2, 18))
+				const filePath = `db/${C}.json?t=` + Math.random().toString(36).substring(2, 18);
+				fetch(filePath)
 					.then(response => {
 						if (!response.ok) ERR(...M2("A"));
 						return response.json();
