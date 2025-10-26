@@ -58,7 +58,7 @@
 			line-height: 1.15em;
 			margin: 0;
 			padding: 0;
-			color: #222;
+			color: #333;
 		}
 
 		noscript {
@@ -114,14 +114,19 @@
 			font-weight: 600;
 		}
 
-		.description {
+		ul>li,
+		p {
+			text-align: justify;
+		}
+
+		.desc {
 			text-align: center;
 			color: #7f8c8d;
 			margin-bottom: 30px;
 		}
 
 		/* Estilo para a lista de descrição */
-		dl {
+		div.dl {
 			margin: 0;
 			padding: 0;
 			display: grid;
@@ -132,12 +137,12 @@
 			transition: opacity 0.5s ease-in-out;
 		}
 
-		dl.loaded {
+		div.loaded {
 			opacity: 1;
 			/* Transição suave */
 		}
 
-		dt {
+		div.dt {
 			font-weight: 600;
 			color: #555;
 			padding: 10px 0;
@@ -146,22 +151,32 @@
 			letter-spacing: 0.5px;
 		}
 
-		dd {
+		div.dd {
 			margin: 0;
 			padding: 10px 0;
 			border-bottom: 1px solid #eee;
 			color: #34495e;
 		}
 
-		dd:last-of-type {
+		div.dd:last-of-type {
 			border-bottom: none;
 		}
 
-		small {
+
+		sup {
+			font-size: .7em;
+			font-style: italic;
+		}
+
+		span.url {
+			background-color: #eee;
+			padding: 0 .2em;
+		}
+
+		p.sub {
 			font-size: .6em;
-			margin-top: .7em;
-			display: block;
 			font-weight: normal;
+			margin: 1em 0;
 		}
 
 		.error-message {
@@ -177,7 +192,7 @@
 				padding: 20px;
 			}
 
-			dl {
+			div.dl {
 				grid-template-columns: 1fr;
 			}
 
@@ -185,10 +200,16 @@
 				padding-bottom: 0;
 			}
 
-			dd {
+			div.dd {
 				padding-top: 0;
 				padding-bottom: 15px;
 			}
+		}
+
+		ul>li,
+		ul {
+			display: block;
+			margin-top: .5em;
 		}
 	</style>
 </head>
@@ -203,20 +224,15 @@
 
 	<div id="container" class="container">
 		<h1 id="ttl">Carregando...</h1>
-		<p id="sub" class="description"></p>
+		<p class="desc"></p>
 
-		<!-- Conteúdo dinâmico: Fica oculto até carregar -->
-		<dl id="list"></dl>
+		<div class="dl"></div>
 
-		<p>
 		<ul>
-			<li>Validação de documentos disponível em <a
-					href="http://www.anatel.gov.br/autenticidade">http://www.anatel.gov.br/autenticidade<a></li>
-			<li>Consultar peticionamento/processo <a
-					href="https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0">aqui<a>
-			</li>
+			<li>A validação de documentos Anatel está disponível em <a
+					href="http://www.anatel.gov.br/autenticidade">anatel.gov.br</a></li>
+			<li>Para consultar onsultar peticionamento/processo acesso o site SEI da Anatel<a href="https://sei.anatel.gov.br/...">aqui</a></li>
 		</ul>
-		</p>
 	</div>
 
 	<noscript><span>There is something <strong>wrong</strong> here!</span>
@@ -232,8 +248,27 @@
 				return Object.hasOwnProperty(this, propriedade);
 			};
 
-			const C = `${window.location.search}`.split('radio/').pop().replace(/[^a-b0-1\/]/i, '').trim().split(`/`);
+			const M1 = (id) => {
+				[id, `Dados de registro incorretas`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`]
+			};
+			const M2 = (id) => {
+				return [id, `Parâmetro não encontrado ou inválido`, 'A url deve terminar com <span class="url">"/?<b>XXX</b>"</span>, onde "XXX" é o nº do peticionamento, despacho ou homologação Anatel sem pontuação.'];
+			};
+
+			const ERR = (id, title, descri, exit) => {
+				TTL(`${title}${e_id(id)}<p class="sub">${descri}</p>`);
+
+				if (typeof exit === "undefined" || exit === 1 || exit === true) {
+					throw new Error(`${title}\n\n${descri}`);
+				}
+			};
+
+			const C = `${window.location.search}`.split('radio/').pop().split(`?`).pop().replace(/[^a-z0-9\/]/i, '').trim().split(`/`);
+
 			const CID = C[0];
+			console.log(CID);
+			if (/[^a-z0-9]/.test(CID)) ERR(...M2("1"));
+
 			const CED = C.length >= 2 ? C[1] : false;
 			const isL = (v) => /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/.test(v);
 
@@ -263,35 +298,22 @@
 			};
 
 			const LOAD = _(".lds");
-			const LST = _("#list");
+			const LST = _(".dl");
 			const TTL = (t) => {
 				_("#ttl").innerHTML = document.title = t;
 			};
-			const DESC = _("#sub");
+			const DESC = _(".desc");
 			const e_id = (id) => {
-				return id ? ` <small>[${`${id}`.toUpperCase()}]<small>` : ``;
-			};
-
-			const M1 = (id) => {
-				[id, `Dados de registro incorretas`, `O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`]
-			};
-			const M2 = (id) => {
-				return [id, `Dados não encontrados`, 'A url deve terminar com "/?<b>XXX<b>", onde "XXX" é o nº do peticionamento anatel sem pontuação.'];
-			};
-
-			const ERR = (id, title, descri, exit) => {
-				TTL(`${title}${e_id(id)}<small>${descri}</small>`);
-
-				if (typeof exit === "undefined" || exit === 1 || exit === true) {
-					throw new Error(`${title}\n\n${descri}`);
-				}
+				return id ? ` <sup>[${`${id}`.toUpperCase()}]</sup>` : ``;
 			};
 
 			const A = (k, v) => {
-				const dt = document.createElement("dt");
+				const dt = document.createElement("div");
+				dt.className = "dt";
 				dt.innerHTML = k === null ? `--` : itms[0].trim();
 
-				const dd = document.createElement("dd");
+				const dd = document.createElement("div");
+				dd.className = "dd";
 				dd.innerHTML = k === null ? 'Item mal formatado' : itms[1];
 
 				LST.appendChild(dt);
