@@ -126,20 +126,6 @@
       position: relative;
     }
 
-    h1 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 0.625rem;
-      font-weight: 600;
-    }
-
-    ul,
-    ul>li,
-    p {
-      text-align: justify;
-      display: block;
-      margin-top: 0.5rem;
-    }
 
     .desc {
       text-align: center;
@@ -209,9 +195,9 @@
     }
 
     p.sub {
-      font-size: 1rem;
-      font-weight: normal;
-      margin: 1rem 0;
+      margin-bottom: 2rem;
+      font-size: 1.3rem;
+      text-align: center;
     }
 
     .error-message {
@@ -247,8 +233,26 @@
       border-top: 1px solid #aaa;
     }
 
+    ul,
+    ul>li,
+    p {
+      font-size: 1rem;
+      font-weight: normal;
+      text-align: justify;
+      display: block;
+      margin-top: 0.5rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 0.625rem;
+      font-weight: 600;
+    }
+
+
     li::before {
-      content: "—";
+      content: "\2022";
       margin: 0 .2em;
       display: inline-block;
       font-weight: bold;
@@ -256,6 +260,11 @@
 
     li.nl::before {
       content: "";
+    }
+
+    ul.pr li::before {
+      content: "\2714";
+      color: #aaa;
     }
   </style>
 
@@ -362,6 +371,8 @@
       };
 
       const _T2 = {};
+      const _T3 = { ..._T, ..._T2 };
+      const _Ts = "<p>Apenas os destinos abaixos podem ser usados, mas note que a maioria não conterá URL e por isso seria inútil:</p><ul class='pr'>" + Object.entries(_T3).map(([chave, valor]) => `<li><b>${chave}:</b> ${valor}</li>`).join('') + '</ul>';
 
       const _S = {
         "imp": "Certificação de Produto: Declaração de Conformidade - Importado uso Próprio"
@@ -429,16 +440,16 @@
             if (!KH(data, 'items') || !iAR(data.items)) ERR(...M1('ITM1'));
 
             if (C.length >= 2) {
-              if (!KH({ ..._T, ..._T2 }, CED)) {
-                return ERR(`D1`, `Destino "${CED}" inválido`, `Destino não é permitido.`, 1);
+              if (!KH(_T3, CED)) {
+                return ERR(`D1`, `Destino "${CED}" inválido`, `Destino não é permitido.${_Ts}`, 1);
               }
 
               if (!KH(data, CED)) {
-                return ERR(`D2`, `Destino "${CED}" inexistente`, `Variável não definida no registro`, 1);
+                return ERR(`D2`, `Destino "${CED}" inexistente`, `Variável não definida no registro.${_Ts}`, 1);
               }
 
               const rr = _L(data[CED], 1);
-              return rr ? ((() => { TTL("Redirecionando..."); window.location = rr; })()) : ERR(`D3`, `Destino "${CED}" inválido`, `Variável de destiono náo é uma URL válida.`, 1);
+              return rr ? ((() => { TTL("Redirecionando..."); window.location = rr; })()) : ERR(`D3`, `Destino "${CED}" inválido`, `Variável de destiono náo é uma URL válida.${_Ts}`, 1);
             } else {
               TTL(`<small>${data.mc}</small> ${data.md}`);
               TAG(DESC, data.desc || `Processo ${NT(_L(data.id))}`);
