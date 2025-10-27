@@ -227,7 +227,7 @@
       }
     }
 
-    ul {
+    ul.main {
       padding-top: .7em;
       border-top: 1px solid #aaa;
     }
@@ -283,7 +283,7 @@
 
     <div class="dl"></div>
 
-    <ul>
+    <ul class="main">
       <li>A validação de documentos Anatel está disponível em <a target="_blank"
           href="http://www.anatel.gov.br/autenticidade">anatel.gov.br</a></li>
       <li>Consultar peticionamento/processo <a target="_blank"
@@ -348,13 +348,13 @@
         if (y.length === 0) return ``;
         if (iST(y[0])) {
           const pl = isL(y[0]) ? 0 : isL(y[1]) ? 1 : -1;
-          const l = `${y[pl]}`.trim();          
+          const l = `${y[pl]}`.trim();
           if (ol) return l;
           const t = y[pl === 0 ? 1 : 0];
           return `<a href="${l}" target="_blank">${t}</a>`;
         }
         if (!iAR(y[0])) return '';
-        return ol ? y.map((z) => _L(z, ol)) : y.map((z) => _L(z, 0)).join('<br />');
+        return ol ? y.map((z) => _L(z, ol)) : "<ul>" + y.map((z) => _L(z, 0)).map(n => `<li>${n}</li>`).join('') + "</ul>";
       };
 
       const _T = {
@@ -457,8 +457,8 @@
                   && iAR(data[CED][idx])
                 ) ? data[CED][idx]
                   : data[CED]
-                , 1);     
-                
+                , 1);
+
               return rr ? ((() => { TTL("Redirecionando..."); window.location = rr; })()) : ERR(`D3`, `Destino "${CED}" inválido`, `Variável de destino náo é uma URL válida ou existente.${_Ts}`, 1);
             } else {
               TTL(`<small>${data.mc}</small> ${data.md}`);
