@@ -270,7 +270,7 @@
   </div>
 
   <div class="container">
-    <h1 id="ttl">Carregando...</h1>
+    <h1 id="ttl"></h1>
     <p class="desc"></p>
 
     <div class="dl"></div>
@@ -438,7 +438,7 @@
               }
 
               const rr = _L(data[CED], 1);
-              return rr ? ((() => { TTL("Redirecionando..."); LDD(); window.location = rr; })()) : ERR(`D3`, `Destino "${CED}" inválido`, `Variável de destiono náo é uma URL válida.`, 1);
+              return rr ? ((() => { TTL("Redirecionando..."); window.location = rr; })()) : ERR(`D3`, `Destino "${CED}" inválido`, `Variável de destiono náo é uma URL válida.`, 1);
             } else {
               TTL(`<small>${data.mc}</small> ${data.md}`);
               TAG(DESC, data.desc || `Processo ${NT(_L(data.id))}`);
