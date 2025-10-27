@@ -315,6 +315,7 @@
       };
 
       const ERR = (id, title, descri, exit) => {
+        console.warn(id);
         const m = `${title}${e_id(id)}\n\n<p class="sub">${descri}</p>`;
 
         if (TAG(_("#ttl")) === ``) {
@@ -347,13 +348,13 @@
         if (y.length === 0) return ``;
         if (iST(y[0])) {
           const pl = isL(y[0]) ? 0 : isL(y[1]) ? 1 : -1;
-          const l = `${y[pl]}`.trim();
+          const l = `${y[pl]}`.trim();          
           if (ol) return l;
           const t = y[pl === 0 ? 1 : 0];
           return `<a href="${l}" target="_blank">${t}</a>`;
         }
         if (!iAR(y[0])) return '';
-        return ol ? y.map(_L) : y.map((z) => _L(z, ol)).join('<br />');
+        return ol ? y.map((z) => _L(z, ol)) : y.map((z) => _L(z, 0)).join('<br />');
       };
 
       const _T = {
@@ -410,7 +411,7 @@
         document.title = NT(t);
       };
       const DESC = _(".desc");
-      const e_id = id => id ? `<sup>[${id.toUpperCase()}]</sup>` : '';
+      const e_id = id => id ? `<sup>[${`${id}`.toUpperCase()}]</sup>` : '';
 
       const A = (k, v) => {
         const row = EA(0, "div", "dl-row");
@@ -431,7 +432,7 @@
         const fURL = `db/${CID}.json?t=` + Math.random().toString(36).substring(2, 18);
         fetch(fURL)
           .then(response => {
-            if (!response.ok) return ERR(...M2(`AX-${C}`));
+            if (!response.ok) return ERR(...M2(`AX`));
             return response.json();
           })
           .then(data => {
@@ -447,7 +448,7 @@
                 return ERR(`D2`, `Destino "${CED}" inexistente`, `Variável não definida no registro.${_Ts}`, 1);
               }
 
-              const idx = C.length > 2 ? parseInt(`${C[2]}`) : NaN;
+              const idx = C.length > 2 ? parseInt(`${C[2]}`) : 0;
 
               const rr = _L(
                 (
@@ -456,24 +457,24 @@
                   && iAR(data[CED][idx])
                 ) ? data[CED][idx]
                   : data[CED]
-                , 1);
-
+                , 1);     
+                
               return rr ? ((() => { TTL("Redirecionando..."); window.location = rr; })()) : ERR(`D3`, `Destino "${CED}" inválido`, `Variável de destino náo é uma URL válida ou existente.${_Ts}`, 1);
             } else {
               TTL(`<small>${data.mc}</small> ${data.md}`);
               TAG(DESC, data.desc || `Processo ${NT(_L(data.id))}`);
 
-              for (const j of [...KO(_Ts), ...data.items, ["Solicitante", atob("PHN0cm9uZz5QVTJZUUM8L3N0cm9uZz4gKEplYW4gQ2FybG8pPGJyIC8+PGk+amVhbmNhcmxvQGplYW5jYXJsb2VtLmNvbTwvaT48YnIgLz5DUEY6IDMzKi4qKiouKio4LTk1")]]) {
-                const val = iAR(j) ? j : [_T[j] || null, (data[j])];
+              for (const j of [...KO(_T3), ...data.items, ["Solicitante", atob("PHN0cm9uZz5QVTJZUUM8L3N0cm9uZz4gKEplYW4gQ2FybG8pPGJyIC8+PGk+amVhbmNhcmxvQGplYW5jYXJsb2VtLmNvbTwvaT48YnIgLz5DUEY6IDMzKi4qKiouKio4LTk1")]]) {
+                const val = iAR(j) ? j : [_T3[j] || null, (data[j])];
                 A(RP(val[0]), _X(val[1], j));
-                if (!val[0]) ERR(M1(`ITM2`));
+                if (!val[0]) return ERR(M1(`ITM2`));
               }
 
               LDD();
             }
           })
           .catch(er => {
-            console.error(fURL, "Erro:", er);
+            console.error(fURL, "\n", er);
             ERR(...M2("BX"));
           });
       } else {
