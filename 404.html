@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta
@@ -7,28 +7,7 @@
 			content="width=device-width, initial-scale=1"
 		/>
 		<meta name="robots" content="noindex" />
-
-		<title>Sermão, ainda estamos aqui - redirecionando...</title>
-
-		<meta property="og:title" content="Sermão: Ainda estamos aqui" />
-		<meta property="og:site_name" content="jcem.pro" />
-		<meta
-			property="og:url"
-			content="https://to.jcem.pro/sermoes/aindaaqui"
-		/>
-		<meta
-			property="og:description"
-			content="Sermão: Ainda estamos aqui"
-		/>
-		<meta property="og:type" content="website" />
-		<meta
-			property="og:image"
-			content="https://github.com/jcemsermoes/sermoes/blob/master/dist/ainda-aqui/pub/capa.png?raw=true"
-		/>
-		<meta
-			property="og:image"
-			content="https://github.com/jcemsermoes/sermoes/blob/master/dist/ainda-aqui/pub/capa.png?raw=true"
-		/>
+		<title>Redirecting...</title>
 
 		<script>
 			((L, w) => {
@@ -37,102 +16,191 @@
 		</script>
 
 		<style>
-			noscript,
-			.lds {
-				width: calc(3 * 1.25rem);
-				height: calc(3 * 1.25rem);
-
-				position: fixed;
-				top: 50vh;
-				left: 50vw;
-				margin-left: calc(-1.5 * 1.25rem);
-				margin-top: calc(-1.5 * 1.25rem);
-			}
-
-			.lds div {
-				box-sizing: border-box;
-				display: block;
-				position: absolute;
-				width: 3rem;
-				height: 3rem;
-				margin: 8px;
-				border: 8px solid #ccc;
-				border-radius: 50%;
-				animation: lds 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-				border-color: #ccc transparent transparent transparent;
-			}
-
-			.lds div:nth-child(1) {
-				animation-delay: -0.45s;
-			}
-
-			.lds div:nth-child(2) {
-				animation-delay: -0.3s;
-			}
-
-			.lds div:nth-child(3) {
-				animation-delay: -0.15s;
-			}
-
-			@keyframes lds {
-				0% {
-					transform: rotate(0deg);
-				}
-
-				100% {
-					transform: rotate(360deg);
-				}
+			:root {
+				--blue: #c08282;
+				--blue2: #2b92db;
+				--amber: #cc4c1e;
+				--bg: #ebebeb;
+				--text: #222;
+				--radius: 1rem;
 			}
 
 			* {
-				font-family: 'Noto Sans', 'Tahoma', 'Arial', 'Sans-serif' !important;
-				line-height: 1.5rem;
+				box-sizing: border-box;
+				font-family: 'Noto Sans', 'Segoe UI', 'Tahoma', sans-serif;
+				color: var(--text);
+			}
+
+			html,
+			body {
 				margin: 0;
 				padding: 0;
-				color: #222;
+				background: var(--bg);
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			/* Loader top bar */
+			.loader-bar {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 0.7rem;
+				background: linear-gradient(
+					90deg,
+					var(--blue2) 0%,
+					var(--blue2) 50%,
+					transparent 100%
+				);
+				background-size: 200% 100%;
+				animation: loading 1s linear infinite;
+				z-index: 9999;
+				border-bottom: 1px solid #bbb;
+			}
+
+			@keyframes loading {
+				0% {
+					background-position: 200% 0;
+				}
+				100% {
+					background-position: -200% 0;
+				}
+			}
+
+			/* Noscript box */
+			noscript main {
+				background: #fff;
+				border-radius: var(--radius);
+				box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+				max-width: 90vw;
+				width: 28rem;
+				padding: 1.5rem;
+				border: 0.1rem solid var(--blue);
+			}
+
+			noscript h1 {
+				font-size: 1.5rem;
+				font-weight: 700;
+				color: #fff;
+				margin-bottom: 0.3rem;
+				text-align: left;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				border-top-left-radius: var(--radius);
+				border-top-right-radius: var(--radius);
+				background: #845050;
+				padding: 0.5em 1em;
+				margin: 0 -1.1em;
+				margin-top: -1.1em;
+			}
+
+			noscript h1 span {
+				margin: 0.2rem;
+				font-size: 1.8rem;
+			}
+
+			noscript p {
+				margin: 0.2rem 0;
+				line-height: 1.4;
+				text-align: left;
+			}
+
+			noscript .lang {
+				border-top: 1px solid rgba(0, 0, 0, 0.1);
+				margin-top: 1rem;
+				padding-top: 0.5rem;
+				font-size: 0.9rem;
+			}
+
+			noscript .lang:first-of-type {
+				border-top: none;
+			}
+
+			noscript .lang h2 {
+				color: var(--blue);
+				display: block;
+				margin-bottom: 0.2rem;
+				font-size: 0.9rem;
+			}
+
+			noscript strong,
+			noscript .lang strong {
+				color: var(--amber);
+				font-size: 1.05rem;
+				font-style: italic;
+				margin-left: 0.4em;
+			}
+
+			noscript p span {
+				font-size: 1.3rem;
+				vertical-align: text-bottom;
 			}
 
 			noscript {
 				display: block;
-				width: 280px;
-				max-width: 280px;
-				height: 160px;
-				margin-left: calc(-140px - 1rem);
-				margin-top: calc(-80px - 0.5rem);
-				background: rgba(255, 255, 255, 0.9);
-				padding: 0.5rem 1rem;
-				border-left: 0.5rem solid #eee;
+				text-align: left;
 			}
 
-			noscript span {
-				opacity: 0.6;
-				font-size: 0.9rem;
-			}
-
-			noscript p {
-				margin-top: 0.5rem;
-				font-weight: 600;
-			}
-
-			noscript p span {
-				font-size: 1.1rem;
+			@media (max-width: 600px) {
+				noscript main {
+					width: 85vw;
+					padding: 1rem;
+				}
+				noscript h1 {
+					font-size: 1.3rem;
+				}
 			}
 		</style>
 	</head>
 
 	<body>
-		<div class="lds">
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
-		<noscript
-			><span>There is something <strong>wrong</strong> here!</span>
-			<p>
-				<span>#noScript</span> <u>Javascript is disabled</u>,
-				preventing us from directing you to the address.
-			</p>
+		<!-- Loader top bar -->
+		<div class="loader-bar"></div>
+
+		<noscript>
+			<main>
+				<h1><span>⚠️</span>Problem / Problema / 问题</h1>
+
+				<div class="lang">
+					<h2>🇺🇸 English</h2>
+					<p>
+						<span>⚠️</span><strong>JavaScript is disabled.</strong
+						><br />
+						This prevents automatic redirection to your destination.
+					</p>
+				</div>
+
+				<div class="lang">
+					<h2>🇧🇷 Português</h2>
+					<p>
+						<span>⚠️</span
+						><strong>O JavaScript está desativado.</strong><br />
+						Isso impede o redirecionamento automático para o destino.
+					</p>
+				</div>
+
+				<div class="lang">
+					<h2>🇪🇸 Español</h2>
+					<p>
+						<span>⚠️</span
+						><strong>JavaScript está deshabilitado.</strong><br />
+						Esto impide la redirección automática al destino.
+					</p>
+				</div>
+
+				<div class="lang">
+					<h2>🇨🇳 中文（普通话）</h2>
+					<p>
+						<span>⚠️</span><strong>JavaScript 已被禁用。</strong
+						><br />
+						这会阻止自动跳转到目标页面。
+					</p>
+				</div>
+			</main>
 		</noscript>
 	</body>
 </html>
