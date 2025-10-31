@@ -376,7 +376,7 @@
 					.replace(/[^a-z0-9\/]/i, '')
 					.trim()
 					.split(`/`);
-				const CID = C[0];
+				const CID = C[0].trim();
 				const M1 = (id) => [
 					id,
 					`Dados de registro incorretas`,
@@ -387,6 +387,9 @@
 					`Parâmetro não encontrado ou inválido`,
 					'A url deve terminar com <span class="url">"/?<b>XXX</b>"</span>, onde "XXX" é o nº do peticionamento, despacho ou homologação Anatel sem pontuação.',
 				];
+				const CST = (x) =>
+					x.charAt(0).toUpperCase() + x.slice(1).toLowerCase() || '';
+
 				const TAG = (o, x = 0) => {
 					if (x) o.innerHTML = x;
 					return o.innerHTML.trim();
@@ -523,6 +526,41 @@
 						LOAD.style.display = 'none';
 					}, 50);
 				};
+				const LST_H = (d) => {
+					d.forEach((e) => {
+						if (Array.isArray(e) && e.le === 3) {
+							const dst = _('.dl > table')
+								? _('.dl > table')
+								: (() => {
+										_('.dl').insertAdjacentHTML(
+											'beforeend',
+											'<table celsspacing="0" border="0" cellpadding="0"></table>',
+										);
+										return _('.dl > table');
+								  })();
+
+							const row = EA(0, 'tr', 'dl-row');
+						}
+					});
+
+					EA(
+						row,
+						'div',
+						'dt',
+						k === null ? `--` : `<span>${k}</span>`,
+					);
+					EA(
+						row,
+						'div',
+						`dd`,
+						k === null
+							? 'Item mal formatado'
+							: v && v.trim().length > 0
+							? `<span>${v}</span>`
+							: `---`,
+					);
+					LST.appendChild(row);
+				};
 				if (C) {
 					const fURL =
 						`db/${CID}.json?t=` +
@@ -533,8 +571,12 @@
 							return response.json();
 						})
 						.then((data) => {
+							if (CID.toLowerCase() === 'sumario') {
+								return LST_H(data);
+							}
 							for (const i of KO(_T))
 								if (!KH(data, i)) return ERR(...M1(`:${i}`));
+
 							if (!KH(data, 'items') || !iAR(data.items))
 								return ERR(...M1('ITM1'));
 							if (C.length >= 2) {
@@ -575,7 +617,7 @@
 											1,
 									  );
 							} else {
-								TTL(`<small>${data.mc}</small> ${data.md}`);
+								TTL(`<small>${CST(data.mc)}</small> ${data.md}`);
 								TAG(DESC, data.desc || `Processo ${NT(_L(data.id))}`);
 								for (const j of [
 									...KO(_T3),

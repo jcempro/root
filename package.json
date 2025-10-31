@@ -16,7 +16,8 @@
 	"scripts": {
 		"minify": "node .minify.html.js",
 		"watch": "npm-watch",
-		"dev": "npm run minify && npm run watch"
+		"dev": "npm run minify && npm run watch",
+		"gerar-sumario": "node ./radio/.gerar_sumario.js"
 	},
 	"watch": {
 		"minify": {
@@ -25,7 +26,8 @@
 			],
 			"extensions": "html",
 			"quiet": false
-		}
+		},
+		"gerar-sumario": {}
 	},
 	"devDependencies": {
 		"html-minifier-terser": "^7.2.0",

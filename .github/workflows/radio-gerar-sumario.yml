@@ -1,0 +1,34 @@
+name: Atualizar sumario.json
+
+on:
+  push:
+    paths:
+      - 'radio/db/*.json'
+      - '.github/workflows/gerar-sumario.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependências
+        run: npm ci || npm install
+
+      - name: Gerar sumario.json
+        run: npm run gerar-sumario
+
+      - name: Commit e push do sumario
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add radio/sumario.json
+          git commit -m "Atualiza sumario.json automaticamente"
+          git push
