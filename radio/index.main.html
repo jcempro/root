@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<meta name="robots" content="noindex" />
+		<title>Carregando...</title>
+		<style>
+			noscript main {
+				background: #fff;
+				border-radius: var(--radius);
+				box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+				max-width: 90vw;
+				width: 28rem;
+				padding: 1.5rem;
+				border: 0.1rem solid var(--blue);
+			}
+			noscript h1 {
+				font-size: 1.5rem;
+				font-weight: 700;
+				color: #fff;
+				margin-bottom: 0.3rem;
+				text-align: left;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				border-top-left-radius: var(--radius);
+				border-top-right-radius: var(--radius);
+				background: #845050;
+				padding: 0.5em 1em;
+				margin: 0 -1.1em;
+				margin-top: -1.1em;
+			}
+			noscript h1 span {
+				margin: 0.2rem;
+				font-size: 1.8rem;
+			}
+			noscript p {
+				margin: 0.2rem 0;
+				line-height: 1.4;
+				text-align: left;
+			}
+			noscript .lang {
+				border-top: 1px solid rgba(0, 0, 0, 0.1);
+				margin-top: 1rem;
+				padding-top: 0.5rem;
+				font-size: 0.9rem;
+			}
+			noscript .lang:first-of-type {
+				border-top: none;
+			}
+			noscript .lang h2 {
+				color: var(--blue);
+				display: block;
+				margin-bottom: 0.2rem;
+				font-size: 0.9rem;
+			}
+			noscript strong,
+			noscript .lang strong {
+				color: var(--amber);
+				font-size: 1.05rem;
+				font-style: italic;
+				margin-left: 0.4em;
+			}
+			noscript p span {
+				font-size: 1.3rem;
+				vertical-align: text-bottom;
+			}
+			noscript {
+				display: block;
+				text-align: left;
+			}
+			@media (max-width: 600px) {
+				noscript main {
+					width: 85vw;
+					padding: 1rem;
+				}
+				noscript h1 {
+					font-size: 1.3rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="lds">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<div class="container">
+			<h1 id="ttl"></h1>
+			<p class="desc"></p>
+			<div class="dl"></div>
+			<ul class="main">
+				<li>
+					A validação de documentos Anatel está disponível em
+					<a
+						target="_blank"
+						href="http://www.anatel.gov.br/autenticidade"
+						>anatel.gov.br</a
+					>
+				</li>
+				<li>
+					Consultar peticionamento/processo
+					<a
+						target="_blank"
+						href="https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0"
+						>anatel.gov.br</a
+					>
+				</li>
+				<li>
+					Dicas, tabelas, modelos, construções, antenas, limites entre
+					outros em
+					<a target="_blank" href="https://jeancarloem.com/radio"
+						>jeancarloem.com/radio</a
+					>
+				</li>
+				<li class="nl">
+					<sup><strong>[1]</strong></sup
+					>"Homologação" refere-se a própria homologação ou outro
+					documentooficial análogo,como uma decisão ou despacho.
+				</li>
+			</ul>
+		</div>
+		<noscript>
+			<main>
+				<h1><span>⚠️</span>Problem / Problema / 问题</h1>
+				<div class="lang">
+					<h2>🇺🇸 English</h2>
+					<p>
+						<span>⚠️</span><strong>JavaScript is disabled.</strong
+						><br />
+						This prevents automatic redirection to your destination.
+					</p>
+				</div>
+				<div class="lang">
+					<h2>🇧🇷 Português</h2>
+					<p>
+						<span>⚠️</span
+						><strong>O JavaScript está desativado.</strong><br />
+						Isso impede o redirecionamento automático para o destino.
+					</p>
+				</div>
+				<div class="lang">
+					<h2>🇪🇸 Español</h2>
+					<p>
+						<span>⚠️</span
+						><strong>JavaScript está deshabilitado.</strong><br />
+						Esto impide la redirección automática al destino.
+					</p>
+				</div>
+				<div class="lang">
+					<h2>🇨🇳 中文（普通话）</h2>
+					<p>
+						<span>⚠️</span><strong>JavaScript 已被禁用。</strong
+						><br />
+						这会阻止自动跳转到目标页面。
+					</p>
+				</div>
+			</main>
+		</noscript>
+		<script>
+			const _ = (e) => document.querySelector(e);
+			document.addEventListener('DOMContentLoaded', () => {
+				const C = `${window.location.search}`
+					.split('radio/')
+					.pop()
+					.split(`?`)
+					.pop()
+					.replace(/[^a-z0-9\/]/i, '')
+					.trim()
+					.split(`/`);
+				const CID = C[0];
+				const M1 = (id) => [
+					id,
+					`Dados de registro incorretas`,
+					`O arquivo do registro existe, mas a formatação está incorreta, impedindo a exibição.`,
+				];
+				const M2 = (id) => [
+					id,
+					`Parâmetro não encontrado ou inválido`,
+					'A url deve terminar com <span class="url">"/?<b>XXX</b>"</span>, onde "XXX" é o nº do peticionamento, despacho ou homologação Anatel sem pontuação.',
+				];
+				const TAG = (o, x = 0) => {
+					if (x) o.innerHTML = x;
+					return o.innerHTML.trim();
+				};
+				const ERR = (id, title, descri, exit) => {
+					console.warn(id);
+					const m = `${title}${e_id(
+						id,
+					)}\n\n<p class="sub">${descri}</p>`;
+					if (TAG(_('#ttl')) === ``) {
+						TTL(m);
+						LDD();
+					}
+					if (
+						typeof exit === 'undefined' ||
+						exit === 1 ||
+						exit === true
+					)
+						throw new Error(m.replace(/<\/?[^>]+(>|$)/g, ``));
+				};
+				const iST = (x) => typeof x === `string`;
+				const KO = (x) => Object.keys(x);
+				const KH = (o, y) => Object.hasOwn(o, y);
+				const iAR = (x) => Array.isArray(x);
+				const EA = (t, x, c = ``, ct = ``) => {
+					const r = document.createElement(x);
+					r.className = c;
+					TAG(r, ct);
+					if (t) t.appendChild(r);
+					return r;
+				};
+				if (/[^a-z0-9]/.test(CID)) return ERR(...M2('1'));
+				const CED =
+					C.length >= 2 ? `${C[1]}`.trim().toLowerCase() : 0;
+				const isL = (v) => /^\s?(http|ftp)s?:\/\//.test(v);
+				const _L = (y, ol = 0) => {
+					if (ol && iST(y) && isL(y)) return y.trim();
+					if (!iAR(y)) return ol ? 0 : y;
+					if (y.length === 0) return ``;
+					if (iST(y[0])) {
+						const pl = isL(y[0]) ? 0 : isL(y[1]) ? 1 : -1;
+						const l = `${y[pl]}`.trim();
+						if (ol) return l;
+						const t = y[pl === 0 ? 1 : 0];
+						return `<a href="${l}" target="_blank">${t}</a>`;
+					}
+					if (!iAR(y[0])) return '';
+					return ol
+						? y.map((z) => _L(z, ol))
+						: '<ul>' +
+								y
+									.map((z) => _L(z, 0))
+									.map((n) => `<li>${n}</li>`)
+									.join('') +
+								'</ul>';
+				};
+				const _T = {
+					id: 'Peticionamento/Processo',
+					tp: 'Tipo de processo',
+					dp: 'Data da Petição',
+					mc: 'Marca',
+					md: 'Modelo',
+					fccid: 'FCC ID',
+					sn: 'Número de Série',
+					r: 'Homologação<sup>[1]</sup>',
+					v: 'Validação da Homologação<sup>[1]</sup>',
+					dt: 'Data de Homologação',
+				};
+				const _T2 = {};
+				const _T3 = { ..._T, ..._T2 };
+				const _Ts =
+					"\n\n<p>Apenas os destinos abaixos podem ser usados, <b>mas</b> note que a maioria não conterão URL:</p><ul class='pr'>" +
+					Object.entries(_T3)
+						.map(
+							([chave, valor]) =>
+								`<li><b>${chave}:</b> ${valor}</li>`,
+						)
+						.join('') +
+					'</ul>';
+				const _S = {
+					imp: 'Certificação de Produto: Declaração de Conformidade - Importado uso Próprio',
+				};
+				const NT = (s) => s.replace(/(<([^>]+)>)/gi, '');
+				const LOAD = _('.lds');
+				const LST = _('.dl');
+				const HO = (x) => {
+					if (iST(x) && x.trim().length > 0) return x;
+					if (iAR(x) && x.length === 2) {
+						return `Código: ${x[0]}<br />CRC: ${x[1]}`;
+					}
+					return '';
+				};
+				const RP = (str) => {
+					return `${str}`.replace(/\$\{([\w\d]+)\}/g, (_, k) => {
+						const i = k.trim().toLowerCase();
+						const val = _S == null || !KH(_S, i) ? null : _S[i];
+						return val === null ? `???` : `${val}`;
+					});
+				};
+				const _X = (x, k = undefinewd) => {
+					return RP(k === 'v' ? HO(x) : _L(x));
+				};
+				const TTL = (t) => {
+					TAG(_('#ttl'), t);
+					document.title = NT(t);
+				};
+				const DESC = _('.desc');
+				const e_id = (id) =>
+					id ? `<sup>[${`${id}`.toUpperCase()}]</sup>` : '';
+				const A = (k, v) => {
+					const row = EA(0, 'div', 'dl-row');
+					EA(
+						row,
+						'div',
+						'dt',
+						k === null ? `--` : `<span>${k}</span>`,
+					);
+					EA(
+						row,
+						'div',
+						`dd`,
+						k === null
+							? 'Item mal formatado'
+							: v && v.trim().length > 0
+							? `<span>${v}</span>`
+							: `---`,
+					);
+					LST.appendChild(row);
+				};
+				const LDD = () => {
+					_('.container').style.display = 'block';
+					window.setTimeout(() => {
+						LST.classList.add('loaded');
+						LOAD.style.display = 'none';
+					}, 50);
+				};
+				if (C) {
+					const fURL =
+						`db/${CID}.json?t=` +
+						Math.random().toString(36).substring(2, 18);
+					fetch(fURL)
+						.then((response) => {
+							if (!response.ok) return ERR(...M2(`AX`));
+							return response.json();
+						})
+						.then((data) => {
+							for (const i of KO(_T))
+								if (!KH(data, i)) return ERR(...M1(`:${i}`));
+							if (!KH(data, 'items') || !iAR(data.items))
+								return ERR(...M1('ITM1'));
+							if (C.length >= 2) {
+								if (!KH(_T3, CED)) {
+									return ERR(
+										`D1`,
+										`Destino "${CED}" inválido`,
+										`Destino não é permitido.${_Ts}`,
+										1,
+									);
+								}
+								if (!KH(data, CED)) {
+									return ERR(
+										`D2`,
+										`Destino "${CED}" inexistente`,
+										`Variável não definida no registro.${_Ts}`,
+										1,
+									);
+								}
+								const idx = C.length > 2 ? parseInt(`${C[2]}`) : 0;
+								const rr = _L(
+									!isNaN(idx) &&
+										idx < data[CED].length &&
+										iAR(data[CED][idx])
+										? data[CED][idx]
+										: data[CED],
+									1,
+								);
+								return rr
+									? (() => {
+											TTL('Redirecionando...');
+											window.location = rr;
+									  })()
+									: ERR(
+											`D3`,
+											`Destino "${CED}" inválido`,
+											`Variável de destino náo é uma URL válida ou existente.${_Ts}`,
+											1,
+									  );
+							} else {
+								TTL(`<small>${data.mc}</small> ${data.md}`);
+								TAG(DESC, data.desc || `Processo ${NT(_L(data.id))}`);
+								for (const j of [
+									...KO(_T3),
+									...data.items,
+									[
+										'Solicitante',
+										atob(
+											'PHN0cm9uZz5QVTJZUUM8L3N0cm9uZz4gKEplYW4gQ2FybG8pPGJyIC8+PGk+amVhbmNhcmxvQGplYW5jYXJsb2VtLmNvbTwvaT48YnIgLz5DUEY6IDMzKi4qKiouKio4LTk1',
+										),
+									],
+								]) {
+									const val = iAR(j) ? j : [_T3[j] || null, data[j]];
+									A(RP(val[0]), _X(val[1], j));
+									if (!val[0]) return ERR(M1(`ITM2`));
+								}
+								LDD();
+							}
+						})
+						.catch((er) => {
+							console.error(fURL, '\n', er);
+							ERR(...M2('BX'));
+						});
+				} else {
+					ERR(...M2('CX'));
+				}
+			});
+		</script>
+	</body>
+</html>
