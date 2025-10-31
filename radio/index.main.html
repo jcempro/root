@@ -9,15 +9,191 @@
 		<meta name="robots" content="noindex" />
 		<title>Carregando...</title>
 		<style>
+			:root {
+				--blue: #c08282;
+				--blue2: #2b92db;
+				--amber: #cc4c1e;
+				--bg: #ebebeb;
+				--text: #222;
+				--radius: 1rem;
+			}
+			a {
+				text-decoration: none;
+				color: #2b92db;
+			}
+			a::after {
+				content: '\279A';
+				display: inline-block;
+				font-weight: 900;
+				margin: 0.15em 0.15em;
+				font-family: system-ui, 'Segoe UI', 'Apple Color Emoji',
+					'Noto Color Emoji', sans-serif;
+				color: #777;
+				border: 1px solid #bbb;
+				background-color: #eee;
+				padding: 0.1em;
+				padding-left: 0;
+				border-radius: 0.25em;
+				width: 0.6em;
+				height: 0.6em;
+				line-height: 0.6em;
+				text-align: left;
+			}
+			* {
+				font-family: 'Noto Sans', 'Tahoma', 'Arial', 'Sans-serif' !important;
+				line-height: 1.15em;
+				margin: 0;
+				padding: 0;
+				color: #333;
+			}
+
+			body {
+				margin: 0;
+				padding: 2.5rem;
+				background-color: #f4f7f9;
+				color: #333;
+				line-height: 1.6;
+			}
+			.container {
+				display: none;
+				max-width: 37.5rem;
+				margin: auto;
+				background: #fff;
+				padding: 1.875rem;
+				border-radius: 0.75rem;
+				box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.08);
+				position: relative;
+			}
+			.desc {
+				text-align: center;
+				color: #333;
+				margin-bottom: 1.875rem;
+			}
+			.dl {
+				display: table;
+				width: 100%;
+				border-spacing: 0rem 0.3125rem;
+				opacity: 0;
+				transition: opacity 0.5s ease-in-out;
+				margin: 2em 0;
+			}
+			.dl.loaded {
+				opacity: 1;
+			}
+			.dl-row {
+				display: table-row;
+			}
+			.dl-row:nth-child(odd) {
+				background: #eee;
+			}
+			.dt,
+			.dd {
+				display: table-cell;
+				vertical-align: middle;
+				padding: 0.3125rem 0.3125rem 0.3125rem 0;
+			}
+			.dt {
+				font-weight: 600;
+				text-transform: uppercase;
+				font-size: 0.8rem;
+				letter-spacing: 0.031rem;
+			}
+			.dd {
+				padding-left: 0.625rem;
+				border-bottom: 0.0625rem solid #eee;
+			}
+			.dd span {
+				margin-bottom: 0.1em !important;
+			}
+			.dd:last-of-type {
+				border-bottom: none;
+			}
+			sup {
+				font-size: 0.7rem;
+				font-style: italic;
+				font-weight: bold;
+				margin: 0 0.15em;
+			}
+			span.url {
+				background-color: #eee;
+				padding: 0 0.125rem;
+			}
+			p.sub {
+				margin-bottom: 2rem;
+				font-size: 1.3rem;
+				text-align: center;
+			}
+			.error-message {
+				text-align: center;
+				color: #e74c3c;
+				margin-top: 1.25rem;
+				font-size: 1.2rem;
+			}
+			@media (max-width: 37.5rem) {
+				.container {
+					padding: 1.25rem;
+				}
+				.dt,
+				.dd {
+					display: block;
+					padding-left: 0;
+				}
+				.dt {
+					margin-bottom: 0.1875rem;
+				}
+				.dd {
+					padding-bottom: 0.625rem;
+					border-bottom: 0.0625rem solid #eee;
+				}
+			}
+			ul.main {
+				padding-top: 0.7em;
+				border-top: 1px solid #aaa;
+			}
+			ul,
+			ul > li,
+			p {
+				font-size: 1rem;
+				font-weight: normal;
+				text-align: justify;
+				display: block;
+				margin-top: 0.1rem;
+			}
+			h1 {
+				text-align: center;
+				color: #333;
+				margin-bottom: 0.625rem;
+				font-weight: 600;
+			}
+			li::before {
+				content: '\2022';
+				margin: 0 0.2em;
+				display: inline-block;
+				font-weight: bold;
+			}
+			li.nl::before {
+				content: '';
+			}
+			ul.pr li::before {
+				content: '\2714';
+				color: #aaa;
+			}
+			noscript main,
+			noscript main * {
+				max-width: 90vw;
+			}
 			noscript main {
 				background: #fff;
 				border-radius: var(--radius);
 				box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+				width: min(90vw, 28rem);
 				max-width: 90vw;
-				width: 28rem;
 				padding: 1.5rem;
 				border: 0.1rem solid var(--blue);
+				box-sizing: border-box;
+				overflow-wrap: break-word;
 			}
+
 			noscript h1 {
 				font-size: 1.5rem;
 				font-weight: 700;
@@ -31,8 +207,8 @@
 				border-top-right-radius: var(--radius);
 				background: #845050;
 				padding: 0.5em 1em;
-				margin: 0 -1.1em;
-				margin-top: -1.1em;
+				margin: 0 calc(-1rem - 2px);
+				margin-top: calc(-1rem - 1px);
 			}
 			noscript h1 span {
 				margin: 0.2rem;
@@ -74,23 +250,49 @@
 				text-align: left;
 			}
 			@media (max-width: 600px) {
+				noscript main,
+				noscript main * {
+					max-width: 85vw;
+				}
 				noscript main {
-					width: 85vw;
 					padding: 1rem;
 				}
 				noscript h1 {
 					font-size: 1.3rem;
 				}
 			}
+			/* Loader top bar */
+			.lds {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 0.7rem;
+				background: linear-gradient(
+					90deg,
+					var(--blue2) 0%,
+					var(--blue2) 50%,
+					transparent 100%
+				);
+				background-size: 200% 100%;
+				animation: loading 1s linear infinite;
+				z-index: 9999;
+				border-bottom: 1px solid #eee;
+			}
+
+			@keyframes loading {
+				0% {
+					background-position: 200% 0;
+				}
+				100% {
+					background-position: -200% 0;
+				}
+			}
 		</style>
 	</head>
 	<body>
-		<div class="lds">
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
+		<div class="lds"></div>
+
 		<div class="container">
 			<h1 id="ttl"></h1>
 			<p class="desc"></p>
