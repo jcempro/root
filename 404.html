@@ -10,8 +10,64 @@
 		<title>Redirecting...</title>
 
 		<script>
-			((L, w) => {
-				//L.href = "https://www.jeancarloem.com/jcemsermoes/sermoes/tree/master/dist/ainda-aqui";
+			(async (L, w) => {
+				/* normalização de URLs (ou canonicalização), que reduz diferentes representações equivalentes a uma forma única e estável.
+				 * A ideia é tratar URLs como equivalentes quando só variam em detalhes irrelevantes (ex: http ↔ https, / no final, #, etc.).
+				 */
+				const normUrl = (u) => {
+					const x = new URL(u, L.origin);
+					let p = x.pathname.replace(/\/+$/, '') || '/';
+					const s = /^(https?|wss?)$/.test(
+						x.protocol.replace(':', ''),
+					);
+					return (
+						(s ? '' : x.protocol + '//') +
+						x.hostname.toLowerCase() +
+						(x.port && !/^(80|443)$/.test(x.port)
+							? ':' + x.port
+							: '') +
+						p +
+						(x.search || '')
+					);
+				};
+
+				const isInt = (v) =>
+					Number.isInteger(v) ||
+					(typeof v === 'string' && /^[+-]?\d+$/.test(v));
+
+				const GO = async (t, flbk) => {
+					const p = (L.pathname + L.search).replace(
+						/^\/\s*404\.html(\/|\?)/gi,
+						'/',
+					);
+					if (/\/[^/]*\.[^/]*$/.test(p)) throw 4;
+					try {
+						const r = await fetch(
+							p.replace(/\/?$/, '/') + 'index.json',
+						);
+						if (!r.ok) throw 1;
+						const j = await r.json().catch(() => {
+							throw 2;
+						});
+						const u = j?.[0];
+						new URL(u); // lança se inválida
+						if (
+							Array.isArray(j) &&
+							j.length == 1 &&
+							typeof u == 'string'
+						)
+							L.href = u;
+						else throw 3;
+					} catch (e) {
+						flbk(e, isInt(t) ? t + 1 : 1);
+					}
+				};
+
+				const STP2 = (e) => {
+					throw e;
+				};
+
+				GO(0, STP2);
 			})(window.location, window);
 		</script>
 
