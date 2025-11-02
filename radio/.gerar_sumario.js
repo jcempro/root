@@ -58,7 +58,7 @@ function gerarSumario() {
 		// Se existir próxima página, adiciona o número dela como última linha
 		if (i < totalPaginas - 1) {
 			pagina.push(i + 1);
-		} else if (totalPaginas > 0 && i === totalPaginas - 1) {
+		} else if (totalPaginas > 1 && i === totalPaginas - 1) {
 			pagina.push(-1);
 		}
 

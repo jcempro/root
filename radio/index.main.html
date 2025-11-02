@@ -645,7 +645,7 @@
 
 					const add_row = (o, t = 0) => {
 						const row = CREATE_EL(0, 'tr', '');
-
+						console.warn(o);
 						for (const v of o) {
 							CREATE_EL(row, 'td', '', `<span>${v}</span>`);
 						}
@@ -668,10 +668,13 @@
 						const e = d[k];
 
 						if (k === d.length - 1 && isFinite(e) && !isNaN(e)) {
-							_('.dl').insertAdjacentHTML(`<p class="center">
+							_('.dl').insertAdjacentHTML(
+								'beforeend',
+								`<p class="center">
 									${e >= 2 ? `<a href="?sumario${e - 2}">« Anterior</a>` : ''}
 								${e < 0 ? '' : `<a href="?sumario${e}">Próximo »</a>`}
-								</p>`);
+								</p>`,
+							);
 						} else if (
 							!Array.isArray(e) ||
 							e.length !== SUM_COLS.length - 1
