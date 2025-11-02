@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 const dbDir = path.join('.', 'radio', 'db');
-const sumarioBase = path.join('.', 'radio', 'sumario'); // base: sumario-0.json, sumario-1.json etc.
+const sumarioBase = path.join('.', 'radio', 'db', 'sumario'); // base: sumario-0.json, sumario-1.json etc.
 
 function gerarSumario() {
 	// Lista todos os arquivos .json dentro de /radio/db
@@ -11,18 +11,20 @@ function gerarSumario() {
 		.readdirSync(dbDir)
 		.filter((f) => f.endsWith('.json'));
 
-	const resultado = arquivos.map((arquivo) => {
-		const caminho = path.join(dbDir, arquivo);
-		const conteudo = JSON.parse(fs.readFileSync(caminho, 'utf-8'));
-		const nome = path.basename(arquivo, '.json');
-		const marca = conteudo.mc
-			? conteudo.mc.charAt(0).toUpperCase() +
-			  conteudo.mc.slice(1).toLowerCase()
-			: '';
-		const modelo = conteudo.md || '';
-		const dt = conteudo.dp || '';
-		return [nome, marca, modelo, dt];
-	});
+	const resultado = arquivos
+		.filter((arquivo) => !/\??sumario[\d]+/i.test(arquivo))
+		.map((arquivo) => {
+			const caminho = path.join(dbDir, arquivo);
+			const conteudo = JSON.parse(fs.readFileSync(caminho, 'utf-8'));
+			const nome = path.basename(arquivo, '.json');
+			const marca = conteudo.mc
+				? conteudo.mc.charAt(0).toUpperCase() +
+				  conteudo.mc.slice(1).toLowerCase()
+				: '';
+			const modelo = conteudo.md || '';
+			const dt = conteudo.dp || '';
+			return [nome, marca, modelo, dt];
+		});
 
 	// Paginação: 25 itens por página
 	const porPagina = 25;
@@ -36,9 +38,11 @@ function gerarSumario() {
 		// Se existir próxima página, adiciona o número dela como última linha
 		if (i < totalPaginas - 1) {
 			pagina.push(i + 1);
+		} else if (totalPaginas > 0 && i === totalPaginas - 1) {
+			pagina.push(-1);
 		}
 
-		const nomeArquivo = `${sumarioBase}-${i}.json`;
+		const nomeArquivo = `${sumarioBase}${i}.json`;
 		fs.writeFileSync(nomeArquivo, JSON.stringify(pagina, null, 2));
 	}
 
