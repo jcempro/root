@@ -746,11 +746,7 @@
 									  );
 							} else {
 								TITULO(`<small>${CST(data.mc)}</small> ${data.md}`);
-								TAG(
-									DESC,
-									data.desc ||
-										`Processo ${PURE_TXT(MAKE_LINK(data.id))}`,
-								);
+
 								for (const j of [
 									...KEYSofOBJ(PROPS),
 									...data.items,
