@@ -30,6 +30,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add radio/sumario.json
+          git add radio/db/sumario*.json
           git commit -m "Atualiza sumario.json automaticamente"
           git push
