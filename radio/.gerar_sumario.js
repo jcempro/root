@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 const dbDir = path.join('.', 'radio', 'db');
-const sumarioBase = path.join('.', 'radio', 'sumario'); // base: sumario0.json, sumario1.json etc.
+const sumarioBase = path.join('.', 'radio', 'sumario'); // base: sumario-0.json, sumario-1.json etc.
 
 function gerarSumario() {
 	// Lista todos os arquivos .json dentro de /radio/db
@@ -38,7 +38,7 @@ function gerarSumario() {
 			pagina.push(i + 1);
 		}
 
-		const nomeArquivo = `${sumarioBase}${i}.json`;
+		const nomeArquivo = `${sumarioBase}-${i}.json`;
 		fs.writeFileSync(nomeArquivo, JSON.stringify(pagina, null, 2));
 	}
 
