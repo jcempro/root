@@ -5,6 +5,7 @@ on:
     paths:
       - 'radio/db/*.json'
       - '.github/workflows/gerar-sumario.yml'
+  workflow_dispatch:
 
 jobs:
   build:
