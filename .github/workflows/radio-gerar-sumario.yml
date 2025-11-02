@@ -11,6 +11,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write # Concede permissão de escrita para o GITHUB_TOKEN
+      # issues: write # Adicione outras permissões se necessário (opcional)
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
