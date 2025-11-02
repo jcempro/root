@@ -30,6 +30,26 @@ function gerarSumario() {
 	const porPagina = 25;
 	const totalPaginas = Math.ceil(resultado.length / porPagina);
 
+	// --- INÍCIO DA NOVA LÓGICA DE REMOÇÃO ---
+	// Remove arquivos de sumário existentes que excedam o totalPaginas
+	const regexSumario = /sumario(\d+)\.json/i;
+
+	fs.readdirSync(dbDir)
+		.filter((f) => regexSumario.test(f))
+		.forEach((arquivoSumario) => {
+			const match = arquivoSumario.match(regexSumario);
+			const idPagina = parseInt(match[1], 10);
+
+			if (idPagina >= totalPaginas) {
+				const caminhoExcedente = path.join(dbDir, arquivoSumario);
+				fs.unlinkSync(caminhoExcedente);
+				console.log(
+					`🗑️ Arquivo excedente removido: ${arquivoSumario}`,
+				);
+			}
+		});
+	// --- FIM DA NOVA LÓGICA DE REMOÇÃO ---
+
 	for (let i = 0; i < totalPaginas; i++) {
 		const inicio = i * porPagina;
 		const fim = inicio + porPagina;
