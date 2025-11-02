@@ -22,8 +22,7 @@ function gerarSumario() {
 				  conteudo.mc.slice(1).toLowerCase()
 				: '';
 			const modelo = conteudo.md || '';
-			const dt = conteudo.dp || '';
-			return [nome, marca, modelo, dt];
+			return [nome, marca, modelo];
 		});
 
 	// Paginação: 25 itens por página

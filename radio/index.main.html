@@ -139,8 +139,11 @@
 				font-size: 1.2rem;
 			}
 			@media (max-width: 37.5rem) {
+				body {
+					padding: 0;
+				}
 				.container {
-					padding: 1.25rem;
+					padding: 0.7rem;
 				}
 				.dt,
 				.dd {
@@ -210,7 +213,7 @@
 			th,
 			td {
 				padding: 0.7em 0.5em;
-				border: 1px solid #ddd;
+				border: 1px solid #bbb;
 				width: max-content;
 				cursor: pointer;
 			}
@@ -620,13 +623,7 @@
 					LST.appendChild(row);
 				};
 
-				const SUM_COLS = [
-					'Peticionamento',
-					'Marca',
-					'Modelo',
-					'Data Pedição',
-					``,
-				];
+				const SUM_COLS = ['Peticionamento', 'Marca', 'Modelo'];
 
 				const LST_H = (d) => {
 					if (!Array.isArray(d)) {
@@ -645,11 +642,17 @@
 
 					const add_row = (o, t = 0) => {
 						const row = CREATE_EL(0, 'tr', '');
-						for (const v of o) {
-							CREATE_EL(row, 'td', '', `<span>${v}</span>`);
+						for (const k in o) {
+							const v = o[k];
+							CREATE_EL(
+								row,
+								'td',
+								'',
+								`<span>${v}${
+									k == 0 && !t ? `<span>🔗</span>` : ''
+								}</span>`,
+							);
 						}
-
-						if (!t) CREATE_EL(row, 'td', '', `<span>🔗</span>`);
 
 						row.addEventListener('click', (e) => {
 							try {
@@ -676,7 +679,7 @@
 							);
 						} else if (
 							!Array.isArray(e) ||
-							e.length !== SUM_COLS.length - 1
+							e.length !== SUM_COLS.length
 						) {
 							return ERR(...MSG3('S2'));
 						}
