@@ -114,10 +114,20 @@
 				border-bottom: none;
 			}
 			sup {
-				font-size: 0.7rem;
-				font-style: italic;
+				font-size: 0.7em;
 				font-weight: bold;
 				margin: 0 0.15em;
+			}
+
+			sup::before {
+				content: '[';
+				margin-right: 0.1em;
+				font-weight: normal;
+			}
+			sup::after {
+				font-weight: normal;
+				content: ']';
+				margin-left: 0.1em;
 			}
 			span.url {
 				background-color: #eee;
@@ -177,9 +187,13 @@
 				font-size: 1rem;
 				font-weight: normal;
 				text-align: justify;
-				display: block;
 				margin-top: 0.1rem;
 			}
+
+			p {
+				display: block;
+			}
+
 			h1 {
 				text-align: center;
 				color: #333;
@@ -190,20 +204,21 @@
 				border-bottom: 1px solid #ddd;
 				padding-bottom: 0.5rem;
 			}
-			li::before {
-				content: '\2022';
-				margin: 0 0.2em;
-				display: inline-block;
-				font-weight: bold;
-			}
-			li.nl::before {
-				content: '';
-			}
-			ul.pr li::before {
-				content: '\2714';
-				color: #aaa;
-			}
 
+			ul {
+				list-style-type: disc;
+				padding-left: 1em;
+			}
+			li::marker {
+				color: #777;
+			}
+			li.nl {
+				margin-top: 1.5em;
+			}
+			ul > li::marker {
+				color: #777;
+				font-size: 1.2em;
+			}
 			table {
 				border-collapse: collapse;
 				margin: 1rem 0;
@@ -397,14 +412,11 @@
 						>jeancarloem.com/radio</a
 					>
 				</li>
-				<li>
-					<a href="/radio/?sumario0">Sumário</a> de rádios.
-					<br /><br />
-				</li>
+				<li><a href="/radio/?sumario0">Sumário</a> de rádios.</li>
 				<li class="nl">
-					<sup><strong>[1]</strong></sup
-					>"Homologação" refere-se a própria homologação ou outro
-					documentooficial análogo,como uma decisão ou despacho.
+					<sup>0</sup><strong>Homologação</strong> refere-se a própria
+					homologação ou outro documentooficial análogo,como uma
+					decisão ou despacho.
 				</li>
 			</ul>
 		</div>
