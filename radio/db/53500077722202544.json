@@ -21,5 +21,10 @@
 	"fccid": ["XBPUV-K5", "https://fcc.report/FCC-ID/XBPUV-K5"],
 	"dp": "17/09/2025",
 	"tp": "${imp}",
-	"items": []
+	"items": [
+		[
+			"Assinador",
+			"Documento assinado eletronicamente por Marcos Vieira Baeta Neves, Gerente de Certificação e Numeração, em 22/10/2025, às 20:52, conforme horário oficial de Brasília, com fundamento no art. 23, inciso II, da Portaria no 912/2017 da Anatel."
+		]
+	]
 }
