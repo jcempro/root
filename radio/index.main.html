@@ -535,7 +535,7 @@
 				};
 
 				const ERR_ID = (id) =>
-					id ? `<sup>[${`${id}`.toUpperCase()}]</sup>` : '';
+					id ? `<sup>${`${id}`.toUpperCase()}</sup>` : '';
 
 				const IS_STRING = (x) => typeof x === `string`;
 				const KEYSofOBJ = (x) => Object.keys(x);
@@ -589,8 +589,8 @@
 					md: 'Modelo',
 					fccid: 'FCC ID',
 					sn: 'Número de Série',
-					r: 'Homologação<sup>[1]</sup>',
-					v: 'Validação da Homologação<sup>[1]</sup>',
+					r: 'Homologação<sup>1</sup>',
+					v: 'Validação da Homologação<sup>1</sup>',
 					dt: 'Data de Homologação',
 				};
 
