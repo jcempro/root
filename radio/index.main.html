@@ -487,6 +487,9 @@
 					}, 50);
 				};
 
+				const EnclouseTag = (v, tag = `span`) =>
+					/^\s*<[\w]+/i.test(v) ? v : `<${tag}>${v}</${tag}>`;
+
 				const ERR = (id, title, descri, exit) => {
 					const txt = `\n\n${descri}`;
 					const m = `⚠️ ${title}${ERR_ID(id)}`;
@@ -606,7 +609,7 @@
 						row,
 						'div',
 						'dt',
-						k === null ? `--` : `<span>${k}</span>`,
+						k === null ? `--` : EnclouseTag(k),
 					);
 					CREATE_EL(
 						row,
@@ -615,7 +618,7 @@
 						k === null
 							? 'Item mal formatado'
 							: v && v.trim().length > 0
-							? `<span>${v}</span>`
+							? EnclouseTag(v)
 							: `---`,
 					);
 					LST.appendChild(row);
@@ -646,9 +649,9 @@
 								row,
 								'td',
 								'',
-								`<span>${v}${
-									k == 0 && !t ? `<span>🔗</span>` : ''
-								}</span>`,
+								EnclouseTag(
+									`${v}${k == 0 && !t ? EnclouseTag('🔗') : ''}`,
+								),
 							);
 						}
 
