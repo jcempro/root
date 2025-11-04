@@ -41,6 +41,8 @@ a::after {
 	text-align: left;
 	opacity: 0;
 	transition: opacity 0.5s ease-in-out;
+	border: 1px solid var(--gray);
+	padding: 0;
 }
 .dl > .tbl {
 	text-align: center;
@@ -51,13 +53,23 @@ a::after {
 .dl-row {
 	display: flex;
 	flex-wrap: wrap;
-	padding: 0.5em;
+	padding: 0.7em;
 	padding-bottom: 0.2em;
 	min-height: 1.5em;
 	vertical-align: middle;
+	margin: 0;
+	border: 1px solid var(--border);
 }
 .dl-row:nth-child(odd) {
 	background: var(--gray2);
+}
+
+dl > .dl-row:first-of-type {
+	margin-top: 0;
+}
+
+dl > .dl-row:last-of-type {
+	margin-bottom: 0;
 }
 .dt,
 .dd {
@@ -96,7 +108,7 @@ h1 {
 p,
 ul,
 li {
-	font-size: 1rem;
+	font-size: 1em;
 	font-weight: 400;
 	text-align: justify;
 	margin-top: 0.1rem;
@@ -134,8 +146,10 @@ sup::after {
 	font-weight: 400;
 }
 ul.main {
-	padding-top: 0.7em;
-	border-top: 1px solid #aaa;
+	margin-top: 3em;
+	padding-top: 2.5em;
+	border-top: 1px solid var(--border);
+	font-size: 0.9rem;
 }
 ul {
 	list-style: disc;
