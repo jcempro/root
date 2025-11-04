@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 
 	const PROPS1 = {
-		id: 'Peticionamento/Processo',
+		id: 'Peticionamento ou Processo',
 		tp: 'Tipo de processo',
 		dp: 'Data da Petição',
 		mc: 'Marca',
