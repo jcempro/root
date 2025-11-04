@@ -183,6 +183,13 @@
 				list-style: disc;
 				padding-left: 1em;
 			}
+			.dl ul {
+				list-style-type: '➤ ' !important;
+			}
+			.dl ul > li::marker {
+				font-size: 0.7em;
+				color: var(--gray);
+			}
 			li::marker {
 				color: var(--gray);
 				font-size: 1.1em;
@@ -369,7 +376,7 @@
 					>
 				</li>
 				<li>
-					Consultar peticionamento ou  processo
+					Consultar peticionamento ou processo
 					<a
 						target="_blank"
 						href="https://sei.anatel.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0"
@@ -382,7 +389,9 @@
 						>jeancarloem.com/radio</a
 					>
 				</li>
-				<li class="nl"><a href="/radio/?sumario0">Sumário</a> de rádios.</li>
+				<li class="nl">
+					<a href="/radio/?sumario0">Sumário</a> de rádios.
+				</li>
 
 				<li class="nl">
 					<a
@@ -405,22 +414,22 @@
 						target="_blank"
 						href="https://docs.google.com/document/d/1yOuq9kbBU2WstnwciOz7ECVysmNJ3ZwCns2uM_6FyYQ/edit?tab=t.0"
 						>Lista de rádios pré e habilitadoss
-						</pre></a
-					>
-				</li>			
-				
+					</a>
+				</li>
+
 				<li>
 					<a
 						target="_blank"
 						href="https://docs.google.com/document/d/17cbebM53ntpm29-wCTdaOC6U56Iz1GWG0CR3AYUdZcc/edit?tab=t.0"
 						>Lista de rádios NÁO conformes
-						</pre></a
-					>
-				</li>								
+					</a>
+				</li>
 
 				<li class="nl">
 					<sup>1</sup><strong>Homologação</strong> refere-se a própria
-					homologação ou outro documento oficial análogo, como uma decisão ou despacho. Ele pode ser individual e pessoal ou comercial e geral.
+					homologação ou outro documento oficial análogo, como uma
+					decisão ou despacho. Ele pode ser individual e pessoal ou
+					comercial e geral.
 				</li>
 			</ul>
 		</div>
