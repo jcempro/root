@@ -39,6 +39,8 @@ jobs:
           cd ../temp-mirror
           git init
           find . -type f \( -iname 'CNAME' -o -iname 'mirror-to-ide2lnk.yml' -o -iname '.git'  \) -exec rm -f {} +
+          rm -f ./CNAME
+          rm -f ./.github/workflows/mirror-to-ide2lnk.yml
           git add -A
           git commit -m "Mirror commit" || echo "No changes to commit"
 
