@@ -1,0 +1,37 @@
+name: Mirror to Repo B
+
+on:
+  push:
+    branches:
+      - main # altere se o branch principal tiver outro nome
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository A
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # necessário para preservar histórico completo do git
+
+      - name: Remove files not mirrored
+        run: |
+          rm -f .github/workflows/mirror-to-b.yml
+          rm -f CNAME
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Push to Repo B
+        env:
+          TARGET_REPO: ownerB/repoB # troque pelo repositório destino, ex: usuarioB/meu-repo
+          PAT: ${{ secrets.PAT_FOR_MIRROR }}
+        run: |
+          # Adiciona o remoto com autenticação usando o token secreto
+          git remote add mirror https://x-access-token:${PAT}@github.com/${TARGET_REPO}.git
+
+          # Envia forçadamente o branch principal (mantendo histórico)
+          git push mirror main --force
