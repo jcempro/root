@@ -25,13 +25,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Test connection to Repo B
-        env:
-          TARGET_REPO: ide2lnk/root
-          PAT: ${{ secrets.PAT_FOR_MIRROR }}
-        run: |
-          git ls-remote "https://x-access-token:${PAT}@github.com/${TARGET_REPO}.git"
-
       - name: Push to Repo B
         env:
           TARGET_REPO: ide2lnk/root
