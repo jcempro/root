@@ -38,4 +38,9 @@ jobs:
           PAT: ${{ secrets.PAT_FOR_MIRROR }}
         run: |
           git remote add mirror "https://x-access-token:${PAT}@github.com/${TARGET_REPO}.git"
-          git push mirror master --force
+
+          # Garante que o branch não esteja rastreando o origin
+          git branch --unset-upstream || true
+
+          # Faz o push efetivo para o repositório B
+          git push mirror HEAD:master --force
