@@ -3,7 +3,7 @@ name: Mirror to Repo B
 on:
   push:
     branches:
-      - main # altere se o branch principal tiver outro nome
+      - master # altere se o branch principal tiver outro nome
 
 jobs:
   mirror:
@@ -34,4 +34,4 @@ jobs:
           git remote add mirror https://x-access-token:${PAT}@github.com/${TARGET_REPO}.git
 
           # Envia forçadamente o branch principal (mantendo histórico)
-          git push mirror main --force
+          git push mirror master --force
