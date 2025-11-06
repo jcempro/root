@@ -41,11 +41,10 @@ jobs:
           git init
           find . -type f \( -iname 'CNAME' -o -iname 'mirror-to-ide2lnk.yml' -o -iname '.git'  \) -exec rm -f {} +
           rm -f ./CNAME
-          rm -f ./.github/workflows/mirror-to-ide2lnk.yml
-          git rm ./CNAME
-          git rm ./github/workflows/mirror-to-ide2lnk.yml
+          rm -f ./.github/workflows/mirror-to-ide2lnk.yml          
           git add -A
           git commit -am "Mirror commit" || echo "No changes to commit"
+          ls -la
 
       - name: Push to Repo B
         env:
