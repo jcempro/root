@@ -39,8 +39,8 @@ jobs:
           # Limpa índice (não inclui nada ainda)
           git reset
 
-          # Adiciona tudo exceto .github/workflows/mirror-to-b.yml e CNAME
-          git add . ':!CNAME' ':!.github/workflows/mirror-to-b.yml'
+          # Adiciona tudo exceto .github/workflows/mirror-to-ide2lnk.yml e CNAME
+          git add . ':!CNAME' ':!.github/workflows/mirror-to-ide2lnk.yml'
 
           # Commit temporário
           git commit -m "Temporary mirror commit" || echo "No changes to commit"
