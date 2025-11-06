@@ -43,7 +43,7 @@
 					if (/\/[^/]*\.[^/]*$/.test(p)) throw 4;
 					try {
 						const r = await fetch(
-							p.replace(/\/?$/, '/') + 'index.json',
+							p.replace(/\/?$/, '/') + 'data.json',
 						);
 						if (!r.ok) throw 1;
 						const j = await r.json().catch(() => {
