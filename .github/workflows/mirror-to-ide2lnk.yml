@@ -68,7 +68,7 @@ jobs:
 
       - name: Push ao respositório B
         env:
-          TARGET_REPO: ide2lnk/mirrors
+          TARGET_REPO: ide2lnk/ide2lnk.github.io
           PAT: ${{ secrets.PAT_FOR_MIRROR }}
         run: |
           echo "Using PAT for push to ${TARGET_REPO}"
