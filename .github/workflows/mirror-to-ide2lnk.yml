@@ -31,15 +31,18 @@ jobs:
           git config --global --unset credential.helper || true
           git config --system --unset credential.helper || true
 
-      - name: Create temporary branch for mirror
+      - name: Create temporary mirror commit
         run: |
           # Cria branch temporária
           git checkout -b mirror-temp
 
-          # Remove arquivos que não devem ir para B
-          git rm -f .github/workflows/mirror-to-b.yml CNAME || true
+          # Limpa índice (não inclui nada ainda)
+          git reset
 
-          # Cria commit temporário só com arquivos permitidos
+          # Adiciona tudo exceto .github/workflows/mirror-to-b.yml e CNAME
+          git add . ':!CNAME' ':!.github/workflows/mirror-to-b.yml'
+
+          # Commit temporário
           git commit -m "Temporary mirror commit" || echo "No changes to commit"
 
       - name: Push to Repo B
