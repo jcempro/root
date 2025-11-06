@@ -30,10 +30,7 @@ jobs:
           TARGET_REPO: ide2lnk/root
           PAT: ${{ secrets.PAT_FOR_MIRROR }}
         run: |
-          git remote add mirror "https://x-access-token:${PAT}@github.com/${TARGET_REPO}.git"
-
-          # Garante que o branch não esteja rastreando o origin
+          echo "Using PAT for push to ${TARGET_REPO}"
+          git remote add mirror https://${PAT}@github.com/${TARGET_REPO}.git
           git branch --unset-upstream || true
-
-          # Faz o push efetivo para o repositório B
           git push mirror HEAD:master --force
