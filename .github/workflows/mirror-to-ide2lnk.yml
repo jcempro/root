@@ -3,7 +3,7 @@ name: Mirror to Repo B
 on:
   push:
     branches:
-      - master # altere se o branch principal tiver outro nome
+      - master
 
 jobs:
   mirror:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository A
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # necessário para preservar histórico completo do git
+          fetch-depth: 0
 
       - name: Remove files not mirrored
         run: |
@@ -25,13 +25,17 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Test connection to Repo B
+        env:
+          TARGET_REPO: ide2lnk/root
+          PAT: ${{ secrets.PAT_FOR_MIRROR }}
+        run: |
+          git ls-remote "https://x-access-token:${PAT}@github.com/${TARGET_REPO}.git"
+
       - name: Push to Repo B
         env:
           TARGET_REPO: ide2lnk/root
           PAT: ${{ secrets.PAT_FOR_MIRROR }}
         run: |
-          # Adiciona o remoto com autenticação usando o token secreto
-          git remote add mirror https://x-access-token:${PAT}@github.com/${TARGET_REPO}.git
-
-          # Envia forçadamente o branch principal (mantendo histórico)
+          git remote add mirror "https://x-access-token:${PAT}@github.com/${TARGET_REPO}.git"
           git push mirror master --force
