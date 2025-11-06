@@ -27,7 +27,7 @@ jobs:
 
       - name: Push to Repo B
         env:
-          TARGET_REPO: ownerB/repoB # troque pelo repositório destino, ex: usuarioB/meu-repo
+          TARGET_REPO: ide2lnk/root
           PAT: ${{ secrets.PAT_FOR_MIRROR }}
         run: |
           # Adiciona o remoto com autenticação usando o token secreto
