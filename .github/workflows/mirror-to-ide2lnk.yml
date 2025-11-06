@@ -18,9 +18,9 @@ jobs:
 
       - name: Remove arquivos exluídos dos espelho
         run: |
-          echo  "\n" 
+          printf "\n" 
           echo "path: '$PWD'"
-          echo  "\n" 
+          printf "\n" 
           rm -f ./.github/workflows/mirror-to-ide2lnk.yml
           rm -f ./CNAME
           rm -rf ./.git
@@ -37,16 +37,16 @@ jobs:
 
       - name: Criando pasta clone ../temp-mirror
         run: |
-          echo  "\n" 
+          printf "\n" 
           echo "path: '$PWD'"
-          echo  "\n" 
+          printf "\n" 
           mkdir ../temp-mirror
           # Copia tudo de A para temp-mirror, exceto workflow e CNAME
           rsync -av --exclude='.git' --exclude='.github/workflows/mirror-to-ide2lnk.yml' --exclude='CNAME' ./ ../temp-mirror/          
           cd ../temp-mirror
-          echo  "\n" 
+          printf "\n" 
           echo "path: '$PWD'"
-          echo  "\n" 
+          printf "\n" 
           rm -rf ./.git
           rm -f ./CNAME
           rm -f ./.github/workflows/mirror-to-ide2lnk.yml
@@ -54,9 +54,9 @@ jobs:
 
       - name: Criando git commit temporário na pasta ../temp-mirror
         run: |
-          echo  "\n" 
+          printf "\n" 
           echo "path: '$PWD'"
-          echo  "\n" 
+          printf "\n" 
           find . -type d -name ".git" -print -quit | grep -q ".git" && echo ".git: Existe" || echo ".git: Não existe"
           echo  " " 
           git init          
