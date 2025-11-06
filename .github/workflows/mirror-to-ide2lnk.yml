@@ -31,6 +31,17 @@ jobs:
           git config --global --unset credential.helper || true
           git config --system --unset credential.helper || true
 
+      - name: Create temporary branch for mirror
+        run: |
+          # Cria branch temporária
+          git checkout -b mirror-temp
+
+          # Remove arquivos que não devem ir para B
+          git rm -f .github/workflows/mirror-to-b.yml CNAME || true
+
+          # Cria commit temporário só com arquivos permitidos
+          git commit -m "Temporary mirror commit" || echo "No changes to commit"
+
       - name: Push to Repo B
         env:
           TARGET_REPO: ide2lnk/root
