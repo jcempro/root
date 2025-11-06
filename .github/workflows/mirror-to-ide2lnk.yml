@@ -18,8 +18,8 @@ jobs:
 
       - name: Remove files not mirrored
         run: |
-          rm -f .github/workflows/mirror-to-ide2lnk.yml
-          rm -f CNAME
+          rm -f ./.github/workflows/mirror-to-ide2lnk.yml
+          rm -f ./CNAME
 
       - name: Configure Git
         run: |
@@ -37,16 +37,19 @@ jobs:
           # Copia tudo de A para temp-mirror, exceto workflow e CNAME
           rsync -av --exclude='.git' --exclude='.github/workflows/mirror-to-ide2lnk.yml' --exclude='CNAME' ./ ../temp-mirror/
           cd ../temp-mirror
+          rm -f ./.git
           git init
           find . -type f \( -iname 'CNAME' -o -iname 'mirror-to-ide2lnk.yml' -o -iname '.git'  \) -exec rm -f {} +
           rm -f ./CNAME
           rm -f ./.github/workflows/mirror-to-ide2lnk.yml
+          git rm ./CNAME
+          git rm ./github/workflows/mirror-to-ide2lnk.yml
           git add -A
-          git commit -m "Mirror commit" || echo "No changes to commit"
+          git commit -am "Mirror commit" || echo "No changes to commit"
 
       - name: Push to Repo B
         env:
-          TARGET_REPO: ide2lnk/mirror
+          TARGET_REPO: ide2lnk/mirrors
           PAT: ${{ secrets.PAT_FOR_MIRROR }}
         run: |
           echo "Using PAT for push to ${TARGET_REPO}"
