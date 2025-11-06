@@ -38,7 +38,7 @@ jobs:
           rsync -av --exclude='.github/workflows/mirror-to-ide2lnk.yml' --exclude='CNAME' ./ temp-mirror/
           cd temp-mirror
           git init
-          git checkout -b master
+
           git add .
           git commit -m "Mirror commit"
 
