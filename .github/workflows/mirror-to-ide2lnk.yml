@@ -18,7 +18,7 @@ jobs:
 
       - name: Remove files not mirrored
         run: |
-          rm -f .github/workflows/mirror-to-b.yml
+          rm -f .github/workflows/mirror-to-ide2lnk.yml
           rm -f CNAME
 
       - name: Configure Git
@@ -33,17 +33,14 @@ jobs:
 
       - name: Create temporary mirror commit
         run: |
-          # Cria branch temporária
-          git checkout -b mirror-temp
-
-          # Limpa índice (não inclui nada ainda)
-          git reset
-
-          # Adiciona tudo exceto .github/workflows/mirror-to-ide2lnk.yml e CNAME
-          git add . ':!CNAME' ':!.github/workflows/mirror-to-ide2lnk.yml'
-
-          # Commit temporário
-          git commit -m "Temporary mirror commit" || echo "No changes to commit"
+          mkdir temp-mirror
+          # Copia tudo de A para temp-mirror, exceto workflow e CNAME
+          rsync -av --exclude='.github/workflows/mirror-to-ide2lnk.yml' --exclude='CNAME' ./ temp-mirror/
+          cd temp-mirror
+          git init
+          git checkout -b master
+          git add .
+          git commit -m "Mirror commit"
 
       - name: Push to Repo B
         env:
