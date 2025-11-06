@@ -38,8 +38,7 @@ jobs:
           rsync -av --exclude='.github/workflows/mirror-to-ide2lnk.yml' --exclude='CNAME' ./ ../temp-mirror/
           cd ../temp-mirror
           git init
-
-          git add $(find ../ -type f ! -name 'CNAME' ! -path '../.github/workflows/mirror-to-b.yml')
+          git add $(find ../ -type f ! -name 'CNAME' ! -name 'mirror-to-ide2lnk.yml')
           git commit -m "Mirror commit"
 
       - name: Push to Repo B
