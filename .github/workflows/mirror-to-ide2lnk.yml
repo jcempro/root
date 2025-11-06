@@ -37,14 +37,16 @@ jobs:
           # Copia tudo de A para temp-mirror, exceto workflow e CNAME
           rsync -av --exclude='.git' --exclude='.github/workflows/mirror-to-ide2lnk.yml' --exclude='CNAME' ./ ../temp-mirror/
           cd ../temp-mirror
-          rm -f ./.git
+          rm -rf ./.git
           git init
           find . -type f \( -iname 'CNAME' -o -iname 'mirror-to-ide2lnk.yml' -o -iname '.git'  \) -exec rm -f {} +
+          find ../ -type f ! -name 'CNAME' ! -name 'mirror-to-ide2lnk.yml' -exec cp --parents {} ./ \
           rm -f ./CNAME
           rm -f ./.github/workflows/mirror-to-ide2lnk.yml          
           git add -A
           git commit -am "Mirror commit" || echo "No changes to commit"
-          ls -la
+          echo "listando"
+          ls -la --color=never | cat
 
       - name: Push to Repo B
         env:
