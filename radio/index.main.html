@@ -10,6 +10,18 @@
 		<title>Carregando...</title>
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<script src="assets/js/main.js"></script>
+		<script>
+			(function () {
+				const novoDominio = 'jcem.pro'; // ← Altere aqui
+				const canonical = document.createElement('link');
+				canonical.rel = 'canonical';
+				canonical.href = location.href.replace(
+					location.hostname,
+					novoDominio,
+				);
+				document.head.appendChild(canonical);
+			})();
+		</script>
 		<style>
 			:root {
 				--blue: #c08282;
@@ -179,6 +191,12 @@
 				</li>
 				<li class="nl">
 					<a href="/radio/?sumario0">Sumário</a> de rádios.
+				</li>
+				<li>
+					Acessível também em
+					<a href="https://ide2lnk.github.io/radio/"
+						>https://ide2lnk.github.io/radio/</a
+					>.
 				</li>
 				<li class="nl">
 					<a
