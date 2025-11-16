@@ -12,13 +12,10 @@
 		<script src="assets/js/main.js"></script>
 		<script>
 			(function () {
-				const novoDominio = 'jcem.pro'; // ← Altere aqui
-				const canonical = document.createElement('link');
-				canonical.rel = 'canonical';
-				canonical.href = location.href.replace(
-					location.hostname,
-					novoDominio,
-				);
+				const n = 'jcem.pro';
+				const c = document.createElement('link');
+				c.rel = 'canonical';
+				c.href = location.href.replace(location.hostname, n);
 				document.head.appendChild(canonical);
 			})();
 		</script>
