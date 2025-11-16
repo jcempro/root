@@ -12,9 +12,5 @@
 	"fccid": ["2AZSA-RT4D", "https://fcc.report/FCC-ID/2AZSA-RT4D"],
 	"dp": "11/11/2025",
 	"tp": "${imp}",
-<<<<<<< HEAD
 	"items": [["Rastreio", "NM967262705BR"]]
-=======
-	"items": []
->>>>>>> f1319535f65c962b0b10b21d9d03c219ebc07b5e
 }
