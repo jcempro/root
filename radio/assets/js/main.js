@@ -307,9 +307,19 @@ document.addEventListener('DOMContentLoaded', () => {
 						...data.items,
 						[
 							'Solicitante',
-							atob(
-								'PHVsPgogIDxsaT5Fc3RhJiMyMzE7JiMyMjc7bzogPGI+UFUyWVFDPC9iPjs8L2xpPgogIDxsaT48aT5qZWFuY2FybG9AamVhbmNhcmxvZW0uY29tPC9pPjwvbGk+CiAgPGxpPkNQRjogMzMqLioqKi4qKjgtOTU8L2xpPgo8L3VsPg==',
-							),
+							`<ul>${Object.entries([
+								'PU2YQC',
+								'jeancarlo@jeancarloem.com',
+								'33*.***.**8-95',
+								7246538,
+							])
+								.map(
+									([k, v]) =>
+										`<li>${
+											[`Estação`, `E-mail`, `CPF`, `DMR ID`][k]
+										}: <b>${v}</b></li>`,
+								)
+								.join('')}</ul>`,
 						],
 					]) {
 						const val = IS_ARR(j) ? j : [PROPS[j] || null, data[j]];
