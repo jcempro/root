@@ -1,13 +1,19 @@
+const isNODE = typeof window === 'undefined';
+
 const fs = isNODE ? require('fs') : null;
 const https = isNODE ? require('https') : null;
+const path = isNODE ? require('path') : null;
 
 const __RPTDR_LNK = 'https://radioid.net/static/rptrs.json';
 const REGEX_PROTOCOL = /^\s*[^:\/\\]:\/\//i;
 const REGEX_LOCAL = /^(?!(?:[a-zA-Z]+:)?\/\/|[a-zA-Z]:\\|\/).*/;
 const PATH_FILE = 'radio/repetidoras/rptrs.json';
+const ROOT = path.resolve('../../../../');
 
-const isNODE = typeof window === 'undefined';
 const hasFETCH = !typeof fetch === 'undefined';
+
+// === APENAS ESTA LINHA ADICIONADA ===
+let cacheProcessado = null;
 
 async function processarJSON() {
 	try {
@@ -15,9 +21,20 @@ async function processarJSON() {
 			const is_relative =
 				!REGEX_PROTOCOL.test(url) || REGEX_LOCAL.test(url);
 
-			if (is_relative && isNODE && fs.existsSync(PATH_FILE)) {
-				const dados = fs.readFileSync(PATH_FILE, 'utf8');
-				return JSON.parse(dados);
+			console.log(isNODE, '???????????', process.cwd());
+			if (is_relative && isNODE) {
+				let furl = !fs.existsSync(url) ? path.join(ROOT, url) : url;
+
+				if (fs.existsSync(furl)) {
+					const dados = fs.readFileSync(furl, 'utf8');
+					return JSON.parse(dados);
+				}
+			}
+
+			if (isNODE && is_relative) {
+				return new Promise((resolve, reject) => {
+					reject();
+				});
 			}
 
 			if (!hasFETCH || isNODE) {
@@ -39,8 +56,9 @@ async function processarJSON() {
 		async function carregarJSON() {
 			for (const value of [PATH_FILE, __RPTDR_LNK]) {
 				const response = await _GET(value);
-				if (!response.ok)
-					throw new Error(`Falha ao carregar '${value}'`);
+				if (!response.ok) {
+					console.error(`Falha ao carregar '${value}'`);
+				}
 				return await response.json();
 			}
 		}
@@ -464,6 +482,9 @@ async function processarJSON() {
 			}
 		}
 
+		// === APENAS ESTA LINHA ADICIONADA ===
+		cacheProcessado = estados;
+
 		// Processa cada estado individualmente
 		const nomeBase = 'meta/' + PATH_FILE.replace('.json', '');
 		let totalEstados = 0;
@@ -531,7 +552,7 @@ async function processarJSON() {
 			});
 
 			// Gera o CSV
-			let csvContent = csvMODEL.join(CSV_SEP) + '\n';
+			let csvContent = csvMODEL.rt4d.join(CSV_SEP) + '\n';
 			let chNumber = 1;
 
 			todosRegistros.forEach((item) => {
@@ -578,15 +599,202 @@ async function processarJSON() {
 			`Arquivos gerados para cada estado: ${nomeBase}.{estado}.{json,csv}`,
 		);
 	} catch (error) {
-		console.error('Erro ao processar o arquivo:', error.message);
+		console.error('Erro ao processar o arquivo:', error);
 	}
 }
 
-// Executa o processamento
-if (typeof window !== 'undefined') {
-	// No navegador, expõe a função globalmente
+// === APENAS ESTAS FUNÇÕES ADICIONADAS ===
+
+// Função para download individual
+function downloadIndividual(estado, formato, modeloCSV = 'rt4d') {
+	if (!cacheProcessado) {
+		console.error(
+			'Dados não processados. Execute processarJSON() primeiro.',
+		);
+		return;
+	}
+
+	const estadoSigla = estado.toLowerCase();
+	const registros = cacheProcessado[estadoSigla];
+
+	if (!registros) {
+		console.error(`Estado ${estado} não encontrado`);
+		return;
+	}
+
+	const nomeBase = 'meta/' + PATH_FILE.replace('.json', '');
+
+	if (formato === 'json') {
+		const registrosOrdenados = [...registros].sort((a, b) =>
+			a.city.localeCompare(b.city),
+		);
+		const estadoJSON = { [estadoSigla]: registrosOrdenados };
+		const jsonNomeArquivo = `${nomeBase}.${estadoSigla}.json`;
+		const conteudo = JSON.stringify(estadoJSON, null, 2);
+
+		if (isNODE) {
+			fs.writeFileSync(jsonNomeArquivo, conteudo);
+			console.log(`JSON gerado: ${jsonNomeArquivo}`);
+		} else {
+			const blob = new Blob([conteudo], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = jsonNomeArquivo;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		}
+	} else if (formato === 'csv') {
+		const modelo = csvMODEL[modeloCSV];
+		if (!modelo) {
+			console.error(`Modelo CSV ${modeloCSV} não encontrado`);
+			return;
+		}
+
+		const CSV_SEP = ',';
+		const _ASPAS = (x) => (!isNaN(x) && isFinite(x) ? x : `"${x}"`);
+
+		const todosRegistros = [];
+		const contadorCidades = {};
+
+		registros.forEach((registro) => {
+			const chave = `${estadoSigla}:${registro.city}`;
+			contadorCidades[chave] = (contadorCidades[chave] || 0) + 1;
+			const contador = contadorCidades[chave];
+
+			const chAlias =
+				contador > 1
+					? `${estadoSigla.toUpperCase()}: ${
+							registro.city
+					  } [${contador}]`
+					: `${estadoSigla.toUpperCase()}: ${registro.city}`;
+
+			todosRegistros.push({
+				registro,
+				estado: estadoSigla,
+				chAlias: chAlias,
+			});
+		});
+
+		todosRegistros.sort((a, b) => {
+			return a.registro.city.localeCompare(b.registro.city);
+		});
+
+		let csvContent = modelo.join(CSV_SEP) + '\n';
+		let chNumber = 1;
+
+		todosRegistros.forEach((item) => {
+			const linha = registroParaCSV(
+				item.registro,
+				item.estado,
+				chNumber++,
+				item.chAlias,
+			);
+			csvContent += linha.join(CSV_SEP) + '\n';
+		});
+
+		const csvNomeArquivo = `${nomeBase}.${estadoSigla}.${modeloCSV}.csv`;
+
+		if (isNODE) {
+			fs.writeFileSync(csvNomeArquivo, csvContent);
+			console.log(`CSV gerado: ${csvNomeArquivo}`);
+		} else {
+			const blob = new Blob([csvContent], { type: 'text/csv' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = csvNomeArquivo;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		}
+	}
+}
+
+// Interface para navegador
+function criarInterfaceNavegador() {
+	if (isNODE) return;
+
+	const container = document.createElement('div');
+	container.style.cssText =
+		'position: fixed; top: 10px; right: 10px; background: white; border: 1px solid #ccc; padding: 10px; z-index: 1000; max-height: 80vh; overflow-y: auto;';
+
+	const titulo = document.createElement('h3');
+	titulo.textContent = 'Downloads Repetidoras';
+	container.appendChild(titulo);
+
+	const btnProcessar = document.createElement('button');
+	btnProcessar.textContent = 'Carregar Dados';
+	btnProcessar.onclick = async () => {
+		btnProcessar.disabled = true;
+		btnProcessar.textContent = 'Carregando...';
+
+		try {
+			await processarJSON();
+
+			btnProcessar.remove();
+
+			const estados = Object.keys(cacheProcessado);
+			const modelos = Object.keys(csvMODEL);
+
+			estados.forEach((estado) => {
+				const estadoSection = document.createElement('div');
+				estadoSection.style.marginBottom = '10px';
+
+				const estadoTitulo = document.createElement('h4');
+				estadoTitulo.textContent = `Estado: ${estado.toUpperCase()} (${
+					cacheProcessado[estado].length
+				} registros)`;
+				estadoSection.appendChild(estadoTitulo);
+
+				const linkJSON = document.createElement('a');
+				linkJSON.textContent = '📁 JSON';
+				linkJSON.href = '#';
+				linkJSON.style.marginRight = '10px';
+				linkJSON.style.cursor = 'pointer';
+				linkJSON.onclick = () => downloadIndividual(estado, 'json');
+				estadoSection.appendChild(linkJSON);
+
+				modelos.forEach((modelo) => {
+					const linkCSV = document.createElement('a');
+					linkCSV.textContent = `📊 CSV ${modelo}`;
+					linkCSV.href = '#';
+					linkCSV.style.marginRight = '10px';
+					linkCSV.style.cursor = 'pointer';
+					linkCSV.onclick = () =>
+						downloadIndividual(estado, 'csv', modelo);
+					estadoSection.appendChild(linkCSV);
+				});
+
+				container.appendChild(estadoSection);
+			});
+		} catch (error) {
+			console.error('Erro ao carregar dados:', error);
+			btnProcessar.textContent =
+				'Erro - Clique para tentar novamente';
+			btnProcessar.disabled = false;
+		}
+	};
+	container.appendChild(btnProcessar);
+
+	document.body.appendChild(container);
+}
+
+if (!isNODE) {
+	window.downloadIndividual = downloadIndividual;
 	window.processarJSON = processarJSON;
+
+	if (document.readyState === 'loading') {
+		document.addEventListener(
+			'DOMContentLoaded',
+			criarInterfaceNavegador,
+		);
+	} else {
+		criarInterfaceNavegador();
+	}
 } else {
-	// No Node.js, executa diretamente
 	processarJSON();
 }
