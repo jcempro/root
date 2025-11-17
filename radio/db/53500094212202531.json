@@ -12,8 +12,5 @@
 	"fccid": ["2AZSA-RT4D", "https://fcc.report/FCC-ID/2AZSA-RT4D"],
 	"dp": "03/11/2025",
 	"tp": "${imp}",
-	"items": [
-		["Rastreio", "NM960765703BR"],
-		["DMR ID", 7246538]
-	]
+	"items": [["Rastreio", "NM960765703BR"]]
 }
