@@ -129,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		r: 'Homologação<sup>1</sup>',
 		v: 'Validação da Homologação<sup>1</sup>',
 		dt: 'Data de Homologação',
+		cid: 'Código de Identificação',
 	};
 
 	const PROPS2 = {};
@@ -179,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		LST.appendChild(row);
 	};
 
-	const SUM_COLS = ['Peticionamento', 'Marca', 'Modelo'];
+	const SUM_COLS = ['Peticionamento', 'Marca / Modelo', `ID`];
 
 	const LST_H = (d) => {
 		if (!Array.isArray(d)) {
@@ -191,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			: (() => {
 					_('.dl').insertAdjacentHTML(
 						'beforeend',
-						'<div class="tbl"><table cellsspacing="0" border="0" cellpadding="0"></table></div>',
+						'<div class="tbl x"><table cellsspacing="0" border="0" cellpadding="0"></table></div>',
 					);
 					return _('.dl table');
 			  })();
@@ -199,12 +200,21 @@ document.addEventListener('DOMContentLoaded', () => {
 		const add_row = (o, t = 0) => {
 			const row = CREATE_EL(0, 'tr', '');
 			for (const k in o) {
-				const v = o[k];
+				const v = o[k]
+					.split(`;`)
+					.map((v) => (k == 1 ? `<i>${v}</i> ` : v))
+					.join('');
+
+				console.log(v);
+
 				CREATE_EL(
 					row,
 					'td',
 					'',
-					EnclouseTag(`${v}${k == 0 && !t ? EnclouseTag('🔗') : ''}`),
+					EnclouseTag(
+						`${v}${k == 0 && !t ? EnclouseTag('🔗') : ''}`,
+						'p',
+					),
 				);
 			}
 

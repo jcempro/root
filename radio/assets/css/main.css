@@ -50,6 +50,15 @@ a::after {
 .dl.loaded {
 	opacity: 1;
 }
+
+.tbl.x table td > i {
+	font-style: normal !important;
+}
+
+.tbl.x table td > i:first-of-type {
+	font-size: 0.9em;
+}
+
 .dl-row {
 	display: flex;
 	flex-wrap: wrap;

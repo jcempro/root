@@ -21,6 +21,7 @@
 	"fccid": ["XBPUV-K5", "https://fcc.report/FCC-ID/XBPUV-K5"],
 	"dp": "17/09/2025",
 	"tp": "${imp}",
+	"cid": "00",
 	"items": [
 		[
 			"Assinador",

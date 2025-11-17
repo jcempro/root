@@ -17,12 +17,13 @@ function gerarSumario() {
 			const caminho = path.join(dbDir, arquivo);
 			const conteudo = JSON.parse(fs.readFileSync(caminho, 'utf-8'));
 			const nome = path.basename(arquivo, '.json');
+			const ID = conteudo.cid;
 			const marca = conteudo.mc
 				? conteudo.mc.charAt(0).toUpperCase() +
 				  conteudo.mc.slice(1).toLowerCase()
 				: '';
 			const modelo = conteudo.md || '';
-			return [nome, marca, modelo];
+			return [nome, `${marca};${modelo}`, ID];
 		});
 
 	// Paginação: 25 itens por página

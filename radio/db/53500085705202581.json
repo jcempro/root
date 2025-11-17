@@ -21,6 +21,7 @@
 	"fccid": ["2AJGM-5RH", "https://fcc.report/FCC-ID/2AJGM-5RH"],
 	"dp": "11/10/2025",
 	"tp": "${imp}",
+	"cid": "01",
 	"items": [
 		[
 			"Assinador",
