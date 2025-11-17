@@ -12,13 +12,21 @@ a::after {
 	color: var(--gray);
 	border: 1px solid var(--border);
 	background: var(--gray2);
-	padding: 0.1em 0.1em 0.1em 0;
+	padding: 0.15em 0.15em 0.15em 0;
 	border-radius: 0.25em;
 	width: 0.6em;
 	height: 0.6em;
 	line-height: 0.6em;
 	text-align: left;
+	font-size: 0.85em !important;
 }
+
+a:hover,
+a:hover::after {
+	color: rgb(177, 13, 13);
+	text-decoration: underline;
+}
+
 .container {
 	display: none;
 	max-width: 37.5rem;
