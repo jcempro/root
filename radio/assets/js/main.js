@@ -205,8 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
 					.map((v) => (k == 1 ? `<i>${v}</i> ` : v))
 					.join('');
 
-				console.log(v);
-
 				CREATE_EL(
 					row,
 					'td',
