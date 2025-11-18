@@ -94,6 +94,8 @@ class FileMinifier {
 			css: 'css',
 			scss: 'css',
 			js: 'js',
+			cjs: 'cjs',
+			mjs: 'mjs',
 		};
 
 		return typeMap[extension] || null;
@@ -144,6 +146,8 @@ class FileMinifier {
 			html: () => this.minifyHtml(content),
 			css: () => this.minifyCss(content),
 			js: () => this.minifyJs(content),
+			cjs: () => this.minifyJs(content),
+			mjs: () => this.minifyJs(content),
 		};
 
 		if (!minifiers[fileType]) {
