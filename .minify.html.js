@@ -14,7 +14,7 @@ class FileMinifier {
 		this.rootDir = config.rootDir || process.cwd();
 		this.verbose = config.verbose !== false;
 
-		this.targetExtensions = /\.main\.(s?css|js|html)$/i;
+		this.targetExtensions = /\.main\.(s?css|(c|m)?js|html)$/i;
 
 		this.minifyOptions = {
 			html: {
