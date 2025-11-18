@@ -56,42 +56,41 @@ const V_RETURN = (v, podenull = 0) =>
 		v[0][0][0] < 0
 	);
 
+const __getValue = async (value) =>
+	typeof value === 'function' || value instanceof Function
+		? value.constructor.name == 'AsyncFunction'
+			? await value()
+			: value()
+		: value;
+
 // -------------------------------------------------------------
 //  localStorage universal
 // -------------------------------------------------------------
 
-function setItemLocalStorage(key, value) {
+async function setItemLocalStorage(key, value) {
+	value = await __getValue(value);
+
 	try {
-		if (typeof localStorage !== 'undefined') {
-			localStorage.setItem(key, JSON.stringify(value));
-		} else {
-			universalStorage.setItem(key, JSON.stringify(value));
-		}
+		(typeof localStorage !== 'undefined'
+			? localStorage
+			: universalStorage
+		).setItem(key, JSON.stringify(value));
 	} catch (e) {
 		console.error('Erro setItemLocalStorage:', e);
 	}
 	return value;
 }
 
-function getItemLocalStorage(key, defaultValue = undefined) {
-	try {
-		let v =
-			typeof localStorage !== 'undefined'
-				? localStorage.getItem(key)
-				: universalStorage.getItem(key);
+async function getItemLocalStorage(key, defValue = undefined) {
+	let v =
+		typeof localStorage !== 'undefined'
+			? localStorage.getItem(key)
+			: universalStorage.getItem(key);
 
-		if (v === null || v === undefined) {
-			v = setItemLocalStorage(
-				key,
-				typeof defaultValue === 'function'
-					? defaultValue()
-					: defaultValue,
-			);
-		}
-		return JSON.parse(v);
-	} catch (e) {
-		return defaultValue;
+	if (v === undefined) {
+		v = await setItemLocalStorage(key, __getValue(defValue));
 	}
+	return JSON.parse(v);
 }
 
 // -------------------------------------------------------------
@@ -173,15 +172,20 @@ async function _GET(url) {
 			console.log(` - tentando: ${p}`);
 
 			try {
-				let rr;
-				if (isNODE && !isProtocol) rr = loadLocal(p);
-				else if (!hasFETCH && isProtocol) rr = await loadViaHTTPS(p);
-				else if (hasFETCH) rr = await loadViaFetch(p);
-				else rr = [[[-106]]];
+				let rr =
+					isNODE && !isProtocol
+						? loadLocal(p)
+						: !hasFETCH && isProtocol
+						? await loadViaHTTPS(p)
+						: hasFETCH
+						? await loadViaFetch(p)
+						: [[[-106]]];
 
 				if (V_RETURN(rr)) return rr;
 			} catch (e) {
-				console.warn('Erro:', e);
+				console.warn(
+					'Erro coomom.main =====================================',
+				);
 			}
 		}
 		return [[[-102]]];
@@ -204,6 +208,7 @@ module.exports = {
 	setItemLocalStorage,
 	getItemLocalStorage,
 	_GET,
+	V_RETURN,
 };
 
 // EXPORTAÇÃO GLOBAL (browser)
@@ -214,4 +219,5 @@ if (typeof globalThis !== 'undefined') {
 	globalThis.setItemLocalStorage = setItemLocalStorage;
 	globalThis.getItemLocalStorage = getItemLocalStorage;
 	globalThis._GET = _GET;
+	globalThis.V_RETURN = V_RETURN;
 }
