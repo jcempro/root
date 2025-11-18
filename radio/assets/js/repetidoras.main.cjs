@@ -1,116 +1,179 @@
 const isNODE = typeof window === 'undefined';
-
 const fs = isNODE ? require('fs') : null;
-const https = isNODE ? require('https') : null;
 const path = isNODE ? require('path') : null;
+const commom = isNODE
+	? require(`../../../@assets/js/common${isNODE ? '.main' : ''}.cjs`)
+	: null;
 
 const __RPTDR_LNK = 'https://radioid.net/static/rptrs.json';
-const REGEX_PROTOCOL = /^\s*[^:\/\\]:\/\//i;
-const REGEX_LOCAL = /^(?!(?:[a-zA-Z]+:)?\/\/|[a-zA-Z]:\\|\/).*/;
-const PATH_FILE = 'radio/repetidoras/rptrs.json';
-const ROOT = path.resolve('../../../../');
 
-const hasFETCH = !typeof fetch === 'undefined';
+const PATH_FILE = '/radio/repetidoras/rptrs.json';
+const ROOT = isNODE ? process.cwd().split('/radio/')[0] : '';
+const META = `${ROOT}/radio/repetidoras/meta`;
 
-// === APENAS ESTA LINHA ADICIONADA ===
+const mapeamentoEstados = {
+	// Nomes completos
+	acre: 'ac',
+	alagoas: 'al',
+	amapa: 'ap',
+	amapá: 'ap',
+	amazonas: 'am',
+	bahia: 'ba',
+	ceara: 'ce',
+	ceará: 'ce',
+	'distrito federal': 'df',
+	'espirito santo': 'es',
+	'espírito santo': 'es',
+	goias: 'go',
+	goiás: 'go',
+	maranhao: 'ma',
+	maranhão: 'ma',
+	'mato grosso': 'mt',
+	'mato grosso do sul': 'ms',
+	'minas gerais': 'mg',
+	para: 'pa',
+	pará: 'pa',
+	paraiba: 'pb',
+	paraíba: 'pb',
+	parana: 'pr',
+	paraná: 'pr',
+	pernambuco: 'pe',
+	piaui: 'pi',
+	piauí: 'pi',
+	'rio de janeiro': 'rj',
+	'rio grande do norte': 'rn',
+	'rio grande do sul': 'rs',
+	rondonia: 'ro',
+	rondônia: 'ro',
+	roraima: 'rr',
+	'santa catarina': 'sc',
+	'sao paulo': 'sp',
+	'são paulo': 'sp',
+	sergipe: 'se',
+	tocantins: 'to',
+
+	// Siglas
+	ac: 'ac',
+	al: 'al',
+	ap: 'ap',
+	am: 'am',
+	ba: 'ba',
+	ce: 'ce',
+	df: 'df',
+	es: 'es',
+	go: 'go',
+	ma: 'ma',
+	mt: 'mt',
+	ms: 'ms',
+	mg: 'mg',
+	pa: 'pa',
+	pb: 'pb',
+	pr: 'pr',
+	pe: 'pe',
+	pi: 'pi',
+	rj: 'rj',
+	rn: 'rn',
+	rs: 'rs',
+	ro: 'ro',
+	rr: 'rr',
+	sc: 'sc',
+	sp: 'sp',
+	se: 'se',
+	to: 'to',
+};
+
 let cacheProcessado = null;
 
-async function processarJSON() {
-	try {
-		async function _GET(url) {
-			const is_relative =
-				!REGEX_PROTOCOL.test(url) || REGEX_LOCAL.test(url);
+/* nome e ordens das colunas .csv a ser gerada a partir o json */
+const csvMODEL = {
+	uv5rh: [],
+	rt4d: [
+		'CH', // number, autoincrement
+		'RX Freq',
+		'TX Freq',
+		'CH Mode', //options: Digital ou Analogue
+		'RX/TX Limit', //options: RX+TX, Only RX, Only TX
+		'TX Power', //options: high ou low
+		'TOT', // options: off, 5, 10, 15, 30, 45,60...600
+		'Scan Add', //options: Add, Remove
+		'CH Alias', // string seguind: 'XX: CITY', onde XX é a sigla do estado maíscula (ex: SP) CITY é o nome da Cidade
+		'ID Type', //options: Radio ID, Channel ID
+		'CH ID',
+		'Dual Slot', //options: On/Off
+		'Time Slot', //options: 1 ou 2
+		'Color Code', //options: 1 à 15
+		'Promiscuous', //options: On/Off - default off
+		'TX Politely', // options: Allow TX, Channel Free, Color Code Idle
+		'TX Contacts', // only: ALl Call
+		'RX TG List', //None ou TG List-001, TG List-002, TG List-003...TG List-250
+		'DMR Encryption', //None or Key 1, Key 2, Key 3 ... Key 256 - default None
+		'RX CTC DCS', //None or float value
+		'TX CTC DCS', // None or float value
+		'CTC DCS Type', //options:Normal, Encrypt 1, Encrypt 2, Encrypt 3, Mute Code
+		'Mute Code', //number value
+		'Busy Lock', //options: Allown TX, Channel Free, CTC/DCS Idle
+		'Demodulation', //options: FM, AM, SSB
+		'Tail Tone', // Options: Off, 55Hz No Shift, 120º Shift, 180º Shift, 240º Shift
+		'Scrambler', //options: off, 1,2,3...9
+		'Bandwidth', //Options: Wide, Narrow
+		'Offset', // float, diference entre RX Freq e TX Freq em relação a RX Freq
+	],
+};
 
-			console.log(isNODE, '???????????', process.cwd());
-			if (is_relative && isNODE) {
-				let furl = !fs.existsSync(url) ? path.join(ROOT, url) : url;
-
-				if (fs.existsSync(furl)) {
-					const dados = fs.readFileSync(furl, 'utf8');
-					return JSON.parse(dados);
+// CORREÇÃO: Adicionado modeloCSV como parâmetro opcional
+async function processarJSON(modeloCSV = 'rt4d') {
+	async function carregarJSON(from) {
+		for (const value of typeof from === 'string'
+			? [from]
+			: Array.isArray(from)
+			? from
+			: []) {
+			try {
+				const r = await commom._GET(value);
+				if (
+					commom.V_RETURN(r) &&
+					(isNODE || (r && typeof r === 'object'))
+				) {
+					return r;
 				}
-			}
-
-			if (isNODE && is_relative) {
-				return new Promise((resolve, reject) => {
-					reject();
-				});
-			}
-
-			if (!hasFETCH || isNODE) {
-				return new Promise((resolve, reject) => {
-					https
-						.get(url, (resp) => {
-							let data = '';
-							resp.on('data', (chunk) => (data += chunk));
-							resp.on('end', () => resolve(JSON.parse(data)));
-						})
-						.on('error', reject);
-				});
-			} else {
-				return fetch(url);
+			} catch (e) {
+				console.log(e);
+				return [[[-1101]]];
 			}
 		}
+		throw new Error('Não foi possível carregar nenhum arquivo');
+	}
 
-		// Função para carregar JSON
-		async function carregarJSON() {
-			for (const value of [PATH_FILE, __RPTDR_LNK]) {
-				const response = await _GET(value);
-				if (!response.ok) {
-					console.error(`Falha ao carregar '${value}'`);
-				}
-				return await response.json();
-			}
+	try {
+		if (!csvMODEL[modeloCSV]) {
+			throw new Error(`Modelo CSV '${modeloCSV}' não encontrado`);
 		}
 
 		// Carrega os dados
-		const jsonData = await carregarJSON();
+		const jsonData = await commom.getItemLocalStorage(
+			'radioid.net',
+			async () => await carregarJSON([PATH_FILE, __RPTDR_LNK]),
+		);
+
+		console.log(
+			JSON.stringify(jsonData).substring(0, 15),
+			typeof jsonData === 'object',
+		);
 
 		// Verifica se a estrutura esperada existe
-		if (!jsonData.rptrs || !Array.isArray(jsonData.rptrs)) {
+		if (
+			typeof jsonData !== 'object' ||
+			!jsonData.hasOwnProperty('rptrs') ||
+			!jsonData['rptrs'] ||
+			!Array.isArray(jsonData['rptrs'])
+		) {
 			throw new Error(
-				'Estrutura do JSON inválida. Esperado objeto com propriedade "rptrs" array.',
+				`JSON inválido. Esperado objeto com '.rptrs'; recebido '${typeof jsonData}', conteúdo '${jsonData}'.`,
 			);
 		}
 
 		const CSV_SEP = ',';
 		const _ASPAS = (x) => (!isNaN(x) && isFinite(x) ? x : `"${x}"`);
-
-		/* nome e ordens das colunas .csv a ser gerada a partir o json */
-		const csvMODEL = {
-			uv5rh: [],
-			rt4d: [
-				'CH', // number, autoincrement
-				'RX Freq',
-				'TX Freq',
-				'CH Mode', //options: Digital ou Analogue
-				'RX/TX Limit', //options: RX+TX, Only RX, Only TX
-				'TX Power', //options: high ou low
-				'TOT', // options: off, 5, 10, 15, 30, 45,60...600
-				'Scan Add', //options: Add, Remove
-				'CH Alias', // string seguind: 'XX: CITY', onde XX é a sigla do estado maíscula (ex: SP) CITY é o nome da Cidade
-				'ID Type', //options: Radio ID, Channel ID
-				'CH ID',
-				'Dual Slot', //options: On/Off
-				'Time Slot', //options: 1 ou 2
-				'Color Code', //options: 1 à 15
-				'Promiscuous', //options: On/Off - default off
-				'TX Politely', // options: Allow TX, Channel Free, Color Code Idle
-				'TX Contacts', // only: ALl Call
-				'RX TG List', //None ou TG List-001, TG List-002, TG List-003...TG List-250
-				'DMR Encryption', //None or Key 1, Key 2, Key 3 ... Key 256 - default None
-				'RX CTC DCS', //None or float value
-				'TX CTC DCS', // None or float value
-				'CTC DCS Type', //options:Normal, Encrypt 1, Encrypt 2, Encrypt 3, Mute Code
-				'Mute Code', //number value
-				'Busy Lock', //options: Allown TX, Channel Free, CTC/DCS Idle
-				'Demodulation', //options: FM, AM, SSB
-				'Tail Tone', // Options: Off, 55Hz No Shift, 120º Shift, 180º Shift, 240º Shift
-				'Scrambler', //options: off, 1,2,3...9
-				'Bandwidth', //Options: Wide, Narrow
-				'Offset', // float, diference entre RX Freq e TX Freq em relação a RX Freq
-			],
-		};
 
 		function capitalizarTodasAsPalavras(str) {
 			if (typeof str !== 'string') return str;
@@ -119,7 +182,6 @@ async function processarJSON() {
 			return str
 				.split(' ')
 				.map((word) => {
-					// Aqui, 'word' já é minúsculo devido à linha anterior
 					return word.charAt(0).toUpperCase() + word.slice(1);
 				})
 				.join(' ');
@@ -170,76 +232,6 @@ async function processarJSON() {
 		}
 
 		// Mapeamento de estados brasileiros (nomes e variações para siglas)
-		const mapeamentoEstados = {
-			// Nomes completos
-			acre: 'ac',
-			alagoas: 'al',
-			amapa: 'ap',
-			amapá: 'ap',
-			amazonas: 'am',
-			bahia: 'ba',
-			ceara: 'ce',
-			ceará: 'ce',
-			'distrito federal': 'df',
-			'espirito santo': 'es',
-			'espírito santo': 'es',
-			goias: 'go',
-			goiás: 'go',
-			maranhao: 'ma',
-			maranhão: 'ma',
-			'mato grosso': 'mt',
-			'mato grosso do sul': 'ms',
-			'minas gerais': 'mg',
-			para: 'pa',
-			pará: 'pa',
-			paraiba: 'pb',
-			paraíba: 'pb',
-			parana: 'pr',
-			paraná: 'pr',
-			pernambuco: 'pe',
-			piaui: 'pi',
-			piauí: 'pi',
-			'rio de janeiro': 'rj',
-			'rio grande do norte': 'rn',
-			'rio grande do sul': 'rs',
-			rondonia: 'ro',
-			rondônia: 'ro',
-			roraima: 'rr',
-			'santa catarina': 'sc',
-			'sao paulo': 'sp',
-			'são paulo': 'sp',
-			sergipe: 'se',
-			tocantins: 'to',
-
-			// Siglas
-			ac: 'ac',
-			al: 'al',
-			ap: 'ap',
-			am: 'am',
-			ba: 'ba',
-			ce: 'ce',
-			df: 'df',
-			es: 'es',
-			go: 'go',
-			ma: 'ma',
-			mt: 'mt',
-			ms: 'ms',
-			mg: 'mg',
-			pa: 'pa',
-			pb: 'pb',
-			pr: 'pr',
-			pe: 'pe',
-			pi: 'pi',
-			rj: 'rj',
-			rn: 'rn',
-			rs: 'rs',
-			ro: 'ro',
-			rr: 'rr',
-			sc: 'sc',
-			sp: 'sp',
-			se: 'se',
-			to: 'to',
-		};
 
 		// Função para normalizar nome do estado para sigla
 		function normalizarEstado(estado) {
@@ -364,7 +356,7 @@ async function processarJSON() {
 			);
 		}
 
-		// Função para converter registro para linha CSV
+		// CORREÇÃO: Movida para dentro do escopo de processarJSON
 		function registroParaCSV(
 			registro,
 			estadoSigla,
@@ -486,7 +478,7 @@ async function processarJSON() {
 		cacheProcessado = estados;
 
 		// Processa cada estado individualmente
-		const nomeBase = 'meta/' + PATH_FILE.replace('.json', '');
+		const nomeBase = META + PATH_FILE.replace('.json', '');
 		let totalEstados = 0;
 		let totalRegistros = 0;
 
@@ -499,10 +491,15 @@ async function processarJSON() {
 
 			// Gera nomes de arquivo com o estado
 			const jsonNomeArquivo = `${nomeBase}.${estadoSigla}.json`;
-			const csvNomeArquivo = `${nomeBase}.${estadoSigla}.csv`;
+			const csvNomeArquivo = `${nomeBase}.${estadoSigla}.${modeloCSV}.csv`;
 
 			// Salva o arquivo JSON (apenas no Node.js)
 			if (isNODE) {
+				// CORREÇÃO: Garante que o diretório existe
+				const dir = path.dirname(jsonNomeArquivo);
+				if (!fs.existsSync(dir)) {
+					fs.mkdirSync(dir, { recursive: true });
+				}
 				fs.writeFileSync(
 					jsonNomeArquivo,
 					JSON.stringify(estadoJSON, null, 2),
@@ -552,7 +549,7 @@ async function processarJSON() {
 			});
 
 			// Gera o CSV
-			let csvContent = csvMODEL.rt4d.join(CSV_SEP) + '\n';
+			let csvContent = csvMODEL[modeloCSV].join(CSV_SEP) + '\n';
 			let chNumber = 1;
 
 			todosRegistros.forEach((item) => {
@@ -598,14 +595,17 @@ async function processarJSON() {
 		console.log(
 			`Arquivos gerados para cada estado: ${nomeBase}.{estado}.{json,csv}`,
 		);
+
+		return estados; // CORREÇÃO: Retorna os estados processados
 	} catch (error) {
 		console.error('Erro ao processar o arquivo:', error);
+		throw error; // CORREÇÃO: Propaga o erro
 	}
 }
 
 // === APENAS ESTAS FUNÇÕES ADICIONADAS ===
 
-// Função para download individual
+// CORREÇÃO: Adicionado parâmetro modeloCSV com valor padrão
 function downloadIndividual(estado, formato, modeloCSV = 'rt4d') {
 	if (!cacheProcessado) {
 		console.error(
@@ -633,6 +633,11 @@ function downloadIndividual(estado, formato, modeloCSV = 'rt4d') {
 		const conteudo = JSON.stringify(estadoJSON, null, 2);
 
 		if (isNODE) {
+			// CORREÇÃO: Garante que o diretório existe
+			const dir = path.dirname(jsonNomeArquivo);
+			if (!fs.existsSync(dir)) {
+				fs.mkdirSync(dir, { recursive: true });
+			}
 			fs.writeFileSync(jsonNomeArquivo, conteudo);
 			console.log(`JSON gerado: ${jsonNomeArquivo}`);
 		} else {
@@ -647,6 +652,41 @@ function downloadIndividual(estado, formato, modeloCSV = 'rt4d') {
 			URL.revokeObjectURL(url);
 		}
 	} else if (formato === 'csv') {
+		const csvMODEL = {
+			uv5rh: [],
+			rt4d: [
+				'CH',
+				'RX Freq',
+				'TX Freq',
+				'CH Mode',
+				'RX/TX Limit',
+				'TX Power',
+				'TOT',
+				'Scan Add',
+				'CH Alias',
+				'ID Type',
+				'CH ID',
+				'Dual Slot',
+				'Time Slot',
+				'Color Code',
+				'Promiscuous',
+				'TX Politely',
+				'TX Contacts',
+				'RX TG List',
+				'DMR Encryption',
+				'RX CTC DCS',
+				'TX CTC DCS',
+				'CTC DCS Type',
+				'Mute Code',
+				'Busy Lock',
+				'Demodulation',
+				'Tail Tone',
+				'Scrambler',
+				'Bandwidth',
+				'Offset',
+			],
+		};
+
 		const modelo = csvMODEL[modeloCSV];
 		if (!modelo) {
 			console.error(`Modelo CSV ${modeloCSV} não encontrado`);
@@ -655,6 +695,59 @@ function downloadIndividual(estado, formato, modeloCSV = 'rt4d') {
 
 		const CSV_SEP = ',';
 		const _ASPAS = (x) => (!isNaN(x) && isFinite(x) ? x : `"${x}"`);
+
+		// CORREÇÃO: Movida para dentro da função
+		function registroParaCSV(
+			registro,
+			estadoSigla,
+			chNumber,
+			chAlias,
+		) {
+			const freqRX = parseFloat(registro.frequency) || 0;
+			const offset = parseFloat(registro.offset) || 0;
+			const freqTX = freqRX + offset;
+
+			function formatarFrequencia(freq) {
+				return `${parseFloat(freq).toFixed(5)}`.padEnd(8, '0');
+			}
+
+			const tsLinked = (registro.ts_linked || '')
+				.replace(/TS/gi, '')
+				.trim();
+			const timeSlot = tsLinked.includes('2') ? '2' : '1';
+
+			return [
+				chNumber,
+				_ASPAS(`${formatarFrequencia(freqRX)}`),
+				_ASPAS(`${formatarFrequencia(freqTX)}`),
+				_ASPAS('Digital'),
+				_ASPAS('RX+TX'),
+				_ASPAS('High'),
+				_ASPAS(60),
+				_ASPAS('Add'),
+				_ASPAS(chAlias),
+				_ASPAS('Channel ID'),
+				_ASPAS(`${registro.id || ''}`),
+				_ASPAS('Off'),
+				_ASPAS(timeSlot),
+				_ASPAS(`${registro.color_code || '1'}`),
+				_ASPAS('Off'),
+				_ASPAS('Allow TX'),
+				_ASPAS('All Call'),
+				_ASPAS('None'),
+				_ASPAS('None'),
+				_ASPAS('None'),
+				_ASPAS('None'),
+				_ASPAS('Normal'),
+				_ASPAS(0),
+				_ASPAS('Allow TX'),
+				_ASPAS('FM'),
+				_ASPAS('Off'),
+				_ASPAS('Off'),
+				_ASPAS('Wide'),
+				_ASPAS(`${offset.toFixed(5)}`),
+			];
+		}
 
 		const todosRegistros = [];
 		const contadorCidades = {};
@@ -698,6 +791,11 @@ function downloadIndividual(estado, formato, modeloCSV = 'rt4d') {
 		const csvNomeArquivo = `${nomeBase}.${estadoSigla}.${modeloCSV}.csv`;
 
 		if (isNODE) {
+			// CORREÇÃO: Garante que o diretório existe
+			const dir = path.dirname(csvNomeArquivo);
+			if (!fs.existsSync(dir)) {
+				fs.mkdirSync(dir, { recursive: true });
+			}
 			fs.writeFileSync(csvNomeArquivo, csvContent);
 			console.log(`CSV gerado: ${csvNomeArquivo}`);
 		} else {
@@ -719,9 +817,6 @@ function criarInterfaceNavegador() {
 	if (isNODE) return;
 
 	const container = document.createElement('div');
-	container.style.cssText =
-		'position: fixed; top: 10px; right: 10px; background: white; border: 1px solid #ccc; padding: 10px; z-index: 1000; max-height: 80vh; overflow-y: auto;';
-
 	const titulo = document.createElement('h3');
 	titulo.textContent = 'Downloads Repetidoras';
 	container.appendChild(titulo);
@@ -742,7 +837,6 @@ function criarInterfaceNavegador() {
 
 			estados.forEach((estado) => {
 				const estadoSection = document.createElement('div');
-				estadoSection.style.marginBottom = '10px';
 
 				const estadoTitulo = document.createElement('h4');
 				estadoTitulo.textContent = `Estado: ${estado.toUpperCase()} (${
@@ -753,8 +847,6 @@ function criarInterfaceNavegador() {
 				const linkJSON = document.createElement('a');
 				linkJSON.textContent = '📁 JSON';
 				linkJSON.href = '#';
-				linkJSON.style.marginRight = '10px';
-				linkJSON.style.cursor = 'pointer';
 				linkJSON.onclick = () => downloadIndividual(estado, 'json');
 				estadoSection.appendChild(linkJSON);
 
@@ -762,8 +854,6 @@ function criarInterfaceNavegador() {
 					const linkCSV = document.createElement('a');
 					linkCSV.textContent = `📊 CSV ${modelo}`;
 					linkCSV.href = '#';
-					linkCSV.style.marginRight = '10px';
-					linkCSV.style.cursor = 'pointer';
 					linkCSV.onclick = () =>
 						downloadIndividual(estado, 'csv', modelo);
 					estadoSection.appendChild(linkCSV);

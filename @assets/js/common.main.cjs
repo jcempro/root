@@ -87,7 +87,7 @@ async function getItemLocalStorage(key, defValue = undefined) {
 			? localStorage.getItem(key)
 			: universalStorage.getItem(key);
 
-	if (v === undefined) {
+	if (v === null || v === undefined) {
 		v = await setItemLocalStorage(key, __getValue(defValue));
 	}
 	return JSON.parse(v);
