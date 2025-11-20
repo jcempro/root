@@ -17,6 +17,7 @@
 		"minify": "node .minify.html.js",
 		"watch": "npm-watch",
 		"dev": "npm run minify && npm run watch",
+		"repetidoras": "node ./radio/assets/js/repetidoras/index.main.cjs",
 		"gerar-sumario": "node ./radio/.gerar_sumario.js"
 	},
 	"watch": {

@@ -1,12 +1,15 @@
-// -------------------------------------------------------------
-//  UNIVERSAL RUNTIME DETECTION
-// -------------------------------------------------------------
+/**
+ * Universal runtime environment detection
+ * @type {boolean}
+ */
 const isNODE =
 	typeof process !== 'undefined' &&
 	typeof process.versions === 'object' &&
 	!!process.versions.node;
 
-// Lazy requires (não interferem com bundlers)
+/**
+ * Lazy-loaded Node.js modules (doesn't interfere with bundlers)
+ */
 let fs = null;
 let https = null;
 let path = null;
@@ -19,6 +22,9 @@ if (isNODE) {
 	ROOT = process.cwd();
 }
 
+/**
+ * Universal storage fallback for environments without localStorage
+ */
 const universalStorage = {
 	_data: {},
 	getItem(key) {
@@ -35,13 +41,39 @@ const universalStorage = {
 	},
 };
 
-// -------------------------------------------------------------
-//  CONSTANTES & FUNÇÕES AUXILIARES
-// -------------------------------------------------------------
+/**
+ * Capitalizes each word in a string
+ * @param {string} str - Input string
+ * @returns {string} Capitalized string
+ */
+const capitalizar = (str) =>
+	typeof str === 'string'
+		? str
+				.toLowerCase()
+				.split(' ')
+				.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+				.join(' ')
+		: str;
+
+/**
+ * Regular expressions for URL and path validation
+ */
 const REGEX_PROTOCOL = /^\s*[a-zA-Z]+:\/\//;
 const REGEX_LOCAL = /^(?!(?:[a-zA-Z]+:)?\/\/|[a-zA-Z]:\\|\/).*/;
 
-// Retorno válido
+/**
+ * Wraps non-numeric values in quotes for string representation
+ * @param {*} x - Value to process
+ * @returns {string|number} Quoted string or original number
+ */
+const _ASPAS = (x) => (!isNaN(x) && isFinite(x) ? x : `"${x}"`);
+
+/**
+ * Validates if a value represents successful operation return
+ * @param {*} v - Value to validate
+ * @param {boolean} podenull - Whether null values are acceptable
+ * @returns {boolean} True if value represents valid return
+ */
 const V_RETURN = (v, podenull = 0) =>
 	v !== undefined &&
 	(podenull || v !== null) &&
@@ -56,6 +88,11 @@ const V_RETURN = (v, podenull = 0) =>
 		v[0][0][0] < 0
 	);
 
+/**
+ * Resolves value from function or returns value directly
+ * @param {*} value - Value or function to resolve
+ * @returns {*} Resolved value
+ */
 const __getValue = async (value) =>
 	typeof value === 'function' || value instanceof Function
 		? value.constructor.name == 'AsyncFunction'
@@ -63,10 +100,12 @@ const __getValue = async (value) =>
 			: value()
 		: value;
 
-// -------------------------------------------------------------
-//  localStorage universal
-// -------------------------------------------------------------
-
+/**
+ * Universal localStorage setter with fallback support
+ * @param {string} key - Storage key
+ * @param {*} value - Value to store
+ * @returns {Promise<*>} Stored value
+ */
 async function setItemLocalStorage(key, value) {
 	value = await __getValue(value);
 
@@ -81,6 +120,12 @@ async function setItemLocalStorage(key, value) {
 	return value;
 }
 
+/**
+ * Universal localStorage getter with default value support
+ * @param {string} key - Storage key
+ * @param {*} defValue - Default value if key doesn't exist
+ * @returns {Promise<*>} Retrieved value
+ */
 async function getItemLocalStorage(key, defValue = undefined) {
 	let v =
 		typeof localStorage !== 'undefined'
@@ -90,27 +135,40 @@ async function getItemLocalStorage(key, defValue = undefined) {
 	if (v === null || v === undefined) {
 		v = await setItemLocalStorage(key, __getValue(defValue));
 	}
-	return JSON.parse(v);
+
+	return typeof v === `object` ? v : JSON.parse(__getValue(v));
 }
 
-// -------------------------------------------------------------
-//  FUNÇÃO _GET (UNIVERSAL)
-// -------------------------------------------------------------
+/**
+ * Universal data fetcher with multiple fallback strategies
+ * @param {string} url - URL or file path to load
+ * @returns {Promise<*>} Retrieved data
+ */
 async function _GET(url) {
 	const isProtocol = REGEX_PROTOCOL.test(url);
 	const is_relative = !isProtocol && REGEX_LOCAL.test(url);
 	const hasFETCH = typeof fetch === 'function';
 
-	// ---------------------------
-	// FUNÇÕES AUXILIARES INTERNAS
-	// ---------------------------
-
-	// Remove duplicados e normaliza caminhos
+	/**
+	 * Removes duplicates and normalizes paths
+	 * @param {Array} arr - Array of paths
+	 * @returns {Array} Unique normalized paths
+	 */
 	const uniq = (arr) => [...new Set(arr.map(String))];
 
+	/**
+	 * Normalizes path separators
+	 * @param {string} p - Path to normalize
+	 * @returns {string} Normalized path
+	 */
 	const normalize = (p) =>
 		p.replace(/\/\/+/g, '/').replace(/\\+/g, '/');
 
+	/**
+	 * Builds fallback paths for relative URLs
+	 * @param {string} u - Original URL/path
+	 * @returns {Array} Array of fallback paths
+	 */
 	const buildFallbacks = (u) => {
 		const list = [u];
 
@@ -132,6 +190,11 @@ async function _GET(url) {
 		return uniq(list.map(normalize));
 	};
 
+	/**
+	 * Loads data from local file system (Node.js only)
+	 * @param {string} file - File path
+	 * @returns {Array} Parsed data or error code
+	 */
 	const loadLocal = (file) => {
 		try {
 			if (isNODE && fs.existsSync(file)) {
@@ -143,6 +206,11 @@ async function _GET(url) {
 		return [[[-103]]];
 	};
 
+	/**
+	 * Loads data via HTTPS (Node.js fallback for fetch)
+	 * @param {string} link - URL to load
+	 * @returns {Promise<Array>} Parsed data
+	 */
 	const loadViaHTTPS = (link) =>
 		new Promise((resolve, reject) => {
 			https
@@ -160,6 +228,11 @@ async function _GET(url) {
 				.on('error', reject);
 		});
 
+	/**
+	 * Loads data via Fetch API
+	 * @param {string} link - URL to load
+	 * @returns {Promise<Array>} Parsed data or error code
+	 */
 	const loadViaFetch = async (link) => {
 		if (isNODE && !isProtocol) return [[[-107]]];
 		const r = await fetch(link);
@@ -167,10 +240,13 @@ async function _GET(url) {
 		return r.json();
 	};
 
+	/**
+	 * Attempts to load data from multiple paths with fallback
+	 * @param {Array} paths - Array of paths to try
+	 * @returns {Promise<Array>} Retrieved data or error code
+	 */
 	const tryPaths = async (paths) => {
 		for (const p of paths) {
-			console.log(` - tentando: ${p}`);
-
 			try {
 				let rr =
 					isNODE && !isProtocol
@@ -191,16 +267,38 @@ async function _GET(url) {
 		return [[[-102]]];
 	};
 
-	// ---------------------------
-	// EXECUÇÃO
-	// ---------------------------
 	const result = await tryPaths(buildFallbacks(url));
 	return V_RETURN(result) ? result : undefined;
 }
 
-// =========================================================
-//  EXPORTAÇÃO UNIVERSAL (CJS)
-// =========================================================
+/**
+ * Checks if path represents a file
+ * @param {string} path - Path to check
+ * @returns {boolean} True if path represents a file
+ */
+const isFile = (path) =>
+	typeof !isNODE
+		? /(?:\/|^)[^/.?]+\.[a-zA-Z0-9]{1,10}(?=[?#]|$)/.test(path)
+		: (() => {
+				try {
+					return require('fs').statSync(path).isFile();
+				} catch {
+					return false;
+				}
+		  })();
+
+/**
+ * Joins path segments with proper separator
+ * @param {string} n1 - First path segment
+ * @param {string} n2 - Second path segment
+ * @returns {string} Joined path
+ */
+const joinPath = (n1, n2) =>
+	isNODE ? path.join(`${n1}/`, n2) : n1 + '/' + n2;
+
+/**
+ * CommonJS module exports
+ */
 module.exports = {
 	isNODE,
 	REGEX_PROTOCOL,
@@ -209,15 +307,31 @@ module.exports = {
 	getItemLocalStorage,
 	_GET,
 	V_RETURN,
+	_ASPAS,
+	isFile,
+	joinPath,
+	capitalizar,
 };
 
-// EXPORTAÇÃO GLOBAL (browser)
+/**
+ * Global scope assignment for universal access
+ */
 if (typeof globalThis !== 'undefined') {
-	globalThis.isNODE = isNODE;
-	globalThis.REGEX_PROTOCOL = REGEX_PROTOCOL;
-	globalThis.REGEX_LOCAL = REGEX_LOCAL;
-	globalThis.setItemLocalStorage = setItemLocalStorage;
-	globalThis.getItemLocalStorage = getItemLocalStorage;
-	globalThis._GET = _GET;
-	globalThis.V_RETURN = V_RETURN;
+	globalThis.commom = {
+		joinPath: joinPath,
+		isNODE: isNODE,
+		REGEX_PROTOCOL: REGEX_PROTOCOL,
+		REGEX_LOCAL: REGEX_LOCAL,
+		setItemLocalStorage: setItemLocalStorage,
+		getItemLocalStorage: getItemLocalStorage,
+		_GET: _GET,
+		V_RETURN: V_RETURN,
+		_ASPAS: _ASPAS,
+		isFile: isFile,
+		capitalizar: capitalizar,
+	};
+
+	if (typeof window !== 'undefined') {
+		window.commom = globalThis.commom;
+	}
 }
