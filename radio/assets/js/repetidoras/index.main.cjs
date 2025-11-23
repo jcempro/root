@@ -32,7 +32,9 @@ const radioidnet = isNODE
  * Modelos RT4D
  */
 const csvMODELOS = isNODE
-	? require('./modelos/rt4d.main.cjs')
+	? {
+			rt4d: require('./modelos/rt4d.main.cjs'),
+	  }
 	: typeof window !== `undefined`
 	? window.radioModels
 	: globalThis.radioModels;
@@ -108,6 +110,7 @@ async function carregarDados(fontes, storageKey) {
  * @param {Object|string} caminhos
  * @param {string} estadoSigla
  * @param {string} formato - 'json' ou 'csv'
+ * @param {Array<string>} cabecalhoCSV - Cabeçalho personalizado para CSV (opcional)
  * @returns {Promise<string>} Caminho final
  */
 async function salvarDados(
@@ -115,6 +118,7 @@ async function salvarDados(
 	caminhos,
 	estadoSigla = '',
 	formato = 'json',
+	cabecalhoCSV = null,
 ) {
 	formato = String(formato || 'json')
 		.trim()
@@ -142,7 +146,7 @@ async function salvarDados(
 	};
 
 	// Converte array/obj JSON para CSV
-	const converterParaCSV = (dados) => {
+	const converterParaCSV = (dados, cabecalhoPersonalizado = null) => {
 		if (!Array.isArray(dados) || dados.length === 0) return '';
 		const todasChaves = new Set();
 		dados.forEach((r) => {
@@ -154,7 +158,18 @@ async function salvarDados(
 				);
 		});
 		const chaves = Array.from(todasChaves);
-		const linhas = [chaves.join(';')];
+
+		const linhas = [];
+
+		// Adiciona cabeçalho APENAS se fornecido explicitamente
+		if (
+			cabecalhoPersonalizado !== null &&
+			Array.isArray(cabecalhoPersonalizado)
+		) {
+			linhas.push(cabecalhoPersonalizado.join(';'));
+		}
+
+		// Adiciona os dados (sem linha de cabeçalho automática)
 		dados.forEach((r) => {
 			const linha = chaves.map((chave) => {
 				let valor;
@@ -202,7 +217,11 @@ async function salvarDados(
 		} else return path.join(baseTrim, `dados${esperado}`);
 	};
 
-	const prepararConteudo = (regs, fmt) => {
+	const prepararConteudo = (
+		regs,
+		fmt,
+		cabecalhoPersonalizado = null,
+	) => {
 		if (typeof regs === 'string') {
 			const txt = regs;
 			if (fmt === 'json') return txt;
@@ -212,6 +231,7 @@ async function salvarDados(
 					const parsed = JSON.parse(txt);
 					return converterParaCSV(
 						Array.isArray(parsed) ? parsed : [parsed],
+						cabecalhoPersonalizado,
 					);
 				} catch (e) {
 					return txt;
@@ -222,7 +242,10 @@ async function salvarDados(
 		if (Array.isArray(regs) || typeof regs === 'object')
 			return fmt === 'json'
 				? JSON.stringify(regs, null, 0)
-				: converterParaCSV(Array.isArray(regs) ? regs : [regs]);
+				: converterParaCSV(
+						Array.isArray(regs) ? regs : [regs],
+						cabecalhoPersonalizado,
+				  );
 		throw new Error("Tipo de 'registros' inválido.");
 	};
 
@@ -252,7 +275,11 @@ async function salvarDados(
 	// FLUXO PRINCIPAL
 	// ---------------------
 	const caminhoFinal = normalizarDestino(destinoBase, formato);
-	const conteudoParaSalvar = prepararConteudo(registros, formato);
+	const conteudoParaSalvar = prepararConteudo(
+		registros,
+		formato,
+		cabecalhoCSV,
+	);
 	return isNODE
 		? gravarNode(caminhoFinal, conteudoParaSalvar)
 		: gravarBrowser(caminhoFinal, conteudoParaSalvar, formato);
@@ -276,7 +303,10 @@ if (!isNODE) {
 		(registros, caminhos, estadoSigla, formato) => {
 			salvarDados(registros, caminhos, estadoSigla, formato);
 			salvarDados(
-				csvMODELOS.converterParaModelo(registros),
+				csvMODELOS.rt4d.converterParaModelo(
+					registros,
+					csvMODELOS.rt4d.MODEL,
+				),
 				caminhos,
 				estadoSigla,
 				'csv',

@@ -207,7 +207,7 @@ function jsonToModel(registros) {
 	if (!Array.isArray(registros))
 		throw new Error('Registros deve ser um array');
 
-	const resultado = [MODEL];
+	const resultado = [];
 	registros.forEach((registro, index) => {
 		const chNumber = index + 1;
 		resultado.push(converterRegistro(registro, chNumber));
@@ -225,8 +225,8 @@ function modelToCSV(dadosModelo) {
 		throw new Error('Dados do modelo devem ser um array não vazio');
 	}
 
-	const cabecalho = dadosModelo[0];
-	const linhasDados = dadosModelo.slice(1);
+	const cabecalho = MODEL;
+	const linhasDados = dadosModelo;
 
 	const todasLinhas = [cabecalho, ...linhasDados];
 	const linhasCSV = todasLinhas.map((linha) =>
