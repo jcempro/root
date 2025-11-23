@@ -1,35 +1,36 @@
 /**
- * Environment detection for Node.js vs Browser
+ * Detecta ambiente Node.js vs Browser
  * @type {boolean}
  */
 const isNODE = typeof window === 'undefined';
 
 /**
- * Cities validation module import
+ * Importa módulo de validação de cidades
  */
 const CIDADES = isNODE
 	? require('../cidades.main.cjs')
-	: typeof window !== `undefined`
+	: typeof window !== 'undefined'
 	? window.cidades
 	: globalThis.cidades;
 
 /**
- * Radio ID network data source URL
+ * URL de dados da rede Radio ID
  * @type {string}
  */
 const __RPTDR_LNK = 'https://radioid.net/static/rptrs.json';
 
 /**
- * Local data file path
+ * Caminho local para armazenamento de dados
  * @type {string}
  */
 const PATH_FILE = 'rptrs.json';
 
 /**
- * Brazilian states mapping (full names to abbreviations)
+ * Mapeamento de estados brasileiros (nomes completos e abreviações)
  * @type {Object}
  */
 const estadosMap = {
+	// Nomes completos
 	acre: 'ac',
 	alagoas: 'al',
 	amapa: 'ap',
@@ -68,7 +69,7 @@ const estadosMap = {
 	'são paulo': 'sp',
 	sergipe: 'se',
 	tocantins: 'to',
-	// State abbreviations
+	// Abreviações
 	ac: 'ac',
 	al: 'al',
 	ap: 'ap',
@@ -99,31 +100,31 @@ const estadosMap = {
 };
 
 /**
- * Cache for processed data
+ * Cache para dados processados
  * @type {Object|null}
  */
 let cacheProcessado = null;
 
 /**
- * Normalizes state names to standard abbreviations
- * @param {string} estado - State name or abbreviation
- * @returns {string} Normalized state abbreviation
+ * Normaliza nomes de estados para abreviações padrão
+ * @param {string} estado - Nome ou abreviação do estado
+ * @returns {string} Sigla normalizada
  */
 const normalizarEstado = (estado) =>
 	estado
 		? estadosMap[
 				estado
 					.toLowerCase()
-					.normalize('NFD')
+					.normalize('NFD') // Remove acentos
 					.replace(/[\u0300-\u036f]/g, '')
 					.trim()
 		  ] || ''
 		: '';
 
 /**
- * Converts timeslot linked string to numeric array
- * @param {string} ts_linked - Timeslot string (e.g., "TS1 TS2")
- * @returns {number[]} Array of timeslot numbers
+ * Converte string de timeslot para array numérico
+ * @param {string} ts_linked - Ex.: "TS1 TS2"
+ * @returns {number[]} Array de timeslots
  */
 const converterTimeslot = (ts_linked) => {
 	if (!ts_linked) return [];
@@ -136,17 +137,16 @@ const converterTimeslot = (ts_linked) => {
 };
 
 /**
- * Processes and validates city names with comprehensive cleaning
- * @param {string} city - Raw city name
- * @param {string} estadoSigla - State abbreviation for context
- * @returns {Promise<string>} Processed and validated city name
+ * Limpa e valida nomes de cidades
+ * @param {string} city - Nome cru da cidade
+ * @param {string} estadoSigla - Sigla do estado
+ * @returns {Promise<string>} Nome processado e validado
  */
 const processarNomeCidade = async (city, estadoSigla) => {
 	if (!city) return '';
-
 	let cityLimpa = String(city);
 
-	// Remove states and countries (only isolated words at the end)
+	// Remove nomes de estados ou países no final
 	const padroesRemover = Object.keys(estadosMap).concat([
 		'brazil',
 		'brasil',
@@ -180,24 +180,20 @@ const processarNomeCidade = async (city, estadoSigla) => {
 		);
 	});
 
-	// Remove trailing symbols
-	cityLimpa = cityLimpa.replace(/[\\-\\.\\/,\\|\\s]+$/, '').trim();
+	// Limpeza de símbolos no início/fim e substituição interna
+	cityLimpa = cityLimpa
+		.replace(/[\\-\\.\\/,\\|\\s]+$/, '')
+		.replace(/^[\\-\\.\\/,\\|\\s]+/, '')
+		.replace(/[\\-\\.\\/,\\|]+/g, ' ')
+		.replace(/\s+/g, ' ')
+		.trim();
 
-	// Remove leading symbols
-	cityLimpa = cityLimpa.replace(/^[\\-\\.\\/,\\|\\s]+/, '').trim();
-
-	// Replace internal symbols with spaces
-	cityLimpa = cityLimpa.replace(/[\\-\\.\\/,\\|]+/g, ' ');
-
-	// Final whitespace cleanup
-	cityLimpa = cityLimpa.replace(/\s+/g, ' ').trim();
-
-	// Validate against official cities database
+	// Valida usando base oficial
 	if (cityLimpa && cityLimpa.length > 1) {
 		return await CIDADES.validarNomeCidade(cityLimpa);
 	}
 
-	// Fallback: return cleaned original name
+	// Fallback
 	return commom.capitalizar(
 		city
 			.replace(/[\\-\\.\\/,\\|]+/g, ' ')
@@ -207,26 +203,15 @@ const processarNomeCidade = async (city, estadoSigla) => {
 };
 
 /**
- * Processes individual radio repeater record
- * @param {Object} registro - Raw repeater data
- * @param {Object} contadorCidades - City counter for duplicate handling
- * @returns {Promise<Object|null>} Processed record or null if invalid
+ * Processa registro individual de repetidor
+ * @param {Object} registro - Dados crus
+ * @param {Object} contadorCidades - Contador para lidar com duplicatas
+ * @returns {Promise<Object|null>} Registro processado ou null se inválido
  */
 async function processarRegistro(registro, contadorCidades) {
-	const {
-		state,
-		country,
-		status,
-		locator,
-		callsign,
-		map_info,
-		trustee,
-		map,
-		city,
-		...novoReg
-	} = registro;
+	const { state, country, status, city, ...novoReg } = registro;
 
-	// Filter for active Brazilian repeaters only
+	// Apenas repetidores ativos no Brasil
 	if (
 		!/bra(s|z)il/i.test((country || '').trim()) ||
 		(status || '').toLowerCase() !== 'active'
@@ -236,87 +221,74 @@ async function processarRegistro(registro, contadorCidades) {
 	const estadoSigla = normalizarEstado(state);
 	if (!estadoSigla) return null;
 
-	// Process city name with validation
 	const cidadeProcessada = await processarNomeCidade(
 		city,
 		estadoSigla,
 	);
 	if (!cidadeProcessada) return null;
 
-	// Convert numeric fields
-	['frequency', 'offset', 'color_code', 'id'].forEach((campo) => {
-		if (novoReg[campo] != null)
-			novoReg[campo] = parseFloat(novoReg[campo]) || 0;
+	// Converte campos numéricos
+	['frequency', 'offset', 'color_code', 'id'].forEach((c) => {
+		if (novoReg[c] != null) novoReg[c] = parseFloat(novoReg[c]) || 0;
 	});
 
 	novoReg.info = {};
 
-	// Field name mapping and restructuring
+	// Mapeamento de campos
 	if (novoReg.frequency !== undefined) {
 		novoReg.rx = novoReg.frequency;
 		delete novoReg.frequency;
 	}
-
 	if (novoReg.color_code !== undefined) {
 		novoReg.color = novoReg.color_code;
 		delete novoReg.color_code;
 	}
-
 	if (novoReg.ts_linked !== undefined) {
 		novoReg.timeslot = converterTimeslot(novoReg.ts_linked);
 		delete novoReg.ts_linked;
 	}
-
 	if (novoReg.id !== undefined) {
 		novoReg.info.dmr_id = novoReg.id;
 		delete novoReg.id;
 	}
-
 	if (novoReg.ipsc_network !== undefined) {
 		novoReg.info.ipsc = novoReg.ipsc_network;
 		delete novoReg.ipsc_network;
 	}
-
 	if (novoReg.assigned !== undefined) {
 		novoReg.info.assigned = novoReg.assigned;
 		delete novoReg.assigned;
 	}
 
-	// Calculate transmission frequency
+	// Calcula frequência de transmissão
 	if (novoReg.rx !== undefined && novoReg.offset !== undefined) {
 		novoReg.tx = parseFloat((novoReg.rx + novoReg.offset).toFixed(5));
 	}
 
-	// Generate standardized name with duplicate counter
+	// Gera location inicial [UF, cidade]
 	const chaveCidade = `${estadoSigla}:${cidadeProcessada}`;
 	contadorCidades[chaveCidade] =
 		(contadorCidades[chaveCidade] || 0) + 1;
-	const contador = contadorCidades[chaveCidade];
+	novoReg.location = [estadoSigla.toUpperCase(), cidadeProcessada];
 
-	novoReg.name =
-		contador > 1
-			? `${estadoSigla.toUpperCase()}: ${cidadeProcessada} [${contador}]`
-			: `${estadoSigla.toUpperCase()}: ${cidadeProcessada}`;
-
-	// Capitalize remaining string fields
-	Object.keys(novoReg).forEach((key) => {
-		if (typeof novoReg[key] === 'string' && key !== 'name') {
-			novoReg[key] = commom.capitalizar(novoReg[key]);
-		}
+	// Capitaliza campos string restantes
+	Object.keys(novoReg).forEach((k) => {
+		if (typeof novoReg[k] === 'string' && k !== 'location')
+			novoReg[k] = commom.capitalizar(novoReg[k]);
 	});
 
 	return { estadoSigla, registro: novoReg };
 }
 
 /**
- * Main function to process radio repeater JSON data
- * @param {Function} resolverCaminhos - Path resolver function
- * @param {Function} carregarDados - Data loader function
- * @param {Function} salvarDados - Data saver function
- * @param {Function|null} callback - Completion callback
- * @param {Array} fontes - Data sources array
- * @param {string} storageKey - Cache storage key
- * @returns {Promise<Object>} Processing results
+ * Processa JSON completo de repetidores
+ * @param {Function} resolverCaminhos - Resolve caminhos de arquivos
+ * @param {Function} carregarDados - Carrega dados
+ * @param {Function} salvarDados - Salva dados processados
+ * @param {Function|null} callback - Função callback opcional
+ * @param {Array} fontes - Fontes de dados
+ * @param {string} storageKey - Chave de cache
+ * @returns {Promise<Object>} Resultados do processamento
  */
 async function processarJSON(
 	resolverCaminhos,
@@ -327,28 +299,25 @@ async function processarJSON(
 	storageKey = 'radioid.net',
 ) {
 	try {
-		// Load data from specified sources
 		const jsonData = await carregarDados(fontes, storageKey);
 
 		if (
 			typeof jsonData !== 'object' ||
 			!Array.isArray(jsonData?.rptrs)
-		) {
+		)
 			throw new Error(`JSON inválido. Esperado objeto com '.rptrs'`);
-		}
 
-		const estados = {};
-		const contadorCidades = {};
-		const resultados = {
-			totalEstados: 0,
-			totalRegistros: 0,
-			registrosOriginais: jsonData.rptrs.length,
-			arquivosGerados: [],
-			estadosProcessados: [],
-			contents: {},
-		};
+		const estados = {},
+			contadorCidades = {},
+			resultados = {
+				totalEstados: 0,
+				totalRegistros: 0,
+				registrosOriginais: jsonData.rptrs.length,
+				arquivosGerados: [],
+				estadosProcessados: [],
+				contents: {},
+			};
 
-		// Process each repeater record
 		for (const registro of jsonData.rptrs) {
 			const processado = await processarRegistro(
 				registro,
@@ -363,12 +332,31 @@ async function processarJSON(
 
 		cacheProcessado = estados;
 
-		// Save processed data per state
+		// Salva dados por estado
 		for (const [estadoSigla, registros] of Object.entries(estados)) {
-			registros.sort((a, b) => a.name.localeCompare(b.name));
+			const contadorPorCidade = {};
+			// Contagem por cidade
+			registros.forEach((r) => {
+				const cidade = r.location[1];
+				const chave = `${estadoSigla}:${cidade}`;
+				contadorPorCidade[chave] =
+					(contadorPorCidade[chave] || 0) + 1;
+			});
+			const contadorAtual = {};
+			registros.forEach((r) => {
+				const cidade = r.location[1];
+				const chave = `${estadoSigla}:${cidade}`;
+				if (contadorPorCidade[chave] > 1) {
+					contadorAtual[chave] = (contadorAtual[chave] || 0) + 1;
+					r.location.push(contadorAtual[chave]);
+				}
+			});
+			// Ordena por cidade
+			registros.sort((a, b) =>
+				a.location[1].localeCompare(b.location[1]),
+			);
 
 			const caminhos = resolverCaminhos('', estadoSigla);
-
 			const arquivoSalvo = await salvarDados(
 				registros,
 				caminhos,
@@ -392,27 +380,15 @@ async function processarJSON(
 			`\nProcessado: ${resultados.totalEstados} estados, ${resultados.totalRegistros} registros (original: ${resultados.registrosOriginais})`,
 		);
 
-		if (typeof callback === 'function') {
-			callback(null, resultados);
-		}
-
+		if (typeof callback === 'function') callback(null, resultados);
 		return resultados;
 	} catch (error) {
 		console.error('Erro ao processar:', error);
-
-		if (typeof callback === 'function') {
-			callback(error, null);
-		}
-
+		if (typeof callback === 'function') callback(error, null);
 		throw error;
 	}
 }
 
-// Environment-specific exports
-if (!isNODE) {
-	window.processarJSON = processarJSON;
-} else {
-	module.exports = {
-		processarJSON,
-	};
-}
+// Exports para Node.js e Browser
+if (!isNODE) window.processarJSON = processarJSON;
+else module.exports = { processarJSON };
