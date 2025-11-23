@@ -1,1 +1,1 @@
-[{"offset":-0.6,"info":{"dmr_id":724111,"ipsc":"BM","assigned":"Master"},"rx":145.45,"color":1,"timeslot":[1,2],"tx":144.85,"name":"MT: Varzea Grande"}]
+[{"locator":724111,"callsign":"Py9grp","offset":-0.6,"trustee":"Py3nz","map_info":"","map":1,"info":{"dmr_id":724111,"ipsc":"BM","assigned":"Master"},"rx":145.45,"color":1,"timeslot":[1,2],"tx":144.85,"location":["MT","Varzea Grande"]}]

@@ -1,1 +1,1 @@
-[{"offset":-5,"info":{"dmr_id":724119,"ipsc":"BM","assigned":"Peer"},"rx":438.125,"color":1,"timeslot":[2],"tx":433.125,"name":"TO: Porto Nacional"}]
+[{"locator":724119,"callsign":"Pq2hx","offset":-5,"trustee":"Pq2hx","map_info":"","map":0,"info":{"dmr_id":724119,"ipsc":"BM","assigned":"Peer"},"rx":438.125,"color":1,"timeslot":[2],"tx":433.125,"location":["TO","Porto Nacional"]}]
