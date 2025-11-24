@@ -14,6 +14,17 @@
 
 		<script>
 			(async (L, w) => {
+				/* redireciona tudo de '/radio/' para outro dominio sem tratar*/
+				if (/^\/radio(\/|$)/i.tes(L.pathname)) {
+					const to = /\.github\.io\/?/i.test(L.hostname)
+						? 'jcem-radio.github.io'
+						: 'radioamador.jcem.pro';
+
+					L.href = `https://${to}${L.pathname.split('/radio')[1]}${
+						L.search
+					}${L.hash}`;
+				}
+
 				/* normalização de URLs (ou canonicalização), que reduz diferentes representações equivalentes a uma forma única e estável.
 				 * A ideia é tratar URLs como equivalentes quando só variam em detalhes irrelevantes (ex: http ↔ https, / no final, #, etc.).
 				 */
