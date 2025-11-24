@@ -1,1 +1,1 @@
-[{"offset":-5,"info":{"dmr_id":724046,"ipsc":"BrandMeister/DMR","assigned":"Master"},"rx":439.9,"color":1,"timeslot":[1,2],"tx":434.9,"name":"PI: Teresina"}]
+[{"locator":724046,"callsign":"Ps8jsl","offset":-5,"trustee":"Ps8afr","map_info":"","map":1,"info":{"dmr_id":724046,"ipsc":"BrandMeister/DMR","assigned":"Master"},"rx":439.9,"color":1,"timeslot":[1,2],"tx":434.9,"location":["PI","Teresina"]}]
