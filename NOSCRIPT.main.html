@@ -36,8 +36,8 @@
 				justify-content: center;
 			}
 
-			/* Noscript box */
-			noscript main {
+			/* box */
+			main {
 				background: #fff;
 				border-radius: var(--radius);
 				box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
@@ -47,7 +47,7 @@
 				border: 0.1rem solid var(--blue);
 			}
 
-			noscript h1 {
+			h1 {
 				font-size: 1.5rem;
 				font-weight: 700;
 				color: #fff;
@@ -64,59 +64,54 @@
 				margin-top: -1.1em;
 			}
 
-			noscript h1 span {
+			h1 span {
 				margin: 0.2rem;
 				font-size: 1.8rem;
 			}
 
-			noscript p {
+			p {
 				margin: 0.2rem 0;
 				line-height: 1.4;
 				text-align: left;
 			}
 
-			noscript .lang {
+			.lang {
 				border-top: 1px solid rgba(0, 0, 0, 0.1);
 				margin-top: 1rem;
 				padding-top: 0.5rem;
 				font-size: 0.9rem;
 			}
 
-			noscript .lang:first-of-type {
+			.lang:first-of-type {
 				border-top: none;
 			}
 
-			noscript .lang h2 {
+			.lang h2 {
 				color: var(--blue);
 				display: block;
 				margin-bottom: 0.2rem;
 				font-size: 0.9rem;
 			}
 
-			noscript strong,
-			noscript .lang strong {
+			strong,
+			.lang strong {
 				color: var(--amber);
 				font-size: 1.05rem;
 				font-style: italic;
 				margin-left: 0.4em;
 			}
 
-			noscript p span {
+			p span {
 				font-size: 1.3rem;
 				vertical-align: text-bottom;
 			}
 
-			noscript {
-				display: block;
-				text-align: left;
-			}
-
 			@media (max-width: 600px) {
-				noscript main {
+				main {
 					width: 85vw;
 					padding: 1rem;
 				}
-				noscript h1 {
+				h1 {
 					font-size: 1.3rem;
 				}
 			}
@@ -124,46 +119,43 @@
 	</head>
 
 	<body>
-		<noscript>
-			<main>
-				<h1><span>⚠️</span>Problem / Problema / 问题</h1>
+		<main>
+			<h1><span>⚠️</span>Problem / Problema / 问题</h1>
 
-				<div class="lang">
-					<h2>🇺🇸 English</h2>
-					<p>
-						<span>⚠️</span><strong>JavaScript is disabled.</strong
-						><br />
-						This prevents automatic redirection to your destination.
-					</p>
-				</div>
+			<div class="lang">
+				<h2>🇺🇸 English</h2>
+				<p>
+					<span>⚠️</span><strong>JavaScript is disabled.</strong
+					><br />
+					This prevents automatic redirection to your destination.
+				</p>
+			</div>
 
-				<div class="lang">
-					<h2>🇧🇷 Português</h2>
-					<p>
-						<span>⚠️</span
-						><strong>O JavaScript está desativado.</strong><br />
-						Isso impede o redirecionamento automático para o destino.
-					</p>
-				</div>
+			<div class="lang">
+				<h2>🇧🇷 Português</h2>
+				<p>
+					<span>⚠️</span><strong>O JavaScript está desativado.</strong
+					><br />
+					Isso impede o redirecionamento automático para o destino.
+				</p>
+			</div>
 
-				<div class="lang">
-					<h2>🇪🇸 Español</h2>
-					<p>
-						<span>⚠️</span
-						><strong>JavaScript está deshabilitado.</strong><br />
-						Esto impide la redirección automática al destino.
-					</p>
-				</div>
+			<div class="lang">
+				<h2>🇪🇸 Español</h2>
+				<p>
+					<span>⚠️</span
+					><strong>JavaScript está deshabilitado.</strong><br />
+					Esto impide la redirección automática al destino.
+				</p>
+			</div>
 
-				<div class="lang">
-					<h2>🇨🇳 中文（普通话）</h2>
-					<p>
-						<span>⚠️</span><strong>JavaScript 已被禁用。</strong
-						><br />
-						这会阻止自动跳转到目标页面。
-					</p>
-				</div>
-			</main>
-		</noscript>
+			<div class="lang">
+				<h2>🇨🇳 中文（普通话）</h2>
+				<p>
+					<span>⚠️</span><strong>JavaScript 已被禁用。</strong><br />
+					这会阻止自动跳转到目标页面。
+				</p>
+			</div>
+		</main>
 	</body>
 </html>
