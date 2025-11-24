@@ -14,6 +14,15 @@ const CIDADES = isNODE
 	: globalThis.cidades;
 
 /**
+ * Importa módulo de utilidades para radios
+ */
+const radioUTILs = isNODE
+	? require('../utils.main.cjs')
+	: typeof window !== 'undefined'
+	? window.radioUtils
+	: globalThis.radioUtils;
+
+/**
  * URL de dados da rede Radio ID
  * @type {string}
  */
@@ -26,100 +35,10 @@ const __RPTDR_LNK = 'https://radioid.net/static/rptrs.json';
 const PATH_FILE = 'rptrs.json';
 
 /**
- * Mapeamento de estados brasileiros (nomes completos e abreviações)
- * @type {Object}
- */
-const estadosMap = {
-	// Nomes completos
-	acre: 'ac',
-	alagoas: 'al',
-	amapa: 'ap',
-	amapá: 'ap',
-	amazonas: 'am',
-	bahia: 'ba',
-	ceara: 'ce',
-	ceará: 'ce',
-	'distrito federal': 'df',
-	'espirito santo': 'es',
-	'espírito santo': 'es',
-	goias: 'go',
-	goiás: 'go',
-	maranhao: 'ma',
-	maranhão: 'ma',
-	'mato grosso': 'mt',
-	'mato grosso do sul': 'ms',
-	'minas gerais': 'mg',
-	para: 'pa',
-	pará: 'pa',
-	paraiba: 'pb',
-	paraíba: 'pb',
-	parana: 'pr',
-	paraná: 'pr',
-	pernambuco: 'pe',
-	piaui: 'pi',
-	piauí: 'pi',
-	'rio de janeiro': 'rj',
-	'rio grande do norte': 'rn',
-	'rio grande do sul': 'rs',
-	rondonia: 'ro',
-	rondônia: 'ro',
-	roraima: 'rr',
-	'santa catarina': 'sc',
-	'sao paulo': 'sp',
-	'são paulo': 'sp',
-	sergipe: 'se',
-	tocantins: 'to',
-	// Abreviações
-	ac: 'ac',
-	al: 'al',
-	ap: 'ap',
-	am: 'am',
-	ba: 'ba',
-	ce: 'ce',
-	df: 'df',
-	es: 'es',
-	go: 'go',
-	ma: 'ma',
-	mt: 'mt',
-	ms: 'ms',
-	mg: 'mg',
-	pa: 'pa',
-	pb: 'pb',
-	pr: 'pr',
-	pe: 'pe',
-	pi: 'pi',
-	rj: 'rj',
-	rn: 'rn',
-	rs: 'rs',
-	ro: 'ro',
-	rr: 'rr',
-	sc: 'sc',
-	sp: 'sp',
-	se: 'se',
-	to: 'to',
-};
-
-/**
  * Cache para dados processados
  * @type {Object|null}
  */
 let cacheProcessado = null;
-
-/**
- * Normaliza nomes de estados para abreviações padrão
- * @param {string} estado - Nome ou abreviação do estado
- * @returns {string} Sigla normalizada
- */
-const normalizarEstado = (estado) =>
-	estado
-		? estadosMap[
-				estado
-					.toLowerCase()
-					.normalize('NFD') // Remove acentos
-					.replace(/[\u0300-\u036f]/g, '')
-					.trim()
-		  ] || ''
-		: '';
 
 /**
  * Converte string de timeslot para array numérico
@@ -137,79 +56,23 @@ const converterTimeslot = (ts_linked) => {
 };
 
 /**
- * Limpa e valida nomes de cidades
- * @param {string} city - Nome cru da cidade
- * @param {string} estadoSigla - Sigla do estado
- * @returns {Promise<string>} Nome processado e validado
- */
-const processarNomeCidade = async (city, estadoSigla) => {
-	if (!city) return '';
-	let cityLimpa = String(city);
-
-	// Remove nomes de estados ou países no final
-	const padroesRemover = Object.keys(estadosMap).concat([
-		'brazil',
-		'brasil',
-	]);
-
-	if (estadoSigla) {
-		const estadoAtual = Object.keys(estadosMap).find(
-			(key) => estadosMap[key] === estadoSigla,
-		);
-		if (estadoAtual) {
-			const padroesEstado = estadoAtual.split(' ');
-			padroesEstado.forEach((padrao) => {
-				cityLimpa = cityLimpa.replace(
-					new RegExp(
-						`[\\-\\s\\/\\,\\.]+${padrao}[\\-\\s\\/\\,\\.]*$`,
-						'gi',
-					),
-					'',
-				);
-			});
-		}
-	}
-
-	padroesRemover.forEach((padrao) => {
-		cityLimpa = cityLimpa.replace(
-			new RegExp(
-				`[\\-\\s\\/\\,\\.]+${padrao}[\\-\\s\\/\\,\\.]*$`,
-				'gi',
-			),
-			'',
-		);
-	});
-
-	// Limpeza de símbolos no início/fim e substituição interna
-	cityLimpa = cityLimpa
-		.replace(/[\\-\\.\\/,\\|\\s]+$/, '')
-		.replace(/^[\\-\\.\\/,\\|\\s]+/, '')
-		.replace(/[\\-\\.\\/,\\|]+/g, ' ')
-		.replace(/\s+/g, ' ')
-		.trim();
-
-	// Valida usando base oficial
-	if (cityLimpa && cityLimpa.length > 1) {
-		return await CIDADES.validarNomeCidade(cityLimpa);
-	}
-
-	// Fallback
-	return commom.capitalizar(
-		city
-			.replace(/[\\-\\.\\/,\\|]+/g, ' ')
-			.replace(/\s+/g, ' ')
-			.trim(),
-	);
-};
-
-/**
  * Processa registro individual de repetidor
  * @param {Object} registro - Dados crus
  * @param {Object} contadorCidades - Contador para lidar com duplicatas
  * @returns {Promise<Object|null>} Registro processado ou null se inválido
  */
 async function processarRegistro(registro, contadorCidades) {
-	const { state, country, status, city, ...novoReg } = registro;
+	const {
+		state,
+		country,
+		status,
+		city,
+		map_info,
+		map,
+		locator,
+		trustee,
+		...novoReg
+	} = registro;
 
 	// Apenas repetidores ativos no Brasil
 	if (
@@ -218,10 +81,10 @@ async function processarRegistro(registro, contadorCidades) {
 	)
 		return null;
 
-	const estadoSigla = normalizarEstado(state);
+	const estadoSigla = radioUTILs.normalizarEstado(state);
 	if (!estadoSigla) return null;
 
-	const cidadeProcessada = await processarNomeCidade(
+	const cidadeProcessada = await radioUTILs.processarNomeCidade(
 		city,
 		estadoSigla,
 	);
@@ -258,6 +121,10 @@ async function processarRegistro(registro, contadorCidades) {
 	if (novoReg.assigned !== undefined) {
 		novoReg.info.assigned = novoReg.assigned;
 		delete novoReg.assigned;
+	}
+	if (novoReg.callsign !== undefined) {
+		novoReg.info.callsign = novoReg.callsign;
+		delete novoReg.callsign;
 	}
 
 	// Calcula frequência de transmissão
@@ -389,6 +256,15 @@ async function processarJSON(
 	}
 }
 
-// Exports para Node.js e Browser
-if (!isNODE) window.processarJSON = processarJSON;
-else module.exports = { processarJSON };
+// Exportações Node.js
+if (isNODE) {
+	module.exports = { processarJSON };
+}
+
+// Exportações globais (Browser)
+if (typeof globalThis !== 'undefined') {
+	globalThis.radioidnet = { processarJSON: processarJSON };
+
+	if (typeof window !== 'undefined')
+		window.radioidnet = globalThis.radioModels;
+}
