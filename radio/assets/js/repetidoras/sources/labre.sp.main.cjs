@@ -4,6 +4,8 @@
  */
 const isNODE = typeof window === 'undefined';
 
+const fromURL = `https://www.labre-sp.org.br/diversos.php?xid=48`;
+
 /**
  * Importa módulo de validação de cidades
  */
