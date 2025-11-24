@@ -1,1 +1,1 @@
-[{"locator":724262,"callsign":"Pw8dmr","offset":-5,"trustee":"Pw8gdc","map_info":"Tg 724262","map":1,"info":{"dmr_id":724262,"ipsc":"BRANDMEISTER","assigned":"Master"},"rx":439.55,"color":1,"timeslot":[1,2],"tx":434.55,"location":["RO","Rolim De Moura"]}]
+[{"offset":-5,"info":{"dmr_id":724262,"ipsc":"BRANDMEISTER","assigned":"Master","callsign":"PW8DMR"},"rx":439.55,"color":1,"timeslot":[1,2],"tx":434.55,"location":["RO","Rolim De Moura"]}]
