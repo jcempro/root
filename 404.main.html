@@ -15,7 +15,7 @@
 		<script>
 			(async (L, w) => {
 				/* redireciona tudo de '/radio/' para outro dominio sem tratar*/
-				if (/^\/radio(\/|$)/i.tes(L.pathname)) {
+				if (/^\/radio(\/|$)/i.test(L.pathname)) {
 					const to = /\.github\.io\/?/i.test(L.hostname)
 						? 'jcem-radio.github.io'
 						: 'radioamador.jcem.pro';
